@@ -1,17 +1,17 @@
 #include <iostream>
 
 struct date{
-    unsigned short day;
-    unsigned short month;
-}
+    unsigned short day=1;
+    unsigned short month=1;
+};
 
 class BankDepos{
     float money;
-    short lic, code, proc, //struct …
-
+    short lic, code, proc; //struct …
+    date date_Depos;
 /// убрать short int (оставить short)
   public:
-    BankDepos(){lic = 0,code=0,proc=0 ,money=0,date_m=1, date_d=1} // Лицевой счет       
+    BankDepos(){lic = 0,code=0,proc=0 ,money=0, date_Depos.month=1, date_Depos.day=1;} // Лицевой счет       
 
     int getLicNum() const{  // все методы которые не меняют поля константные
         return lic;
@@ -39,13 +39,13 @@ class BankDepos{
 
     int get_Date()const{ // вернем значение типа struct …
         
-        return date_d;
-        return date_m;
+        return date_Depos.day;
+        return date_Depos.month;
     }
 
     void set_Date(unsigned short x, unsigned short y){ 
-        date.day=x;
-        date.month=y;
+        date_Depos.day=x;
+        date_Depos.month=y;
     }
 
        
@@ -54,12 +54,12 @@ class BankDepos{
         return money;
     }
 
-    void set_Money(unsigned float x){ 
+    void set_Money(float x){ 
         money=x;
         }
 
     float change(float money_c) {
-        res=money+money_c;
+        float res=money+money_c;
         return res;
     } 
 
@@ -68,5 +68,11 @@ class BankDepos{
 
 int main(int argc, char const *argv[])
 {
-  
+  BankDepos deposit;
+  int x=0;
+  std::cout<<"Input client lic number\n";
+  std::cin>>x;
+  deposit.setLicNum(x);
+  int b=deposit.getLicNum();
+  std::cout<<"Lic number: "<<deposit.getLicNum()<<'\n';
 }
