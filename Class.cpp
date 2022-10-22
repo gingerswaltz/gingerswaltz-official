@@ -1,89 +1,65 @@
 #include <iostream>
-class BankVklad{
-    float money, money_c;
-    short int lic, code, proc, date_d, date_m;
-/// todo: определить длину кода, процентов, лиц счета. ограничить длину
-  
+
+struct date{
+    unsigned short day;
+    unsigned short month;
+}
+
+class BankDepos{
+    float money;
+    short lic, code, proc, //struct …
+
+/// убрать short int (оставить short)
   public:
-    Lic(){ vklad = 0} // Лицевой счет
+    BankDepos(){lic = 0,code=0,proc=0 ,money=0,date_m=1, date_d=1} // Лицевой счет       
 
-    Lic(){ // if () 
-       
-
-    int get(){ 
+    int getLicNum() const{  // все методы которые не меняют поля константные
         return lic;
     }
 
-    void set(short int x){ 
-        if (x=" ") throw invalid_argument("License is empty!")
+    void setLicNum(unsigned short x){  // прописать везде unsigned short кроме money 
         lic=x;
-        }
+    }       
 
-    Code(){ code = 0} // Код клиента
-
-    Code(){ 
-       
-
-    int get(){ 
+    int getClientCode()const{ 
         return code;
     }
 
-    void set(short int x){ 
-        if (x=" ") throw invalid_argument("Code is empty!")
+    void setClientCode(unsigned short x){ 
         code=x;
         }
 
-    
-    Proc(){ proc = 0} // Проценты
-
-    Proc(){ // if () 
-       
-
-    int get(){ 
+    int get_Proc()const{ 
         return proc;
     }
 
-    void set(short int x){ 
-        if (x=" ") throw invalid_argument("Procents is empty!")
+    void set_Proc(unsigned short x){ 
         proc=x;
-        }
+    }
 
-    Date(){ date_d = 1, date_m=1} // Проценты
-
-    Date(){ // if () 
-       
-
-    int get(){ 
+    int get_Date()const{ // вернем значение типа struct …
+        
         return date_d;
         return date_m;
     }
 
-    void set(short int x, short int y){ 
-        if ((x=" ") or (y=" ")) throw invalid_argument("Date is empty!")
-        date_d=x;
-        date_m=y;
-        }
+    void set_Date(unsigned short x, unsigned short y){ 
+        date.day=x;
+        date.month=y;
+    }
 
-
-    Money(){ money = 0} // Вклад
-
-    Money(){ // if () 
        
 
-    int get(){ 
+    int get_Money()const{ 
         return money;
     }
 
-    void set(short int x){ 
-        if (x=" ") throw invalid_argument("Money is empty!")
+    void set_Money(unsigned float x){ 
         money=x;
         }
 
-    float change(float money1,float money_c) {
-        if (money1=" ") throw invalid_argument("Money is empty!")
-        if (money_c=" ") throw invalid_argument("Money changing is empty!")
-        money1+=money_c;
-        res=money1;
+    float change(float money_c) {
+        res=money+money_c;
         return res;
     } 
 
@@ -92,10 +68,5 @@ class BankVklad{
 
 int main(int argc, char const *argv[])
 {
-    //*Array a(10);
-    a.set(5, 123); 
-    float x = a.get(5);
-    a.print();*//  
-
-    return 0;
+  
 }
