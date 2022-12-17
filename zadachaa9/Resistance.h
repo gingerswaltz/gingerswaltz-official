@@ -1,6 +1,8 @@
 /// @author:georgy purtov
 #ifndef RESISTANCE_H
 #define RESISTANCE_H
+const double e=0.00001;
+
 #include <QString>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,7 +14,7 @@ public:
     Resistance();
     Resistance(float x1, float x2, float x3);
     void set_Res(float x1, float x2, float x3);
-    float get_Res() const;
+    double get_Res() const;
     void calc_res();
     void set_paralRes(float n);
 };

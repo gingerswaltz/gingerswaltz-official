@@ -1,46 +1,28 @@
 /// @author:georgy purtov
 
-#include <QString>
+#include <QString> // библиотека строк
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Resistance.h" // модуль с моей функцией
-#include <QMessageBox>
+#include <QMessageBox> // библиотека мессаг
 
 using namespace std;
+/// Конструктор
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->lineEdit_r1->setStyleSheet("background-color: white");
+     ui->lineEdit_r2->setStyleSheet("background-color: white");
+     ui->lineEdit_r3->setStyleSheet("background-color: white");
 }
-
+/// Деструктор
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_clicked()
-{
-   QString str;
-   try {
-       str=ui->lineEdit->text(); // получаем значение
-       x1=str.toFloat(); // конвертируем в вещественное число для передачи в функцию
-       str=ui->lineEdit_2->text();
-       x2=str.toFloat();
-       str=ui->lineEdit_3->text();
-       x3=str.toFloat();
-        Resistance resist(x1,x2,x3);
-       ui->plainTextEdit->appendPlainText("Result="+QString::number(resist.get_Res()+'\n'));
-       ui->statusbar->showMessage("OK");
-   }  catch (invalid_argument &e) {
-       ui->statusbar->showMessage("UNDER 0");
-
-
-   }
-
-}
 
 
 void MainWindow::on_actionCredits_triggered()
@@ -49,5 +31,45 @@ void MainWindow::on_actionCredits_triggered()
     msgBox.setWindowTitle("Author");
     msgBox.setText("Georgy Purtov 2022");
     msgBox.exec();
+}
+
+
+void MainWindow::on_actionClear_Plain_Text_Bar_triggered()
+{
+    ui->plainTextOutput->clear();
+}
+
+
+void MainWindow::on_pushButton_calc_clicked()
+{
+    QString str;
+    /// пробуем наш код и ловим исключения
+    try {
+       /// Выкрасим в белый наши поля, чтобы исправить красный цвет ошибки
+      Resistance resist_obj;
+        ui->lineEdit_r1->setStyleSheet("background-color: white");
+         ui->lineEdit_r2->setStyleSheet("background-color: white");
+         ui->lineEdit_r3->setStyleSheet("background-color: white");
+        str=ui->lineEdit_r1->text(); // получаем значение
+        r1=str.toFloat(); // конвертируем в вещественное число для передачи в функцию
+        str=ui->lineEdit_r2->text();
+        r2=str.toFloat();
+        str=ui->lineEdit_r3->text();
+        r3=str.toFloat();
+        resist_obj.set_Res(r1,r2,r3);
+        resist_obj.calc_res();
+        /// добавим результат вычислений
+         ui->plainTextOutput->appendPlainText("Result="+QString::number(resist_obj.get_Res(),'g',3)+" Ohm");
+        /// добавим в статус бар что все хорошо
+        ui->statusbar->showMessage("OK");
+    }  catch (invalid_argument &e) {
+        /// словим исключение и напишем что неверно введены данные
+        ui->statusbar->showMessage("ERROR INPUT");
+       /// и окрасим эдиты
+        ui->lineEdit_r1->setStyleSheet("background-color: #F08080");
+         ui->lineEdit_r2->setStyleSheet("background-color: #F08080");
+         ui->lineEdit_r3->setStyleSheet("background-color: #F08080");
+    }
+
 }
 

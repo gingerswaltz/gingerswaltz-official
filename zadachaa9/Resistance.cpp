@@ -5,10 +5,10 @@
 using namespace std;
 
 Resistance::Resistance(){
-this->r1=1;
-this->r2=1;
-this->r3=1;
-this->res=12;
+this->r1=0;
+this->r2=0;
+this->r3=0;
+this->res=0;
 };
 
 
@@ -19,12 +19,12 @@ calc_res();
 };
 void Resistance::calc_res(){
 
-   float n=(r1*r2*r3)/((r1*r2)+(r2*r3)+(r1*r3)); // по формуле из интернета.
+   double n=(r1 * r2 * r3)/(r1 * r2 + r2 * r3 + r3 * r1); // по формуле из интернета.
 set_paralRes(n);
 }
 
 
-float Resistance::get_Res() const{
+double Resistance::get_Res() const{
     return res;
 }
 
@@ -32,7 +32,7 @@ void Resistance::set_paralRes(float n){
     this->res=n;
 }
 void Resistance::set_Res(float x1, float x2, float x3){
-    if ((x1<1) or (x2<1) or (x3<1)) throw std::invalid_argument("Error");
+    if ((x1<e) or (x2<e) or (x3<e)) throw std::invalid_argument("Error");
     r1=x1;
     r2=x2;
     r3=x3;
