@@ -1,0 +1,48 @@
+format mz
+org 100h
+mov di, str1
+add di,4
+movsx ax, [x] ; n=x
+mov cx, 0 ;int count=0;
+test al, al ;if(n<0)
+jns @forward ;{
+mov [di], byte '-'; putch('-');
+inc di
+neg al ; n = fabs(n);
+@forward: ;};
+mov bh, 10
+@back: ;do{
+mov ah, 0 ; int reminder= n%10;
+div bh ; n = n /10;
+add ah, '0' ; push(reminder+'0');
+;цифровые символы '0'-'9' в таблице ASCII расположены в том же порядке, что и цифры 0-9 в десятичной системе счисления.
+;Значит, если мы возьмём символ '0' и прибавим к его коду число от 0 до 9, то, получим код символа, соответствующего этому числу.
+mov bl, ah
+push bx ; закинем в стек то что хотим в дальейнем преобразовать
+inc cx ; count++;
+test al, al
+jnz @back ;}while(n==0)
+;
+@for: ;for( ;count>0; count--)
+;{
+pop ax ; pop(c);
+stosb ; putch(c)
+loop @for ;}
+
+mov al, '$'
+stosb
+
+
+
+mov ah,09h
+mov dx, str1
+int 21h
+mov ah, 01h
+int 21h
+mov ah, 4ch
+mov al, 0
+int 21h
+
+
+x db -127 ; -128..127
+str1 db "x = "
