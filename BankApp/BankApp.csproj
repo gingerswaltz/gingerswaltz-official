@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="BankDeposit.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BankDepos2">
+      <HintPath>..\git_work\georgy_purtov2022\BankDepos_С#\bin\Debug\net6.0\BankDepos2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

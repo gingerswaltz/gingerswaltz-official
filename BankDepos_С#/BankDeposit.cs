@@ -96,7 +96,7 @@ public class BankDepos /// Класс описывающий банковски�
 }
 
 
-public class BankDeposit // основной класс
+public class MainFunction // основной класс
 {
     public static void Main(string[] args) 
     {
