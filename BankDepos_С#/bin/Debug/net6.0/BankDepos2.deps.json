@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "BankDepos2/1.0.0": {
+        "dependencies": {
+          "BankDepos_Test2": "1.0.0.0"
+        },
         "runtime": {
           "BankDepos2.dll": {}
+        }
+      },
+      "BankDepos_Test2/1.0.0.0": {
+        "runtime": {
+          "BankDepos_Test2.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -16,6 +27,11 @@
   "libraries": {
     "BankDepos2/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BankDepos_Test2/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

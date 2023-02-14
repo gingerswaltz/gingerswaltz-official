@@ -8,9 +8,19 @@ namespace BankDeposTests
         [TestMethod]
         public void testSetProc()
         {
-        BankDepos bankDepos_test = new BankDepos();
-            Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setProc(15));
+            BankDepos bankDepos_test = new BankDepos();
+                Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setProc(15));
         }
+
+        [TestMethod]
+        public void testSetPro_good()
+        {
+            BankDepos bankDepos_test = new BankDepos();
+            bankDepos_test.setProc(10);
+            Assert.IsTrue(bankDepos_test.getProc()==10);
+        }
+
+
         
         [TestMethod]
         public void testSetMoney()
@@ -19,9 +29,15 @@ namespace BankDeposTests
             Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setMoney(-1));
         }
 
+        public void testSetMoney_good()
+        {
+            BankDepos bankDepos_test = new BankDepos();
+            bankDepos_test.setMoney(10);
+            Assert.IsTrue(bankDepos_test.getMoney() == 10);
+        }
 
 
-        [TestMethod]
+       
         public void testSetCodeNum()
         {
             BankDepos bankDepos_test = new BankDepos();
@@ -30,10 +46,27 @@ namespace BankDeposTests
         }
         
         [TestMethod]
+        public void testSetCodenum_good()
+        {
+            BankDepos bankDepos_test = new BankDepos();
+            bankDepos_test.setcodeNum(1000);
+            Assert.IsTrue(bankDepos_test.getcodeNum() == 1000);
+        }
+       
+        [TestMethod]
         public void testSetLicNum()
         {
             BankDepos bankDepos_test = new BankDepos();
             Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setlicNum(99999));
+        }
+        
+        
+        [TestMethod]
+        public void testSetLicnum_good()
+        {
+            BankDepos bankDepos_test = new BankDepos();
+            bankDepos_test.setlicNum(1000);
+            Assert.IsTrue(bankDepos_test.getlicNum() == 1000);
         }
 
         [TestMethod]
@@ -51,6 +84,18 @@ namespace BankDeposTests
             bankDepos.MoneyChange(-1);
             Assert.IsTrue(bankDepos.getMoney() == 0);
         }
+
+        [TestMethod]
+
+        public void testToString()
+        {
+            BankDepos bankDepos = new BankDepos(1111,1,111,111);
+            Assert.IsInstanceOfType(bankDepos.ToString(), typeof(string));
+
+        }
+
+
+        // todo: to string,
 
     }
 

@@ -1,8 +1,13 @@
 ﻿namespace BankDeposit;
 using System;
 
-public class BankDepos /// Класс описывающий банковский вклад
+
+// todo: to file
+
+/// Класс описывающий банковский вклад
+public class BankDepos 
 {
+    const double proc_eps = 10; // Чиселко точности для процентов, потому что проценты могут быть ниже 0
     const double eps = 0.01; // Чиселко точности для процентов, потому что проценты могут быть ниже 0
     private double _money; // Деньги
     private double _proc; // Проценты
@@ -12,12 +17,10 @@ public class BankDepos /// Класс описывающий банковски�
     // Конструктор 1
     public BankDepos(double money, double proc, uint codenum, uint licnum)
     {
-        _money = money;
-        _proc = proc;
-        _codenum = codenum;
-        _licnum = licnum;
-        
-        
+        setMoney(money);         // todo: сеттеры
+        setcodeNum(codenum);
+        setProc(proc);
+        setlicNum(licnum);  
     }
     
     // Конструктор 2
@@ -44,7 +47,7 @@ public class BankDepos /// Класс описывающий банковски�
     // сеттер процентов
     public void setProc(double value)
     {
-        if ((value < eps) || (value>10))
+        if ((value < eps) || (value> proc_eps))               
             throw new ArgumentException("Wrong Procents");
         else 
             _proc = value;
@@ -107,6 +110,7 @@ public class MainFunction // основной класс
         char c;
         /// Хранение объектов реализовано через коллекцию List 
         List<BankDepos> Deposit= new List<BankDepos>();
+        // коллекция ссылок на объекты
 
         while (true) // бесконечный цикл для ввода данных
         {

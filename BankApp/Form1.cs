@@ -4,6 +4,9 @@ namespace BankApp
 {
     public partial class BankApp_Main : Form
     {
+
+    protected  List<BankDepos> Deposit = new List<BankDepos>();
+
         public BankApp_Main()
         {
             InitializeComponent();
@@ -18,7 +21,7 @@ namespace BankApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<BankDepos> Deposit = new List<BankDepos>();
+           
 
             int _code=0;
             int _lic = 0;

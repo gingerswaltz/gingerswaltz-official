@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Reference Include="BankDepos_Test2">
-      <HintPath>..\..\georgy_purtov2022\BankDepos_Test2\obj\Debug\net6.0\BankDepos_Test2.dll</HintPath>
+      <HintPath>..\BankDepos_Test2\obj\Debug\net6.0\BankDepos_Test2.dll</HintPath>
     </Reference>
   </ItemGroup>
 

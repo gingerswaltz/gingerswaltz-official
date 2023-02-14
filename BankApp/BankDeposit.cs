@@ -1,7 +1,11 @@
 ﻿namespace BankDeposit;
 using System;
 
-public class BankDepos /// Класс описывающий банковский вклад
+
+// todo: to file
+
+/// Класс описывающий банковский вклад
+public class BankDepos 
 {
     const double eps = 0.01; // Чиселко точности для процентов, потому что проценты могут быть ниже 0
     private double _money; // Деньги
@@ -12,7 +16,7 @@ public class BankDepos /// Класс описывающий банковски�
     // Конструктор 1
     public BankDepos(double money, double proc, uint codenum, uint licnum)
     {
-        _money = money;
+        setMoney(money);         // todo: сеттеры
         _proc = proc;
         _codenum = codenum;
         _licnum = licnum;
@@ -44,7 +48,7 @@ public class BankDepos /// Класс описывающий банковски�
     // сеттер процентов
     public void setProc(double value)
     {
-        if ((value < eps) || (value>10))
+        if ((value < eps) || (value> 10))               // todo: 
             throw new ArgumentException("Wrong Procents");
         else 
             _proc = value;
@@ -96,7 +100,7 @@ public class BankDepos /// Класс описывающий банковски�
 }
 
 
-public class BankDeposit // основной класс
+public class MainFunction // основной класс
 {
     public static void Main(string[] args) 
     {
@@ -107,6 +111,7 @@ public class BankDeposit // основной класс
         char c;
         /// Хранение объектов реализовано через коллекцию List 
         List<BankDepos> Deposit= new List<BankDepos>();
+        // toto: ref
 
         while (true) // бесконечный цикл для ввода данных
         {
