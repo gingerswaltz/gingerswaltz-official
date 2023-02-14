@@ -13,7 +13,7 @@ namespace BankDeposTests
         }
 
         [TestMethod]
-        public void testSetPro_good()
+        public void testSetProc_good()
         {
             BankDepos bankDepos_test = new BankDepos();
             bankDepos_test.setProc(10);
@@ -57,17 +57,16 @@ namespace BankDeposTests
         public void testSetLicNum()
         {
             BankDepos bankDepos_test = new BankDepos();
+
             Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setlicNum(99999));
+            
+            BankDepos bankDepos = new BankDepos();
+            bankDepos.setlicNum(1000);
+            Assert.IsTrue(bankDepos.getlicNum() == 1000); // todo: объединить гуд и плохое
         }
         
         
-        [TestMethod]
-        public void testSetLicnum_good()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            bankDepos_test.setlicNum(1000);
-            Assert.IsTrue(bankDepos_test.getlicNum() == 1000);
-        }
+    
 
         [TestMethod]
 

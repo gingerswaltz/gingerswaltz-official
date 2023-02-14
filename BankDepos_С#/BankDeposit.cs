@@ -1,4 +1,7 @@
-﻿namespace BankDeposit;
+﻿/// <summary>
+/// @author: Georgy Purtov
+/// </summary> // copy to all files
+namespace BankDeposit;
 using System;
 
 
