@@ -5,69 +5,48 @@ namespace BankDeposTests
     [TestClass]
     public class BankDeposTests
     {
-        [TestMethod]
-        public void testSetProc()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-                Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setProc(15));
-        }
-
-        [TestMethod]
-        public void testSetProc_good()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            bankDepos_test.setProc(10);
-            Assert.IsTrue(bankDepos_test.getProc()==10);
-        }
-
-
-        
-        [TestMethod]
-        public void testSetMoney()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setMoney(-1));
-        }
-
-        public void testSetMoney_good()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            bankDepos_test.setMoney(10);
-            Assert.IsTrue(bankDepos_test.getMoney() == 10);
-        }
-
-
-       
-        public void testSetCodeNum()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setcodeNum(99999));
-             
-        }
-        
-        [TestMethod]
-        public void testSetCodenum_good()
-        {
-            BankDepos bankDepos_test = new BankDepos();
-            bankDepos_test.setcodeNum(1000);
-            Assert.IsTrue(bankDepos_test.getcodeNum() == 1000);
-        }
        
         [TestMethod]
-        public void testSetLicNum()
+        public void testSet()
         {
-            BankDepos bankDepos_test = new BankDepos();
+            BankDepos bankDepos_bad1 = new BankDepos();
 
-            Assert.ThrowsException<ArgumentException>(() => bankDepos_test.setlicNum(99999));
-            
-            BankDepos bankDepos = new BankDepos();
-            bankDepos.setlicNum(1000);
-            Assert.IsTrue(bankDepos.getlicNum() == 1000); // todo: объединить гуд и плохое
+            Assert.ThrowsException<ArgumentException>(() => bankDepos_bad1.setlicNum(99999));
+
+
+            BankDepos bankDepos_bad2 = new BankDepos();
+            Assert.ThrowsException<ArgumentException>(() => bankDepos_bad2.setcodeNum(99999));
+
+
+            BankDepos bankDepos_bad3 = new BankDepos();
+            Assert.ThrowsException<ArgumentException>(() => bankDepos_bad3.setMoney(-1));
+
+
+
+            BankDepos bankDepos_bad4 = new BankDepos();
+            Assert.ThrowsException<ArgumentException>(() => bankDepos_bad4.setProc(15));
+
+
+            BankDepos bankDepos2 = new BankDepos();
+            bankDepos2.setlicNum(1000);
+            Assert.IsTrue(bankDepos2.getlicNum() == 1000); 
+
+
+            BankDepos bankDepos3 = new BankDepos();
+            bankDepos3.setcodeNum(1000);
+            Assert.IsTrue(bankDepos3.getcodeNum() == 1000);
+
+            BankDepos bankDepos4 = new BankDepos();
+            bankDepos4.setMoney(10);
+            Assert.IsTrue(bankDepos4.getMoney() == 10);
+
+            BankDepos bankDepos5 = new BankDepos();
+            bankDepos5.setProc(10);
+            Assert.IsTrue(bankDepos5.getProc() == 10);
+
         }
         
         
-    
-
         [TestMethod]
 
         public void testCreateObject()
@@ -90,8 +69,8 @@ namespace BankDeposTests
         {
             BankDepos bankDepos = new BankDepos(1111,1,111,111);
             BankDepos bankDepos1 = new BankDepos(1111, 1, 111, 111);
-            string str = bankDepos.ToString();
-            Assert.AreEqual(str, bankDepos1.ToString());
+            string str = bankDepos.ToString(); // объект 1 в строку.
+            Assert.AreEqual(str, bankDepos1.ToString()); // сравним 2 эквивалетных по данным объекта
 
         }
 
