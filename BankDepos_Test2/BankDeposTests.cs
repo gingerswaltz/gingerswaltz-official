@@ -89,12 +89,12 @@ namespace BankDeposTests
         public void testToString()
         {
             BankDepos bankDepos = new BankDepos(1111,1,111,111);
-            Assert.IsInstanceOfType(bankDepos.ToString(), typeof(string));
+            BankDepos bankDepos1 = new BankDepos(1111, 1, 111, 111);
+            string str = bankDepos.ToString();
+            Assert.AreEqual(str, bankDepos1.ToString());
 
         }
 
-
-        // todo: to string,
 
     }
 
