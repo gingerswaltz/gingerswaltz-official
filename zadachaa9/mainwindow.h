@@ -34,6 +34,7 @@ private slots:
 private:
     /// Указатель на UI, для него в QT есть программа UIC
     Ui::MainWindow *ui;
-    float r1,r2,r3;
+    Resistance resist_obj;
+
 };
 #endif // MAINWINDOW_H

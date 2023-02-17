@@ -5,22 +5,23 @@
 using namespace std;
 
 Resistance::Resistance(){
-this->r1=0;
-this->r2=0;
-this->r3=0;
-this->res=0;
+this->r1=1;
+this->r2=1;
+this->r3=1;
+this->res=0.33;
 };
 
 
 Resistance::Resistance(float x1, float x2, float x3){
-set_Res(x1,x2,x3);
+set_Res1(x1);
+set_Res2(x2);
+set_Res3(x3);
 calc_res();
 
 };
 void Resistance::calc_res(){
 
-   double n=(r1 * r2 * r3)/(r1 * r2 + r2 * r3 + r3 * r1); // по формуле из интернета.
-set_paralRes(n);
+    res=(r1 * r2 * r3)/(r1 * r2 + r2 * r3 + r3 * r1); // по формуле из интернета.
 }
 
 
@@ -28,13 +29,18 @@ double Resistance::get_Res() const{
     return res;
 }
 
-void Resistance::set_paralRes(float n){
-    this->res=n;
-}
-void Resistance::set_Res(float x1, float x2, float x3){
-    if ((x1<e) or (x2<e) or (x3<e)) throw std::invalid_argument("Error");
-    r1=x1;
-    r2=x2;
-    r3=x3;
+float Resistance::get_Res1()const {return r1;}; // getter r1
 
+float Resistance::get_Res2()const{return r2;}; // getter r2
+float Resistance::get_Res3()const{return r3;}; // getter r3
+
+void Resistance::set_Res1(float x1){
+   if (x1<e)  throw std::invalid_argument("Error");
+   else
+    r1=x1;
 }
+
+void Resistance::set_Res2(float x2){
+    if (x2<e) throw std::invalid_argument("Error"); else
+        r2=x2;}
+void Resistance::set_Res3(float x3){if (x3<e) throw std::invalid_argument("Error"); else r3=x3;}
