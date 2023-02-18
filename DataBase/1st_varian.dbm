@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="230,0" last-zoom="1.1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="db_example" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="филиал" layer="0" collapse-mode="1" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="260" y="40"/>
+	<column name="название" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="город">
+		<type name="text" length="0"/>
+	</column>
+	<column name="адрес">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="филиал_pk" type="pk-constr" table="public.&quot;филиал&quot;">
+		<columns names="название" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[название•город•адрес⸣
+филиал 1•москва•кремль⸣
+филиал2•чита•ул. Бабушкина, 10⸣
+филиал3•москва•м. Сходненская]]>
+	</initial-data>
+</table>
+
+<table name="Агент" layer="0" collapse-mode="1" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="900" y="20"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="Имя" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Фамилия" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Отчество" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Дата рождения">
+		<type name="date" length="0"/>
+	</column>
+	<column name="Адрес">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Агент_pk" type="pk-constr" table="public.&quot;Агент&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Страхование" layer="0" collapse-mode="1" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="240" y="340"/>
+	<column name="Название" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Минимальная сумма" not-null="true">
+		<type name="decimal" length="8" precision="1"/>
+	</column>
+	<constraint name="Страхование_pk" type="pk-constr" table="public.&quot;Страхование&quot;">
+		<columns names="Название" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Договор" layer="0" collapse-mode="1" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1020" y="280"/>
+	<column name="Номер" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Дата договора" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="Сумма" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="Процент" not-null="true">
+		<type name="float4" length="0"/>
+	</column>
+	<constraint name="Договор_pk" type="pk-constr" table="public.&quot;Договор&quot;">
+		<columns names="Номер" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="содержит" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ffc723"
+	 src-table="public.&quot;филиал&quot;"
+	 dst-table="public.&quot;Агент&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-51.7208" y="-4.75596"/>
+	</label>
+</relationship>
+
+<relationship name="ЗАКЛЮЧАЕТ" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#b93da1"
+	 src-table="public.&quot;Агент&quot;"
+	 dst-table="public.&quot;Договор&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="344.301" y="-42.6073"/>
+	</label>
+</relationship>
+
+<relationship name="many_Страхование_has_many_Договор" type="relnn" layer="0"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#0a2ced"
+	 src-table="public.&quot;Страхование&quot;"
+	 dst-table="public.&quot;Договор&quot;"
+	 src-required="false" dst-required="false"
+	 table-name="many_Страхование_has_many_Договор"/>
+
+</dbmodel>
