@@ -1,7 +1,7 @@
 namespace BankApp
 {
 
-    internal static class Program
+    internal static class BankApp
     {
         
         /// <summary>
