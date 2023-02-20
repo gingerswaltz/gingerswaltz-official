@@ -1,6 +1,6 @@
 ﻿/// <summary>
-/// @author: Georgy Purtov
-/// </summary> // copy to all files
+/// author: Georgy Purtov
+/// </summary> 
 namespace BankDeposit;
 using System;
 
@@ -18,7 +18,7 @@ public class BankDepos
     // Конструктор 1
     public BankDepos(double money, double proc, uint codenum, uint licnum)
     {
-        setMoney(money);         // todo: сеттеры
+        setMoney(money);        
         setcodeNum(codenum);
         setProc(proc);
         setlicNum(licnum);  
@@ -34,10 +34,10 @@ public class BankDepos
         
     }
 
-    // сеттер денег
+    // сеттер денег, входящее значение не меньше 1;
     public void setMoney(double value)
     {
-        if (value < 0)
+        if (value < 0) 
             throw new ArgumentException("Too litle");
         else
        _money = value;
@@ -45,7 +45,7 @@ public class BankDepos
     // геттер денег
     public double getMoney() { return _money; }
 
-    // сеттер процентов
+    // сеттер процентов. входящее значение не меньше 0.01 и не более 10
     public void setProc(double value)
     {
         if ((value < eps) || (value> proc_eps))               
@@ -56,7 +56,7 @@ public class BankDepos
     // геттер процентов
     public double getProc() { return _proc; }
 
-    // сеттер кода клиента
+    // сеттер кода клиента. входящее значение не более 4 цифр
     public void setcodeNum(uint value)
     {
         if (value > 9999) throw new ArgumentException("Wrong Number");
@@ -67,7 +67,7 @@ public class BankDepos
     // геттер кода клиента
     public uint getcodeNum() { return _codenum; }
 
-    // сеттер лицевого счета
+    // сеттер лицевого счета. входящее число не более 4 цифр
     public void setlicNum(uint value)
     {
         if (value > 9999) throw new ArgumentException("Wrong Number");

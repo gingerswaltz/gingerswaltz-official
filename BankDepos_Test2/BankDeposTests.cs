@@ -68,9 +68,24 @@ namespace BankDeposTests
         public void testToString()
         {
             BankDepos bankDepos = new BankDepos(1111,1,111,111);
-            BankDepos bankDepos1 = new BankDepos(1111, 1, 111, 111);
-            string str = bankDepos.ToString(); // объект 1 в строку.
-            Assert.AreEqual(str, bankDepos1.ToString()); // сравним 2 эквивалетных по данным объекта
+
+            /// Геттерами получим значение полей (вероятность ошибки низка, геттеры просты)
+            var _licnum = bankDepos.getlicNum();
+            var _codenum = bankDepos.getcodeNum();
+            var _proc=bankDepos.getProc();
+            var _money = bankDepos.getMoney();
+            
+
+            /// Инициализируем пример строки из ToString() с заведомо рабочими значениями
+            string str = $"Client license number: {_licnum}\n" +
+            $"Client Code Number: {_codenum}\n" +
+            $"Client procents: {_proc}%\n" +
+            $"Client money deposit: {_money}$\n" +
+            $"Client date of deposit: {DateTime.Now.Day} day, {DateTime.Now.Month} month, {DateTime.Now.Year} year\n";
+
+
+            // Если вдруг ToString() потеряет данные полей, я отслежу это. Геттеры менее подвержены ошибкам благодаря своей простоте
+            Assert.AreEqual(str, bankDepos.ToString()); 
 
         }
 

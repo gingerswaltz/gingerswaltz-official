@@ -1,3 +1,6 @@
+/// <summary>
+/// author: Georgy Purtov
+/// </summary> 
 namespace BankApp
 {
 

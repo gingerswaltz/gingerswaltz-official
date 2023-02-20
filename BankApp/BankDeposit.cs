@@ -2,7 +2,10 @@
 using System;
 
 
-// todo: to file
+/// <summary>
+/// author: Georgy Purtov
+/// </summary> 
+
 
 /// Класс описывающий банковский вклад
 public class BankDepos 
