@@ -27,8 +27,8 @@ public class BankDepos
     // Конструктор 2
     public BankDepos()
     {
-        _money = 1;
-        _proc = 1;
+        _money = 1.0;
+        _proc = 1.0;
         _codenum = 1111;
         _licnum = 2222;
         

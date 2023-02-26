@@ -15,18 +15,19 @@
         {
             if (disposing && (components != null))
             {
-                components.Dispose();
+                components.Dispose(); // Очистка памяти
             }
-            base.Dispose(disposing);
+            base.Dispose(disposing); // Очистка памяти
         }
 
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        ///  
+        ///  Инициализация элементов управления формы
+        ///  
         /// </summary>
-        private void InitializeComponent()
+        private void InitializeComponent() 
         {
             this.codeTextBox = new System.Windows.Forms.TextBox();
             this.licTextBox = new System.Windows.Forms.TextBox();
@@ -36,7 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.addButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.codeNumColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.licNumColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -121,16 +122,16 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Procents (<10%)";
             // 
-            // button1
+            // addButton
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.button1.Location = new System.Drawing.Point(271, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(180, 110);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Add Deposit";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.addButton.Location = new System.Drawing.Point(271, 29);
+            this.addButton.Name = "button1";
+            this.addButton.Size = new System.Drawing.Size(180, 110);
+            this.addButton.TabIndex = 8;
+            this.addButton.Text = "Add Deposit";
+            this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.add_ButtonClick);
             // 
             // dataGridView1
             // 
@@ -178,7 +179,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(470, 331);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.addButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -189,7 +190,7 @@
             this.Controls.Add(this.codeTextBox);
             this.Name = "BankApp_Main";
             this.Text = "Bank Deposit Base";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.BankFormLoad);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -206,7 +207,7 @@
         private Label label2;
         private Label label3;
         private Label label4;
-        private Button button1;
+        private Button addButton;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn codeNumColumn;
         private DataGridViewTextBoxColumn licNumColumn;

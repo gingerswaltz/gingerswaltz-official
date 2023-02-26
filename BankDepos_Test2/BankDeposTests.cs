@@ -69,23 +69,47 @@ namespace BankDeposTests
         {
             BankDepos bankDepos = new BankDepos(1111,1,111,111);
 
-            /// √еттерами получим значение полей (веро€тность ошибки низка, геттеры просты)
-            var _licnum = bankDepos.getlicNum();
-            var _codenum = bankDepos.getcodeNum();
-            var _proc=bankDepos.getProc();
-            var _money = bankDepos.getMoney();
+
             
 
             /// »нициализируем пример строки из ToString() с заведомо рабочими значени€ми
-            string str = $"Client license number: {_licnum}\n" +
-            $"Client Code Number: {_codenum}\n" +
-            $"Client procents: {_proc}%\n" +
-            $"Client money deposit: {_money}$\n" +
+            string str = "Client license number: 111\n" +
+            $"Client Code Number: 111\n" +
+            $"Client procents: 1%\n" +
+            $"Client money deposit: 1111$\n" +
             $"Client date of deposit: {DateTime.Now.Day} day, {DateTime.Now.Month} month, {DateTime.Now.Year} year\n";
 
 
-            // ≈сли вдруг ToString() потер€ет данные полей, € отслежу это. √еттеры менее подвержены ошибкам благодар€ своей простоте
-            Assert.AreEqual(str, bankDepos.ToString()); 
+            // ≈сли вдруг ToString() потер€ет данные полей, € отслежу это
+            Assert.AreEqual(str, bankDepos.ToString());
+            
+            BankDepos bankDepos1 = new BankDepos(2222, 2, 222, 222);
+
+            /// »нициализируем пример строки из ToString() с заведомо рабочими значени€ми
+            string str1 = "Client license number: 222\n" +
+            $"Client Code Number: 222\n" +
+            $"Client procents: 2%\n" +
+            $"Client money deposit: 2222$\n" +
+            $"Client date of deposit: {DateTime.Now.Day} day, {DateTime.Now.Month} month, {DateTime.Now.Year} year\n";
+
+
+            // ≈сли вдруг ToString() потер€ет данные полей, € отслежу это
+            Assert.AreEqual(str1, bankDepos1.ToString());
+
+
+
+            BankDepos bankDepos2 = new BankDepos(3333, 3, 333, 333); //
+
+            /// »нициализируем пример строки из ToString() с заведомо рабочими значени€ми
+            string str2 = "Client license number: 333\n" +
+            $"Client Code Number: 333\n" +
+            $"Client procents: 3%\n" +
+            $"Client money deposit: 3333$\n" +
+            $"Client date of deposit: {DateTime.Now.Day} day, {DateTime.Now.Month} month, {DateTime.Now.Year} year\n";
+
+
+            // ≈сли вдруг ToString() потер€ет данные полей, € отслежу это
+            Assert.AreEqual(str2, bankDepos2.ToString());
 
         }
 
