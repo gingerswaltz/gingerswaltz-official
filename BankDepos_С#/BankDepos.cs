@@ -86,7 +86,7 @@ public class BankDepos
     }
 
 
-    // Вывод данных объекта
+    // Вывод данных объекта, tostring наследован от System.Object 
     public override string ToString()
     {
         return $"Client license number: {_licnum}\n" +
