@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\George\\Desktop\\ChatBot\\ChatBot.csproj": {}
+    "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\ChatBot\\ChatBot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\George\\Desktop\\ChatBot\\ChatBot.csproj": {
+    "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\ChatBot\\ChatBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\George\\Desktop\\ChatBot\\ChatBot.csproj",
+        "projectUniqueName": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\ChatBot\\ChatBot.csproj",
         "projectName": "ChatBot",
-        "projectPath": "C:\\Users\\George\\Desktop\\ChatBot\\ChatBot.csproj",
+        "projectPath": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\ChatBot\\ChatBot.csproj",
         "packagesPath": "C:\\Users\\George\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\George\\Desktop\\ChatBot\\obj\\",
+        "outputPath": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\ChatBot\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

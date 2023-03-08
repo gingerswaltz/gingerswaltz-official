@@ -38,13 +38,14 @@
             this.chatTalkBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chatTalkBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.chatTalkBox.Font = new System.Drawing.Font("Yu Gothic UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.chatTalkBox.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.chatTalkBox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.chatTalkBox.Location = new System.Drawing.Point(0, 0);
             this.chatTalkBox.Name = "chatTalkBox";
             this.chatTalkBox.ReadOnly = true;
             this.chatTalkBox.Size = new System.Drawing.Size(262, 363);
             this.chatTalkBox.TabIndex = 0;
+            this.chatTalkBox.TabStop = false;
             this.chatTalkBox.Text = " Доброго времени суток!";
             // 
             // fileMenu
