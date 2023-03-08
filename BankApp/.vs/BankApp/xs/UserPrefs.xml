@@ -5,16 +5,16 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="BankForm.cs">
     <Files>
-      <File FileName="BankApp.cs" Line="1" Column="1" />
+      <File FileName="BankApp.cs" />
       <File FileName="BankForm.cs" Line="11" Column="10" />
-      <File FileName="BankForm.Designer.cs" Line="10" Column="22" />
+      <File FileName="BankForm.Designer.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="BankApp" expanded="True">
             <Node name="BankApp" expanded="True">
-              <Node name="BankForm.cs" selected="True" />
+              <Node name="BankApp.cs" selected="True" />
             </Node>
           </Node>
         </State>
