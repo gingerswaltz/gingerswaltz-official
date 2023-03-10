@@ -22,13 +22,13 @@ namespace ChatBot
         {
             
            
-            UserName = userInputBox.Text;
+            UserName = userInputBox.Text;   // Присваиваем юзернейм с текст бокса.
 
            
 
-            this.Close();
-            Form chatform = new ChatForm();
-            chatform.Show();
+            this.Close();                   // Закрываем окно логина
+            Form chatform = new ChatForm(); // Формируем ссылку на окно чат формы
+            chatform.Show();                // Открываем окно чат формы
 
         }
     }

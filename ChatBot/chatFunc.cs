@@ -20,11 +20,14 @@ namespace ChatBotFunc
         public static readonly string patterMult = @"(произв|множ|\*|x|vyj;)";
         public static readonly string patternMinus = @"(разн|минус|\-)";
         public static readonly string patternHello = @"(прив|хай|здарова|здорова|йоу|хэй|hello|hi)";
-        public static readonly string patternPicUpload = @"(кач|груз|load)";
+        public static readonly string patternPicUpload = @"(кач|груз|load|pic|изобр)";
         public static readonly string patternGetTime= @"(время|дата|час)";
 
 
-
+        /// <summary>
+        ///  Паттерны для регулярных выражений:
+        ///  сумма, умножение, разность, приветствия, загрузки картинки, получения текущего времени
+        /// </summary>
         public static Regex regexSum = new Regex(patternSum, RegexOptions.IgnoreCase);
         public static Regex regexMult = new Regex(patterMult, RegexOptions.IgnoreCase);
         public static Regex regexMinus = new Regex(patternMinus, RegexOptions.IgnoreCase);
@@ -32,45 +35,45 @@ namespace ChatBotFunc
         public static Regex regexUpload = new Regex(patternPicUpload, RegexOptions.IgnoreCase);
         public static Regex regexTime = new Regex(patternGetTime, RegexOptions.IgnoreCase);
 
-        public static string botNameGen()
+        public static string botNameGen() // Метод генерации рандомного имени бота
         {
             Random random = new Random();
             int Index = random.Next(robotNames.Length);
             return robotNames[Index];
         }
-        public static int CheckRegexDigit(string s1)
+        public static int CheckRegexDigit(string s1) // Метод проверки арифметической операции
         {
-            List<int> mas1 = new();
+            List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
             var sum = 0;
             int i = 0;
 
-            if (regexSum.IsMatch(s1))
+            if (regexSum.IsMatch(s1)) // проверка запроса на сумму
             {
-                foreach (char s in s1)
+                foreach (char s in s1) // для каждого символа в полученной строке
                 {
 
-                    int[] matches = Regex.Matches(s1, "\\d+")
-                        .Cast<Match>()
-                        .Select(x => int.Parse(x.Value))
-                        .ToArray();
-                    if (matches.Length < 2) return -1;
+                    int[] matches = Regex.Matches(s1, "\\d+") // формируем массив из совпадений, ищем только цифры
+                        .Cast<Match>()                        // приводим к другому типу
+                        .Select(x => int.Parse(x.Value))      // затем получаем целочисленное значение
+                        .ToArray();                           // затем возвращаем их в массив
+                    if (matches.Length < 2) return -1;        // если цифра одна, нечего считать, возвращаем -1
                     else
-                    if (i == matches.Length) break;
+                    if (i == matches.Length) break;           // проверка на выход из диапазона
                     else
-                        mas1.Add(matches[i]);
+                        mas1.Add(matches[i]);                 // если всё ок, добавляем в лист..
                     i++;
                 }
 
                 for (int j = 0; j < mas1.Count; j++)
                 {
-                    sum += mas1[j];
+                    sum += mas1[j];                           // суммируем..
                 }
-                mas1.Clear();
-                return sum;
+                mas1.Clear();                                 // очищаем массив на всякий случай
+                return sum;                                   // возвращаем результат в контроллер
             }
 
 
-
+            /// Комментарии к проверке на сумму применимы к умножению и разности..
 
             else
 
@@ -127,20 +130,20 @@ namespace ChatBotFunc
 
             }
 
-            else return -1;
+            else return -1; // Если ни умножение, ни сумма, ни разность не подошли под запрос пользователя : вернем -1
 
         }
-        public static bool CheckRegexHello(string s1)
+        public static bool CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
         {
             return (regexHello.IsMatch(s1));
         }
 
-        public static bool CheckRegexUpload(string s1)
+        public static bool CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку картинки
         {
             return (regexUpload.IsMatch(s1));
         }
 
-        public static bool CheckRegexTime(string s1)
+        public static bool CheckRegexTime(string s1) // Проверка  запроса юзера на получение текущей даты
         {
             return (regexTime.IsMatch(s1));
         }
