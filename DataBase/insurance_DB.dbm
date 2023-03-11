@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1.1" max-obj-count="7"
+	 default-schema="public" default-owner="postgres">
+<database name="Insurance_DB" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Branch" layer="0" alias="Филиал" collapse-mode="1" pagination="true" attribs-page="0" ext-attribs-page="0" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1000" y="140"/>
+	<column name="id" alias="Уникальный код" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name" alias="Наименование" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="address" alias="Адресс" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="phone" alias="Телефон">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Branch_pk" type="pk-constr" table="public.&quot;Branch&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Client" layer="0" alias="Клиент" collapse-mode="1" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="520" y="140"/>
+	<column name="passport_serie" alias="Серия паспорта" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="passport_number" alias="Номер паспорта" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="family" alias="Фамилия" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="name" alias="Имя" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="surname" alias="Отчество">
+		<type name="text" length="0"/>
+	</column>
+	<column name="birthday" alias="Дата рождения" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="address" alias="Адрем">
+		<type name="text" length="0"/>
+	</column>
+	<column name="regdate" alias="Дата регистрации" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="Client_pk" type="pk-constr" table="public.&quot;Client&quot;">
+		<columns names="passport_serie,passport_number" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Order" layer="0" collapse-mode="1" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="60" y="60"/>
+	<column name="number" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="date" not-null="true" default-value="now()">
+		<type name="date" length="0"/>
+	</column>
+	<column name="sum" not-null="true">
+		<type name="decimal" length="15" precision="2"/>
+	</column>
+	<column name="tarif">
+		<type name="decimal" length="15" precision="2"/>
+	</column>
+	<column name="object_name">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Order_pk" type="pk-constr" table="public.&quot;Order&quot;">
+		<columns names="number" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_Agent" index="7"/>
+		<object name="passport_number_Client" index="6"/>
+		<object name="passport_serie_Client" index="5"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Agent_fk" index="2"/>
+		<object name="Client_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="Insurance_type" layer="0" collapse-mode="1" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="440" y="660"/>
+	<column name="id" alias="Уникальный код" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name" alias="Наименование" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="minsum" alias="Минимальная страховая сумма">
+		<type name="decimal" length="10" precision="2"/>
+	</column>
+	<constraint name="Insurance_type_pk" type="pk-constr" table="public.&quot;Insurance_type&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="Client_has_many_Order" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#d5ce33"
+	 src-table="public.&quot;Client&quot;"
+	 dst-table="public.&quot;Order&quot;"
+	 src-required="true" dst-required="false"/>
+
+<table name="Agent" layer="0" alias="Агент" collapse-mode="1" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="560" y="420"/>
+	<column name="id" alias="Уникальный код" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="family" alias="Фамилия" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="name" alias="Имя" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="surname" alias="Отчество" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="birthday" alias="Дата рождения" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="address" alias="Адресс" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Agent_pk" type="pk-constr" table="public.&quot;Agent&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_Branch" index="6"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Branch_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="Branch_has_many_Agent" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#c02d2f"
+	 src-table="public.&quot;Branch&quot;"
+	 dst-table="public.&quot;Agent&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-3.34238" y="-15.7073"/>
+	</label>
+</relationship>
+
+<relationship name="Agent_has_many_Order" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#9fff88"
+	 src-table="public.&quot;Agent&quot;"
+	 dst-table="public.&quot;Order&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="many_Order_has_many_Insurance_type" type="relnn" layer="0"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#b51965"
+	 src-table="public.&quot;Order&quot;"
+	 dst-table="public.&quot;Insurance_type&quot;"
+	 src-required="false" dst-required="false"
+	 table-name="many_Order_has_many_Insurance_type"/>
+
+<table name="Salary" layer="0" alias="Зарплата" collapse-mode="2" pagination="true" attribs-page="0" ext-attribs-page="0" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1040" y="320"/>
+	<column name="month" alias="Месяц" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="year" alias="Год" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="value" alias="Сумма" not-null="true">
+		<type name="decimal" length="10" precision="2"/>
+	</column>
+	<constraint name="Salary_pk" type="pk-constr" table="public.&quot;Salary&quot;">
+		<columns names="month,year" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_Agent" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Agent_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="Agent_get_many_Salary" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#bd0a1b"
+	 src-table="public.&quot;Agent&quot;"
+	 dst-table="public.&quot;Salary&quot;"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+>
+	<label ref-type="name-label">
+		<position x="24.6576" y="14.9058"/>
+	</label>
+</relationship>
+
+</dbmodel>

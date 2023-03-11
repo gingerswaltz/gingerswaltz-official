@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="0.9" max-obj-count="8"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1.2" max-obj-count="8"
 	 default-schema="public" default-owner="postgres">
 <database name="rent_db" is-template="false" allow-conns="true">
 </database>
@@ -97,7 +97,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#c618c4"
 	 src-table="public.&quot;клиент&quot;"
 	 dst-table="public.&quot;договор&quot;"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="1.99741" y="5.46774"/>
+	</label>
+</relationship>
 
 <relationship name="точка_has_many_договор" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
@@ -106,7 +110,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#2858c1"
 	 src-table="public.&quot;точка&quot;"
 	 dst-table="public.&quot;договор&quot;"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-8.79238" y="2.67111"/>
+	</label>
+</relationship>
 
 <table name="точка_cp" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
@@ -184,44 +192,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 identifier="true"
 />
 
-<table name="оплата" layer="0" collapse-mode="2" max-obj-count="16" z-value="0">
+<table name="оплата" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="180" y="420"/>
-	<column name="январь">
+	<position x="100" y="460"/>
+	<column name="месяц">
 		<type name="decimal" length="0"/>
 	</column>
-	<column name="февраль">
+	<column name="год">
 		<type name="decimal" length="0"/>
 	</column>
-	<column name="март">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="апрель">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="май">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="июнь">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="июль">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="август">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="сентябрь">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="октябрь">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="ноябрь">
-		<type name="decimal" length="0"/>
-	</column>
-	<column name="декабрь">
+	<column name="стоимость">
 		<type name="decimal" length="0"/>
 	</column>
 	<column name="id" not-null="true">
@@ -232,26 +213,21 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="id_договор" index="13"/>
+		<object name="id_договор" index="4"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
 		<object name="договор_fk" index="1"/>
-		<object name="оплата_uq" index="2"/>
 	</customidxs>
 </table>
 
-<relationship name="договор_has_one_прайс" type="rel11" layer="0"
+<relationship name="договор_has_many_оплата" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#4447fd"
-	 src-table="public.&quot;оплата&quot;"
-	 dst-table="public.&quot;договор&quot;"
-	 src-required="false" dst-required="true">
-	<label ref-type="name-label">
-		<position x="-8.99238" y="-7.9297"/>
-	</label>
-</relationship>
+	 custom-color="#b7a799"
+	 src-table="public.&quot;договор&quot;"
+	 dst-table="public.&quot;оплата&quot;"
+	 src-required="true" dst-required="false"/>
 
 </dbmodel>
