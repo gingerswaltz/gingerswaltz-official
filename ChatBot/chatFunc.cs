@@ -5,23 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-// todo: выгрузка и загрузка из файла
 
 namespace ChatBotFunc
 {
-   
+
     public static class chatFunc
     {
-        static 
-            string[] 
+        static
+            string[]
             robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
 
         public static readonly string patternSum = @"(сум|cev|\+)";
         public static readonly string patterMult = @"(произв|множ|\*|x|vyj;)";
         public static readonly string patternMinus = @"(разн|минус|\-)";
-        public static readonly string patternHello = @"(прив|хай|здарова|здорова|йоу|хэй|hello|hi)";
+        public static readonly string patternHello = @"(прив|хай|здарова|здорова|йоу|хэй|hello|hi|hey)";
         public static readonly string patternPicUpload = @"(кач|груз|load|pic|изобр)";
-        public static readonly string patternGetTime= @"(время|дата|час)";
+        public static readonly string patternGetTime = @"(время|дата|час|time)";
 
 
         /// <summary>
@@ -147,5 +146,34 @@ namespace ChatBotFunc
         {
             return (regexTime.IsMatch(s1));
         }
+
+        public static void ToFile(string s1)
+        {
+            if (s1 == null) throw new Exception();
+
+            string path = "History.txt";
+            string text = s1;
+
+            
+            // добавление в файл
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                writer.WriteLine("***LAST SESSION***\n" +$"{DateTime.Now}\n" +text);
+            }
+
+        }
+
+        public static string LoadFile()
+        {
+            string path = "History.txt";
+            string text = "";
+            // асинхронное чтение
+            using (StreamReader reader = new StreamReader(path))
+            {
+                 text = reader.ReadToEnd();
+            }
+            return text;
+        }
+
     }
 }

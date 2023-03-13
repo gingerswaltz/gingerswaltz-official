@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.chatTalkBox = new System.Windows.Forms.RichTextBox();
-            this.fileMenu = new System.Windows.Forms.MenuStrip();
             this.talkBotButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -46,17 +45,7 @@
             this.chatTalkBox.Size = new System.Drawing.Size(262, 363);
             this.chatTalkBox.TabIndex = 0;
             this.chatTalkBox.TabStop = false;
-            this.chatTalkBox.Text = " Доброго времени суток!";
-            // 
-            // fileMenu
-            // 
-            this.fileMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-            this.fileMenu.Location = new System.Drawing.Point(0, 0);
-            this.fileMenu.Name = "fileMenu";
-            this.fileMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.fileMenu.Size = new System.Drawing.Size(262, 24);
-            this.fileMenu.TabIndex = 1;
-            this.fileMenu.Text = "Файл";
+            this.chatTalkBox.Text = "";
             // 
             // talkBotButton
             // 
@@ -69,7 +58,7 @@
             this.talkBotButton.Name = "talkBotButton";
             this.talkBotButton.Size = new System.Drawing.Size(262, 121);
             this.talkBotButton.TabIndex = 2;
-            this.talkBotButton.Text = "Поговорить с ботом";
+            this.talkBotButton.Text = "&Поговорить с ботом";
             this.talkBotButton.UseVisualStyleBackColor = false;
             this.talkBotButton.Click += new System.EventHandler(this.talkBotButton_Click);
             // 
@@ -80,20 +69,18 @@
             this.ClientSize = new System.Drawing.Size(262, 481);
             this.Controls.Add(this.talkBotButton);
             this.Controls.Add(this.chatTalkBox);
-            this.Controls.Add(this.fileMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MainMenuStrip = this.fileMenu;
             this.Name = "ChatForm";
             this.Text = "ЧатБот";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChatForm_FormClosing);
+            this.Load += new System.EventHandler(this.ChatForm_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private RichTextBox chatTalkBox;
-        private MenuStrip fileMenu;
         private Button talkBotButton;
     }
 }
