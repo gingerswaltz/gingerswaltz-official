@@ -3,7 +3,7 @@ namespace ChatBot;
 using ChatBotFunc;
 using System.Net;
 public partial class ChatForm : Form
-{   
+{
 
     // todo: to bot
     string username = formLogin.UserName; // Юзернейм
@@ -30,12 +30,11 @@ public partial class ChatForm : Form
     private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
     {
         int result = 0;
-        string s1 = Microsoft.VisualBasic.Interaction.InputBox("Введите ваш запрос: ", "Chat Bot Input"); // Вызов инпут бокса ввода запроса
+        string s1 = chatTextBox.Text; // ввод запроса
         if (string.IsNullOrEmpty(s1)) s1 = "???"; // Если ничего не ввели, то покажем это на форме..
         chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
 
-        if (chatFunc.CheckRegexHello(s1)) chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Hello!" + "\n"); // Если поздоровались, то поздороваемся в ответ
-        else
+       chatTalkBox.AppendText(chatFunc.CheckRegexHello(s1));
 
 
             while (true) // Бесконечный цикл..
@@ -78,7 +77,7 @@ public partial class ChatForm : Form
                 }
                 else
                 
-                chatTalkBox.AppendText($"{bot} at {DateTime.Now}+{chatFunc.CheckRegexDigit(s1)}"); // Получаем результат расчётов..
+                
 
 
 
@@ -94,6 +93,11 @@ public partial class ChatForm : Form
     private void ChatForm_Load(object sender, EventArgs e)
     {
 
+
+    }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
 
     }
 }

@@ -11,10 +11,14 @@ namespace ChatBotFunc
     //
     public static class chatFunc
     {
-        static
+
+        static string bot = botNameGen();   // Ботнейм
+
+        static readonly
             string[]
             robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
-
+        static readonly string[]
+       helloNames = { "Hola", "Hello", "Привет", "Hiya" };
         public static readonly string patternSum = @"(сум|cev|\+)";
         public static readonly string patterMult = @"(произв|множ|\*|x|vyj;)";
         public static readonly string patternMinus = @"(разн|минус|\-)";
@@ -54,7 +58,7 @@ namespace ChatBotFunc
                         .Cast<Match>()                        // приводим к другому типу
                         .Select(x => int.Parse(x.Value))      // затем получаем целочисленное значение
                         .ToArray();                           // затем возвращаем их в массив
-                    if (matches.Length < 2) return "Я не понимаю вас.." ;        // если цифра одна, нечего считать, возвращаем -1
+                    if (matches.Length < 2) return $"{bot} at { DateTime.Now}:Я не понимаю вас.." ;        // если цифра одна, нечего считать, возвращаем -1
                     else
                     if (i == matches.Length) break;           // проверка на выход из диапазона
                     else
@@ -67,7 +71,7 @@ namespace ChatBotFunc
                     sum += mas1[j];                           // суммируем..
                 }
                 mas1.Clear();                                 // очищаем массив на всякий случай
-                return $"Сумма:{sum}";                        // возвращаем результат в контроллер
+                return $"{bot} at { DateTime.Now}:Сумма: {sum}";  // возвращаем результат в контроллер
             }
 
 
@@ -84,7 +88,7 @@ namespace ChatBotFunc
                         .Cast<Match>()
                         .Select(x => int.Parse(x.Value))
                         .ToArray();
-                    if (matches.Length < 2) return "Я не понимаю вас..";
+                    if (matches.Length < 2) return $"{bot} at { DateTime.Now}:Я не понимаю вас..";
                     else
                     if (i == matches.Length) break;
                     else
@@ -97,7 +101,7 @@ namespace ChatBotFunc
                     sum *= mas1[j];
                 }
                 mas1.Clear();
-                return $"Умножение:{sum}";
+                return $"{bot} at { DateTime.Now}:Умножение:{sum}";
 
             }
             else
@@ -110,7 +114,7 @@ namespace ChatBotFunc
                         .Cast<Match>()
                         .Select(x => int.Parse(x.Value))
                         .ToArray();
-                    if (matches.Length < 2) return "Я не понимаю вас..";
+                    if (matches.Length < 2) return $"{bot} at { DateTime.Now}:Я не понимаю вас..";
                     else
                     if (i == matches.Length) break;
                     else
@@ -124,16 +128,18 @@ namespace ChatBotFunc
                 }
 
                 mas1.Clear();
-                return $"Разность:{sum}";
+                return $"{bot} at { DateTime.Now}:Разность:{sum}";
 
             }
 
-            else return "Я не понимаю вас..."; // Если ни умножение, ни сумма, ни разность не подошли под запрос пользователя : вернем -1
+            else return $"{bot} at { DateTime.Now}:Я не понимаю вас..."; // Если ни умножение, ни сумма, ни разность не подошли под запрос пользователя : вернем -1
 
         }
-        public static bool CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
+        public static string CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
         {
-            return (regexHello.IsMatch(s1));
+            Random random = new Random();
+            int Index = random.Next(helloNames.Length);
+            return $"{bot} at { DateTime.Now}: {helloNames[Index]}!";
         }
 
         public static bool CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку картинки
