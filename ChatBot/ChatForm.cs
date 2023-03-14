@@ -34,14 +34,14 @@ public partial class ChatForm : Form
         if (string.IsNullOrEmpty(s1)) s1 = "???"; // Если ничего не ввели, то покажем это на форме..
         chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
 
-       chatTalkBox.AppendText(chatFunc.CheckRegexHello(s1));
+        chatTalkBox.AppendText(chatFunc.CheckRegexHello(s1).Item2);
 
 
             while (true) // Бесконечный цикл..
             {
-                if (chatFunc.CheckRegexTime(s1)) // Если запрос пользователя время, покажем время
+                if (chatFunc.CheckRegexTime(s1).Item1) // Если запрос пользователя время, покажем время
                 {
-                    chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Time Now:: {DateTime.Now}" + '\n');
+                    chatTalkBox.AppendText(chatFunc.CheckRegexTime(s1).Item2+ '\n');
                     break;
                 }
                 else

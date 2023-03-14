@@ -135,11 +135,12 @@ namespace ChatBotFunc
             else return $"{bot} at { DateTime.Now}:Я не понимаю вас..."; // Если ни умножение, ни сумма, ни разность не подошли под запрос пользователя : вернем -1
 
         }
-        public static string CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
+        public static (bool,string) CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
         {
             Random random = new Random();
             int Index = random.Next(helloNames.Length);
-            return $"{bot} at { DateTime.Now}: {helloNames[Index]}!";
+            var result = (true, $"{bot} at { DateTime.Now}: {helloNames[Index]}!");
+            return result;
         }
 
         public static bool CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку картинки
@@ -147,9 +148,9 @@ namespace ChatBotFunc
             return (regexUpload.IsMatch(s1));
         }
 
-        public static bool CheckRegexTime(string s1) // Проверка  запроса юзера на получение текущей даты
+        public static (bool, string) CheckRegexTime(string s1) // Проверка  запроса юзера на получение текущей даты
         {
-            return (regexTime.IsMatch(s1));
+            return (true, $"{bot} replies: {DateTime.Now}");
         }
 
 
