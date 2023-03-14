@@ -1,8 +1,11 @@
+// todo: doc
 namespace ChatBot;
 using ChatBotFunc;
 using System.Net;
 public partial class ChatForm : Form
-{
+{   
+
+    // todo: to bot
     string username = formLogin.UserName; // Юзернейм
     string bot = chatFunc.botNameGen();   // Ботнейм
 
@@ -23,6 +26,7 @@ public partial class ChatForm : Form
 
     }
 
+    // todo: to bot
     private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
     {
         int result = 0;
@@ -73,33 +77,10 @@ public partial class ChatForm : Form
                     }
                 }
                 else
-                {
+                
+                chatTalkBox.AppendText($"{bot} at {DateTime.Now}+{chatFunc.CheckRegexDigit(s1)}"); // Получаем результат расчётов..
 
-                }
-                result = chatFunc.CheckRegexDigit(s1); // Получаем результат расчётов..
-                if (result == -1)
-                {
-                    chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Я не понимаю вас.. " + '\n');
-                    break;
-                }
-                else
-                if (chatFunc.regexSum.IsMatch(s1))
-                {
-                    chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Summa= {result}\n");
-                    break;
-                }
-                else
-                if (chatFunc.regexMult.IsMatch(s1))
-                {
-                    chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Multiply= {result}" + '\n');
-                    break;
-                }
-                else
-                if (chatFunc.regexMinus.IsMatch(s1))
-                {
-                    chatTalkBox.AppendText($"{bot} at {DateTime.Now}: Разность= {result}" + '\n');
-                    break;
-                }
+
 
 
             }
