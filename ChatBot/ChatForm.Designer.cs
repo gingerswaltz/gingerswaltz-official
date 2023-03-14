@@ -44,10 +44,11 @@
             this.chatTalkBox.Location = new System.Drawing.Point(0, 0);
             this.chatTalkBox.Name = "chatTalkBox";
             this.chatTalkBox.ReadOnly = true;
-            this.chatTalkBox.Size = new System.Drawing.Size(262, 363);
+            this.chatTalkBox.Size = new System.Drawing.Size(283, 363);
             this.chatTalkBox.TabIndex = 0;
             this.chatTalkBox.TabStop = false;
             this.chatTalkBox.Text = "";
+            this.chatTalkBox.TextChanged += new System.EventHandler(this.chatTalkBox_TextChanged);
             // 
             // talkBotButton
             // 
@@ -55,9 +56,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.talkBotButton.BackColor = System.Drawing.Color.PaleTurquoise;
             this.talkBotButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.talkBotButton.Location = new System.Drawing.Point(0, 411);
+            this.talkBotButton.Location = new System.Drawing.Point(0, 432);
             this.talkBotButton.Name = "talkBotButton";
-            this.talkBotButton.Size = new System.Drawing.Size(262, 70);
+            this.talkBotButton.Size = new System.Drawing.Size(283, 70);
             this.talkBotButton.TabIndex = 2;
             this.talkBotButton.Text = "&Поговорить с ботом";
             this.talkBotButton.UseVisualStyleBackColor = false;
@@ -74,17 +75,16 @@
             this.chatTextBox.Multiline = true;
             this.chatTextBox.Name = "chatTextBox";
             this.chatTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.chatTextBox.Size = new System.Drawing.Size(262, 53);
+            this.chatTextBox.Size = new System.Drawing.Size(283, 76);
             this.chatTextBox.TabIndex = 3;
             this.chatTextBox.Text = "Привет!";
-            this.chatTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(262, 481);
+            this.ClientSize = new System.Drawing.Size(283, 504);
             this.Controls.Add(this.chatTextBox);
             this.Controls.Add(this.chatTalkBox);
             this.Controls.Add(this.talkBotButton);
