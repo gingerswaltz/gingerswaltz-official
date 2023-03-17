@@ -1,4 +1,8 @@
-﻿using System;
+﻿/// <summary>
+///  author: Georgy Purtov
+///  сумма, умножение, разность, приветствия, загрузки картинки, получения текущего времени
+/// </summary>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

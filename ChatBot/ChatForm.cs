@@ -1,4 +1,4 @@
-// todo: doc
+/// 
 namespace ChatBot;
 using ChatBotFunc;
 using System.Windows.Forms;
@@ -15,12 +15,8 @@ public partial class ChatForm : Form
         if (string.IsNullOrEmpty(formLogin.UserName))              // Если не ввели имя
         {
             MessageBox.Show("Wrong name. Choose right next time"); // То сообщим и бросим исключение
-            
         }
-
         InitializeComponent();
-        
-
         chatTalkBox.Text = chatFunc.LoadFile();
         chatTalkBox.AppendText($"Доброго времени суток, {username}!");
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
@@ -28,7 +24,6 @@ public partial class ChatForm : Form
         chatTalkBox.ScrollToCaret();
     }
 
-    // todo: to bot
     private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
     {
         string s1 = chatTextBox.Text; // ввод запроса
