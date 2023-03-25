@@ -41,7 +41,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Client" layer="0" alias="Клиент" collapse-mode="1" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="520" y="140"/>
+	<position x="560" y="60"/>
 	<column name="passport_serie" alias="Серия паспорта" not-null="true">
 		<type name="text" length="0"/>
 	</column>
@@ -83,7 +83,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Order" layer="0" collapse-mode="1" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="60" y="60"/>
+	<position x="0" y="0"/>
 	<column name="number" not-null="true">
 		<type name="text" length="0"/>
 	</column>
@@ -114,17 +114,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="Client_fk" index="1"/>
 	</customidxs>
 	<initial-data>
-<![CDATA[number•date•sum•tarif•object_name•passport_serie_Client•passport_number_Client•id_Agent⸣
-1•15.03.2023•50000•2••••1⸣
-2•03.02.2023•40000•2••••2⸣
-3•17.01.2022•10000•2••••3⸣
-4•24.05.2022•20000•5••••1⸣
-5•30.11.2021•15000•••••2⸣
-6•02.12.2022•60000•••••2⸣
-7•10.10.2022•35000•3••••4⸣
-8•01.03.2023•23000•3••••5⸣
-9•09.01.2023•5000•7••••2⸣
-10•12.12.2021•12000•5••••1]]>
+<![CDATA[number•date•sum•tarif•object_name•passport_number_Client•passport_serie_Client•id_Agent⸣
+1•15.03.2023•50000•2••000001•0001•1⸣
+2•03.02.2023•40000•2••000002•0002•2⸣
+3•17.01.2022•10000•2••000003•0003•3⸣
+4•24.05.2022•20000•5••000004•0004•1⸣
+5•30.11.2021•15000•••000005•0005•2⸣
+6•02.12.2022•60000•••000006•0006•2]]>
 	</initial-data>
 </table>
 
@@ -202,7 +198,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 3•Сидоров•Сидор•Сидорович•03.03.2003•Москва•2⸣
 4•Борисов•Борис•Борисович•04.04.2004•Москва•2⸣
 5•Федорова•Ольга•Александровна•05.05.2005•Новоибирск•3⸣
-6•Михайлов•Михаил•Михайлович•06.06.2006•Владивосток•]]>
+6•Михайлов•Михаил•Михайлович•06.06.2006•Владивосток•3]]>
 	</initial-data>
 </table>
 
