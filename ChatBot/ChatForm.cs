@@ -1,4 +1,7 @@
-/// 
+/// <summary>
+///  author: Georgy Purtov
+/// <summary>
+
 namespace ChatBot;
 using ChatBotFunc;
 using System.Windows.Forms;
@@ -6,18 +9,17 @@ using System.Windows.Forms;
 public partial class ChatForm : Form
 {
 
-    // todo: to bot
     public static string username = formLogin.UserName; // Юзернейм
 
 
     public ChatForm()
     {
-        if (string.IsNullOrEmpty(formLogin.UserName))              // Если не ввели имя
+        if (string.IsNullOrEmpty(formLogin.UserName))              // Если закрыли окно логина на крестик
         {
-            MessageBox.Show("Wrong name. Choose right next time"); // То сообщим и бросим исключение
+            Environment.Exit(0);
         }
         InitializeComponent();
-        chatTalkBox.Text = chatFunc.LoadFile();
+        chatTalkBox.Text = chatFunc.LoadFile("History.txt");
         chatTalkBox.AppendText($"Доброго времени суток, {username}!");
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
         // scroll it automatically
@@ -42,13 +44,10 @@ public partial class ChatForm : Form
 
     private void ChatForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n");
+        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt");
     }
 
-    private void ChatForm_Load(object sender, EventArgs e)
-    {
-       
-    }
+
 
    
     private void chatTalkBox_TextChanged(object sender, EventArgs e)
