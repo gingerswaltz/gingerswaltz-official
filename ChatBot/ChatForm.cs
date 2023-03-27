@@ -6,7 +6,7 @@ namespace ChatBot;
 using ChatBotFunc;
 using System.Windows.Forms;
 
-public partial class ChatForm : Form
+public partial class ChatForm : Form 
 {
 
     public static string username = formLogin.UserName; // ёзернейм
