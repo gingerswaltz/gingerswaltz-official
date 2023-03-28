@@ -12,7 +12,7 @@ namespace ChatBot
 {
     public partial class formLogin : Form
     {
-        public static string UserName { get; set; }
+        public static string? UserName { get; set; }
         public formLogin()
         {
             InitializeComponent();
@@ -20,23 +20,30 @@ namespace ChatBot
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-            
-           
+
+
             UserName = userInputBox.Text;   // Присваиваем юзернейм с текст бокса.
 
-            if (!string.IsNullOrEmpty(UserName))
+            if ((UserName == null) || (UserName == ""))
+            {
+                MessageBox.Show("Type your name");
+            }
+            else
             {
                 this.Close();
                 Form chatform = new ChatForm(); // Формируем ссылку на окно чат формы
                 chatform.Show();                // Открываем окно чат формы
-            } else
-            {
-                MessageBox.Show("Type your name");
             }
 
-            this.Close();
-            
 
+
+        }
+
+        private void formLogin_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing && UserName == "")
+                UserName = null;
+           
         }
     }
 }

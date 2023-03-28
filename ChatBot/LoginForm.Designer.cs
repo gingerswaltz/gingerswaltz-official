@@ -28,51 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.userInputBox = new System.Windows.Forms.TextBox();
-            this.buttonApply = new System.Windows.Forms.Button();
-            this.label_Input = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            userInputBox = new TextBox();
+            buttonApply = new Button();
+            label_Input = new Label();
+            SuspendLayout();
             // 
             // userInputBox
             // 
-            this.userInputBox.Location = new System.Drawing.Point(12, 40);
-            this.userInputBox.Name = "userInputBox";
-            this.userInputBox.Size = new System.Drawing.Size(145, 23);
-            this.userInputBox.TabIndex = 0;
+            userInputBox.Location = new Point(12, 40);
+            userInputBox.Name = "userInputBox";
+            userInputBox.Size = new Size(145, 23);
+            userInputBox.TabIndex = 0;
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(30, 69);
-            this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(110, 49);
-            this.buttonApply.TabIndex = 1;
-            this.buttonApply.Text = "Apply";
-            this.buttonApply.UseVisualStyleBackColor = true;
-            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
+            buttonApply.Location = new Point(30, 69);
+            buttonApply.Name = "buttonApply";
+            buttonApply.Size = new Size(110, 49);
+            buttonApply.TabIndex = 1;
+            buttonApply.Text = "Apply";
+            buttonApply.UseVisualStyleBackColor = true;
+            buttonApply.Click += buttonApply_Click;
             // 
             // label_Input
             // 
-            this.label_Input.AutoSize = true;
-            this.label_Input.Location = new System.Drawing.Point(12, 9);
-            this.label_Input.Name = "label_Input";
-            this.label_Input.Size = new System.Drawing.Size(93, 15);
-            this.label_Input.TabIndex = 2;
-            this.label_Input.Text = "Input username:";
+            label_Input.AutoSize = true;
+            label_Input.Location = new Point(12, 9);
+            label_Input.Name = "label_Input";
+            label_Input.Size = new Size(93, 15);
+            label_Input.TabIndex = 2;
+            label_Input.Text = "Input username:";
             // 
             // formLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(171, 130);
-            this.Controls.Add(this.label_Input);
-            this.Controls.Add(this.buttonApply);
-            this.Controls.Add(this.userInputBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "formLogin";
-            this.Text = "Login";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(171, 130);
+            Controls.Add(label_Input);
+            Controls.Add(buttonApply);
+            Controls.Add(userInputBox);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            Name = "formLogin";
+            Text = "Login";
+            FormClosed += formLogin_FormClosed;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

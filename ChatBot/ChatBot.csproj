@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="RegexPatterns.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="icons8-приложение-64.ico" />
   </ItemGroup>
 

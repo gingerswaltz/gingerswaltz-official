@@ -19,9 +19,8 @@ namespace ChatBotFunc
 
 
 
-        static
-            string[]
-            robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
+        static readonly string[]
+       robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
         static readonly string[]
        helloNames = { "Hola", "Hello", "Привет", "Hiya" };
         static readonly string[]
@@ -188,33 +187,28 @@ namespace ChatBotFunc
         }
 
 
-        public static string CheckRegexHowRU(string s1)
+        public static string CheckRegexHowRU(string s1) // Проверка запроса на вопрос Как дела
         {
             Random random = new Random();
             int Index = random.Next(howruNames.Length);
             return howruNames[Index];
         }
 
-        public static string CheckClearHistory(string s1)
+        public static string CheckClearHistory(string s1, string path) // Проверка запроса на очистку истории
         {
 
-            using (StreamWriter writer = new StreamWriter("History.txt", false))
+            using (StreamWriter writer = new StreamWriter(path, false))
             {
                 writer.WriteLine(string.Empty);
             }
             return $"{bot} at {DateTime.Now}: Файл истории очищен";
         }
 
-        // tpdp: history to list
 
-        public static void ToFile(string s1)
+        public static void ToFile(string s1, string path)
         {
             if (s1 == null) throw new Exception();
-
-            // todo: to arg
-            string path = "History.txt";
             string text = s1;
-
 
             // добавление в файл
             using (StreamWriter writer = new StreamWriter(path, true))
@@ -224,12 +218,11 @@ namespace ChatBotFunc
 
         }
 
-        public static string LoadFile()
+        public static string LoadFile(string path)
         {
-            // todo: to arg
-            string path = "History.txt";
+            
             string text = "";
-            // асинхронное чтение
+            // чтение
             using (StreamReader reader = new StreamReader(path))
             {
                 text = reader.ReadToEnd();
@@ -252,7 +245,7 @@ namespace ChatBotFunc
             else
                 if (regexSum.IsMatch(s1)) return CheckRegexDigit(s1);
             else
-                if (regexClear.IsMatch(s1)) return CheckClearHistory(s1);
+                if (regexClear.IsMatch(s1)) return CheckClearHistory(s1, "History.txt");
             else return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
 
 
