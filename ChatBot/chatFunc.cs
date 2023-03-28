@@ -14,10 +14,34 @@ using System.Net;
 namespace ChatBotFunc
 {
     //
-    public static class chatFunc
+    public class chatFunc
     {
 
+        public List<string> botHistory = new();
+       
+        public void setHistory()
+        {
+            string s1 = LoadFile("History.txt");
+            if ((s1 == null))
+            {
+                s1 = "";
+            }
+            else
+            {
+                botHistory.Add(s1); 
+            }
 
+        }
+        public string getHistory()
+        {
+            return botHistory[botHistory.Count - 1];
+        }
+    
+        public chatFunc() 
+        {
+            setHistory();
+            botNameGen();
+        }
 
         static readonly string[]
        robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
@@ -50,7 +74,7 @@ namespace ChatBotFunc
         public static Regex regexUrl = new Regex(patternGetUrl, RegexOptions.IgnoreCase);
         public static Regex regexClear = new Regex(patternClearHistory, RegexOptions.IgnoreCase);
         public static Regex regexHowRU = new Regex(patternHowRU, RegexOptions.IgnoreCase);
-
+        // два списка, один хранит regex, другой хранит адреса методов соответствующие им
         public static string botNameGen() // Метод генерации рандомного имени бота
         {
             Random random = new Random();

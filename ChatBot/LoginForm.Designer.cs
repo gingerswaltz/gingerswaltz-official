@@ -35,16 +35,18 @@
             // 
             // userInputBox
             // 
-            userInputBox.Location = new Point(12, 40);
+            userInputBox.Location = new Point(22, 85);
+            userInputBox.Margin = new Padding(6, 6, 6, 6);
             userInputBox.Name = "userInputBox";
-            userInputBox.Size = new Size(145, 23);
+            userInputBox.Size = new Size(266, 39);
             userInputBox.TabIndex = 0;
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(30, 69);
+            buttonApply.Location = new Point(56, 147);
+            buttonApply.Margin = new Padding(6, 6, 6, 6);
             buttonApply.Name = "buttonApply";
-            buttonApply.Size = new Size(110, 49);
+            buttonApply.Size = new Size(204, 105);
             buttonApply.TabIndex = 1;
             buttonApply.Text = "Apply";
             buttonApply.UseVisualStyleBackColor = true;
@@ -53,21 +55,23 @@
             // label_Input
             // 
             label_Input.AutoSize = true;
-            label_Input.Location = new Point(12, 9);
+            label_Input.Location = new Point(22, 19);
+            label_Input.Margin = new Padding(6, 0, 6, 0);
             label_Input.Name = "label_Input";
-            label_Input.Size = new Size(93, 15);
+            label_Input.Size = new Size(187, 32);
             label_Input.TabIndex = 2;
             label_Input.Text = "Input username:";
             // 
             // formLogin
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(171, 130);
+            ClientSize = new Size(312, 278);
             Controls.Add(label_Input);
             Controls.Add(buttonApply);
             Controls.Add(userInputBox);
             FormBorderStyle = FormBorderStyle.Fixed3D;
+            Margin = new Padding(6, 6, 6, 6);
             Name = "formLogin";
             Text = "Login";
             FormClosed += formLogin_FormClosed;

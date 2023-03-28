@@ -10,11 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ChatBotTest\**" />
+    <EmbeddedResource Remove="ChatBotTest\**" />
+    <None Remove="ChatBotTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="RegexPatterns.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="icons8-приложение-64.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ChatBotTest">
+      <HintPath>ChatBotTest\bin\Debug\net6.0\ChatBotTest.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -15,36 +15,37 @@ namespace ChatBotTest
 
         }
 
-            [TestMethod]
-           public void CheckRegexDigit_ShouldReturnMinus()
-            {
-                // Arrange
-                var input = "10-2-3";
-                var expected = $"{chatFunc.bot} at {DateTime.Now}:Разность:{5}";
+        [TestMethod]
+        public void CheckRegexDigit_ShouldReturnMinus()
+        {
+            // Arrange
+            var input = "10-2-3";
+            var expected = $"{chatFunc.bot} at {DateTime.Now}:Разность:{5}";
+            
+            // Act
+            var result = chatFunc.CheckRegexDigit(input);
 
-                // Act
-                var result = chatFunc.CheckRegexDigit(input);
-
-                // Assert
-                Assert.AreEqual(expected, result);
-            }
-
-    [TestMethod]
-    public void CheckRegexDigit_ShouldReturnMult()
-    {
-        // Arrange
-        var input = "2*3*4";
-        var expected = $"{chatFunc.bot} at {DateTime.Now}:Умножение:{24}";
-        
-        // Act
-       var result = chatFunc.CheckRegexDigit(input);
-
-        // Assert
-        Assert.AreEqual(expected, result);
-    }
-
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
 
         [TestMethod]
+        public void CheckRegexDigit_ShouldReturnMult()
+        {
+            // Arrange
+            var input = "2*3*4";
+            var expected = $"{chatFunc.bot} at {DateTime.Now}:Умножение:{24}";
 
+            // Act
+            var result = chatFunc.CheckRegexDigit(input);
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        /// варианты с кучей пробелов 
+        //   [TestMethod]
+
+        //  }
     }
 }

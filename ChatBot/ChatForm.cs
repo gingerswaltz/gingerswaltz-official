@@ -6,7 +6,7 @@ namespace ChatBot;
 using ChatBotFunc;
 using System.Windows.Forms;
 
-public partial class ChatForm : Form 
+public partial class ChatForm : Form
 {
 
     public static string username = formLogin.UserName; // Юзернейм
@@ -19,13 +19,14 @@ public partial class ChatForm : Form
             Environment.Exit(0);
         }
         InitializeComponent();
-        chatTalkBox.Text = chatFunc.LoadFile("History.txt");
+        chatFunc botObj = new();
+        chatTalkBox.Text = botObj.getHistory();
         chatTalkBox.AppendText($"Доброго времени суток, {username}!");
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
         // scroll it automatically
         chatTalkBox.ScrollToCaret();
     }
-
+    // сначала переписку в ячейку листа а затем с нее в форму
     private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
     {
         string s1 = chatTextBox.Text; // ввод запроса
@@ -35,8 +36,8 @@ public partial class ChatForm : Form
             chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
         }
         else
-        
-        chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
+
+            chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
 
         chatTalkBox.AppendText(chatFunc.GetAnswer(s1) + "\n");
 
@@ -49,7 +50,7 @@ public partial class ChatForm : Form
 
 
 
-   
+
     private void chatTalkBox_TextChanged(object sender, EventArgs e)
     {
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;

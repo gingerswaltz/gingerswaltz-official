@@ -20,7 +20,7 @@ namespace ChatBot
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-
+            
 
             UserName = userInputBox.Text;   // Присваиваем юзернейм с текст бокса.
 
@@ -33,6 +33,7 @@ namespace ChatBot
                 this.Close();
                 Form chatform = new ChatForm(); // Формируем ссылку на окно чат формы
                 chatform.Show();                // Открываем окно чат формы
+                // association
             }
 
 
@@ -43,7 +44,7 @@ namespace ChatBot
         {
             if (e.CloseReason == CloseReason.UserClosing && UserName == "")
                 UserName = null;
-           
+
         }
     }
 }
