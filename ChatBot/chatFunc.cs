@@ -19,9 +19,11 @@ namespace ChatBotFunc
 
         public List<string> botHistory = new();
        
-        public void setHistory()
+        public void loadHistory()
         {
-            string s1 = LoadFile("History.txt");
+
+            // to arg 
+            string s1 = LoadFile("History.txt"); // stroka s istoriyei
             if ((s1 == null))
             {
                 s1 = "";
@@ -39,7 +41,7 @@ namespace ChatBotFunc
     
         public chatFunc() 
         {
-            setHistory();
+            loadHistory();
             botNameGen();
         }
 

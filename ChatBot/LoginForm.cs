@@ -31,6 +31,7 @@ namespace ChatBot
             else
             {
                 this.Close();
+                // создать в чатформе сеттер юзернейма (избавиться от статического поля)
                 Form chatform = new ChatForm(); // Формируем ссылку на окно чат формы
                 chatform.Show();                // Открываем окно чат формы
                 // association

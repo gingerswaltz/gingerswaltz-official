@@ -9,7 +9,8 @@ using System.Windows.Forms;
 public partial class ChatForm : Form
 {
 
-    public static string username = formLogin.UserName; // Юзернейм
+    public string username = formLogin.UserName; // Юзернейм
+    chatFunc botObj = new();
 
 
     public ChatForm()
@@ -19,7 +20,6 @@ public partial class ChatForm : Form
             Environment.Exit(0);
         }
         InitializeComponent();
-        chatFunc botObj = new();
         chatTalkBox.Text = botObj.getHistory();
         chatTalkBox.AppendText($"Доброго времени суток, {username}!");
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
@@ -45,6 +45,7 @@ public partial class ChatForm : Form
 
     private void ChatForm_FormClosing(object sender, FormClosingEventArgs e)
     {
+        
         chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt");
     }
 
