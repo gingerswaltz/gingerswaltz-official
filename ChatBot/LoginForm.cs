@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBotFunc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,6 @@ namespace ChatBot
 {
     public partial class formLogin : Form
     {
-        public static string? UserName { get; set; }
         public formLogin()
         {
             InitializeComponent();
@@ -20,18 +20,17 @@ namespace ChatBot
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-            
 
-            UserName = userInputBox.Text;   // Присваиваем юзернейм с текст бокса.
 
-            if ((UserName == null) || (UserName == ""))
+            chatFunc.SetUserName(userInputBox.Text);
+
+            if ((userInputBox.Text == null) || (userInputBox.Text == ""))
             {
                 MessageBox.Show("Type your name");
             }
             else
             {
                 this.Close();
-                // создать в чатформе сеттер юзернейма (избавиться от статического поля)
                 Form chatform = new ChatForm(); // Формируем ссылку на окно чат формы
                 chatform.Show();                // Открываем окно чат формы
                 // association
@@ -43,8 +42,8 @@ namespace ChatBot
 
         private void formLogin_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing && UserName == "")
-                UserName = null;
+            if (e.CloseReason == CloseReason.UserClosing && userInputBox.Text == "")
+                chatFunc.SetUserName(null);
 
         }
     }

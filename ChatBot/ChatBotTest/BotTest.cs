@@ -1,3 +1,4 @@
+/// author: Georgy Purtov
 using ChatBotFunc;
 
 namespace ChatBotTest
@@ -19,7 +20,7 @@ namespace ChatBotTest
         public void CheckRegexDigit_ShouldReturnMinus()
         {
             // Arrange
-            var input = "10-2-3";
+            var input = "10   -2 -3";
             var expected = $"{chatFunc.bot} at {DateTime.Now}:Разность:{5}";
             
             // Act
@@ -33,7 +34,7 @@ namespace ChatBotTest
         public void CheckRegexDigit_ShouldReturnMult()
         {
             // Arrange
-            var input = "2*3*4";
+            var input = "2*           3*4                 ";
             var expected = $"{chatFunc.bot} at {DateTime.Now}:Умножение:{24}";
 
             // Act
@@ -43,9 +44,11 @@ namespace ChatBotTest
             Assert.AreEqual(expected, result);
         }
 
-        /// варианты с кучей пробелов 
-        //   [TestMethod]
+       
+          [TestMethod]
+          public void Check{
 
-        //  }
+
+          }
     }
 }

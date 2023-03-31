@@ -5,3 +5,19 @@
   },
   "compilationOptions": {},
   "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ChatBot/1.0.0": {
+        "runtime": {
+          "ChatBot.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ChatBot/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

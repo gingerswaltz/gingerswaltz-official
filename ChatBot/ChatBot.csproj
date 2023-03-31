@@ -20,14 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="icons8-приложение-64.ico" />
+    <None Remove="chatbot.drawio" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ChatBotTest">
-      <HintPath>ChatBotTest\bin\Debug\net6.0\ChatBotTest.dll</HintPath>
-    </Reference>
+    <Content Include="icons8-приложение-64.ico" />
   </ItemGroup>
+
+
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

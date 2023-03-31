@@ -37,13 +37,13 @@
             // 
             chatTalkBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             chatTalkBox.BackColor = SystemColors.ControlLight;
-            chatTalkBox.BorderStyle = BorderStyle.None;
+            chatTalkBox.BorderStyle = BorderStyle.FixedSingle;
             chatTalkBox.Font = new Font("Nirmala UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point);
             chatTalkBox.ForeColor = SystemColors.ActiveCaptionText;
             chatTalkBox.Location = new Point(0, 0);
             chatTalkBox.Name = "chatTalkBox";
             chatTalkBox.ReadOnly = true;
-            chatTalkBox.Size = new Size(415, 557);
+            chatTalkBox.Size = new Size(898, 374);
             chatTalkBox.TabIndex = 0;
             chatTalkBox.TabStop = false;
             chatTalkBox.Text = "";
@@ -54,9 +54,9 @@
             talkBotButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             talkBotButton.BackColor = Color.PaleTurquoise;
             talkBotButton.Font = new Font("Leelawadee UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            talkBotButton.Location = new Point(0, 649);
+            talkBotButton.Location = new Point(0, 541);
             talkBotButton.Name = "talkBotButton";
-            talkBotButton.Size = new Size(415, 174);
+            talkBotButton.Size = new Size(898, 109);
             talkBotButton.TabIndex = 2;
             talkBotButton.Text = "&Поговорить с ботом";
             talkBotButton.UseVisualStyleBackColor = false;
@@ -68,20 +68,20 @@
             chatTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             chatTextBox.BorderStyle = BorderStyle.FixedSingle;
             chatTextBox.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            chatTextBox.Location = new Point(0, 558);
+            chatTextBox.Location = new Point(0, 372);
             chatTextBox.Multiline = true;
             chatTextBox.Name = "chatTextBox";
             chatTextBox.RightToLeft = RightToLeft.No;
-            chatTextBox.Size = new Size(415, 94);
+            chatTextBox.Size = new Size(898, 172);
             chatTextBox.TabIndex = 3;
             chatTextBox.Text = "Привет!";
             // 
             // ChatForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 29F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            ClientSize = new Size(415, 825);
+            ClientSize = new Size(898, 652);
             Controls.Add(chatTextBox);
             Controls.Add(chatTalkBox);
             Controls.Add(talkBotButton);

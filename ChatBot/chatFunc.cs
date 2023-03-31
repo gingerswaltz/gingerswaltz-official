@@ -18,19 +18,18 @@ namespace ChatBotFunc
     {
 
         public List<string> botHistory = new();
-       
-        public void loadHistory()
+
+        public void loadHistory(string path = "History.txt")
         {
 
-            // to arg 
-            string s1 = LoadFile("History.txt"); // stroka s istoriyei
+            string s1 = LoadFile(path); // stroka s istoriyei
             if ((s1 == null))
             {
                 s1 = "";
             }
             else
             {
-                botHistory.Add(s1); 
+                botHistory.Add(s1);
             }
 
         }
@@ -38,10 +37,10 @@ namespace ChatBotFunc
         {
             return botHistory[botHistory.Count - 1];
         }
-    
-        public chatFunc() 
+
+        public chatFunc()
         {
-            loadHistory();
+            loadHistory("History.txt");
             botNameGen();
         }
 
@@ -50,7 +49,7 @@ namespace ChatBotFunc
         static readonly string[]
        helloNames = { "Hola", "Hello", "Привет", "Hiya" };
         static readonly string[]
-       howruNames= { "Все отлично", "Alright Bro", "I'm fine", "Всё супер", "I'm OK" };
+       howruNames = { "Все отлично", "Alright Bro", "I'm fine", "Всё супер", "I'm OK" };
 
         public static readonly string patternSum = @"(сум|cev|\+)";
         public static readonly string patterMult = @"(произв|множ|\*|x|vyj;)";
@@ -62,7 +61,14 @@ namespace ChatBotFunc
         public static readonly string patternGetUrl = @"(?i)\b(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’])";
         public static readonly string patternClearHistory = @"(чист|удал|del)";
         public static string bot = botNameGen();   // Ботнейм
+        public static string? username = "";
 
+        public static void SetUserName(string s1)
+        {
+            username = s1;
+        }
+
+        public static string GetUserName() { return username; }
         /// <summary>
         ///  Паттерны для регулярных выражений:
         ///  сумма, умножение, разность, приветствия, загрузки картинки, получения текущего времени
@@ -76,14 +82,14 @@ namespace ChatBotFunc
         public static Regex regexUrl = new Regex(patternGetUrl, RegexOptions.IgnoreCase);
         public static Regex regexClear = new Regex(patternClearHistory, RegexOptions.IgnoreCase);
         public static Regex regexHowRU = new Regex(patternHowRU, RegexOptions.IgnoreCase);
-        // два списка, один хранит regex, другой хранит адреса методов соответствующие им
+        //можно было бы сделать два списка, один хранит regex, другой хранит адреса методов соответствующие им
         public static string botNameGen() // Метод генерации рандомного имени бота
         {
             Random random = new Random();
             int Index = random.Next(robotNames.Length);
             return robotNames[Index];
         }
-        public static string CheckRegexDigit(string s1) // Метод проверки арифметической операции
+        public static string CheckRegexSum(string s1) // Метод проверки арифметической операции
         {
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
             var sum = 0;
@@ -112,12 +118,17 @@ namespace ChatBotFunc
                 mas1.Clear();                                 // очищаем массив на всякий случай
                 return $"{bot} at {DateTime.Now}:Сумма: {sum}";  // возвращаем результат в контроллер
             }
+            else return null;
+        }
 
 
-            /// Комментарии к проверке на сумму применимы к умножению и разности..
+        /// Комментарии к проверке на сумму применимы к умножению и разности..
 
-            else
-
+        public static string CheckRegexMult(string s1)
+        {
+            List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
+            var sum = 0;
+            int i = 0;
             if (regexMult.IsMatch(s1))
             {
                 foreach (char s in s1)
@@ -143,7 +154,15 @@ namespace ChatBotFunc
                 return $"{bot} at {DateTime.Now}:Умножение:{sum}";
 
             }
-            else
+            else return null;
+        }
+    
+
+        public static string CheckRegexMinus(string s1)
+        {
+            List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
+            var sum = 0;
+            int i = 0;
             if (regexMinus.IsMatch(s1))
             {
                 foreach (char s in s1)
@@ -171,9 +190,11 @@ namespace ChatBotFunc
 
             }
 
-            else return $"{bot} at {DateTime.Now}:Я не понимаю вас..."; // Если ни умножение, ни сумма, ни разность не подошли под запрос пользователя : вернем -1
+            else return null;
 
         }
+    
+        
         public static string CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
         {
             Random random = new Random();
@@ -233,6 +254,8 @@ namespace ChatBotFunc
 
         public static void ToFile(string s1, string path)
         {
+            if (!File.Exists(path)) { File.Create(path); }
+
             if (s1 == null) throw new Exception();
             string text = s1;
 
@@ -246,7 +269,7 @@ namespace ChatBotFunc
 
         public static string LoadFile(string path)
         {
-            
+            if (!File.Exists(path)) { File.Create(path); }
             string text = "";
             // чтение
             using (StreamReader reader = new StreamReader(path))
@@ -261,23 +284,23 @@ namespace ChatBotFunc
         public static string GetAnswer(string s1)
         {
             if (string.IsNullOrEmpty(s1)) return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
-
+            else 
             if (regexHello.IsMatch(s1)) return CheckRegexHello(s1);
             else
-            if (regexHowRU.IsMatch(s1)) return CheckRegexHowRU(s1);
+                if (regexHowRU.IsMatch(s1)) return CheckRegexHowRU(s1);
+            else
                 if (regexTime.IsMatch(s1)) return CheckRegexTime(s1);
             else
                 if (regexUpload.IsMatch(s1)) return CheckRegexUpload(s1);
             else
-                if (regexSum.IsMatch(s1)) return CheckRegexDigit(s1);
+                if (regexSum.IsMatch(s1)) return CheckRegexSum(s1);
             else
+                if (regexMult.IsMatch(s1)) return CheckRegexMult(s1);   
+            else 
+                if (regexMinus.IsMatch(s1)) return CheckRegexMinus(s1);
+            else 
                 if (regexClear.IsMatch(s1)) return CheckClearHistory(s1, "History.txt");
             else return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
-
-
-
-
-
 
         }
 

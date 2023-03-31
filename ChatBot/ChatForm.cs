@@ -9,43 +9,43 @@ using System.Windows.Forms;
 public partial class ChatForm : Form
 {
 
-    public string username = formLogin.UserName; // Юзернейм
-    chatFunc botObj = new();
+    public string username = chatFunc.GetUserName(); // Юзернейм
+    chatFunc botObject = new();
 
 
     public ChatForm()
     {
-        if (string.IsNullOrEmpty(formLogin.UserName))              // Если закрыли окно логина на крестик
+        if (string.IsNullOrEmpty(username))              // Если закрыли окно логина на крестик
         {
-            Environment.Exit(0);
+            Environment.Exit(0);                         // Убьем всю программу
         }
         InitializeComponent();
-        chatTalkBox.Text = botObj.getHistory();
-        chatTalkBox.AppendText($"Доброго времени суток, {username}!");
+        chatTalkBox.Text = botObject.getHistory(); // Получаем историю бота с оперативной памяти из листа
+        botObject.botHistory.Add($"Доброго времени суток, {username}!"); // Добавим в ячейку листа фразу приветствия
+        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]); // Потом добавим из листа уже на форму
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
         // scroll it automatically
         chatTalkBox.ScrollToCaret();
     }
-    // сначала переписку в ячейку листа а затем с нее в форму
+
     private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
     {
         string s1 = chatTextBox.Text; // ввод запроса
+        botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
         if (string.IsNullOrEmpty(s1))
         {
             s1 = "???"; // Если ничего не ввели, то покажем это на форме..
-            chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
+            botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
+            chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
         }
         else
-
-            chatTalkBox.AppendText($"\n{username} says: " + s1 + "\n");
-
-        chatTalkBox.AppendText(chatFunc.GetAnswer(s1) + "\n");
-
+            chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
+        botObject.botHistory.Add(chatFunc.GetAnswer(s1) + "\n");
+        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
     }
 
     private void ChatForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        
         chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt");
     }
 
