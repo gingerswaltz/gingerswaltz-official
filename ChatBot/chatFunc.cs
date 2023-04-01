@@ -203,25 +203,35 @@ namespace ChatBotFunc
             return result;
         }
 
-        public static string CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку картинки
+        public static string CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку чего либо
         {
             WebClient client = new(); // создадим объект взаимодействия с сетью
-            string fileName = "pic";  // название файла
+            string fileName = "file";  // название файла
                                       //   string link = regexUrl.Matches(s1).ToString();
             var link = regexUrl.Matches(s1)
    .Cast<Match>()
    .Select(m => m.Value)
    .ToArray();
 
-            if (string.IsNullOrEmpty(link[0]) || link[0].ToUpper() == " " || !regexUrl.IsMatch(s1)) // Если строка пустая или юзер нажал отмена в инпут боксе
-            {
-                return $"{bot} at {DateTime.Now}:Кажется, вы прервали скачку..";
-            }
-            Uri uri = new Uri(link[0]); // если всё ок, то из инпут бокса получаем ссылку на файл
+
+            if (link.Length == 0) {return $"{bot} at {DateTime.Now}:Ссылка некорректна";}
             string result = "";
-            client.DownloadFileAsync(uri, "pic.jpg");                                                                                                // Скачиваем файл по ссылке асинхронно
-            result += ($"{bot} at {DateTime.Now}: Successfully Downloaded File \"{fileName}\" from \"{link[0]}\"" + '\n');                           // Покажем на форме что и откуда скачали
-            result += ($"{bot} at {DateTime.Now}: Downloaded file saved in the following file system folder: {Application.StartupPath}" + '\n'); // Покажем куда
+            if (string.IsNullOrEmpty(link[0]) || link[0].ToUpper() == " " || !regexUrl.IsMatch(s1)) // Если строка пустая или ссылка не та
+            {
+                return $"{bot} at {DateTime.Now}:Ссылка некорректна";
+            }
+
+            try
+            {
+                Uri uri = new Uri(link[0]);
+                client.DownloadFileAsync(uri, fileName);
+            }
+            catch(WebException ex) { 
+                return $"{bot} at {DateTime.Now}:{ex.Message}"; 
+            }
+                                                                                         
+            result += ($"{bot} at {DateTime.Now}: Успешно загружен файл \"{fileName}\" из \"{link[0]}\"" + '\n');                           // Покажем на форме что и откуда скачали
+            result += ($"{bot} at {DateTime.Now}: Загруженный файл сохранен в следующей папке: {Application.StartupPath}" + '\n'); // Покажем куда
 
             return result;
 
