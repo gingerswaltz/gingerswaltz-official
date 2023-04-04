@@ -44,18 +44,18 @@ public partial class ChatForm : Form
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
     }
 
-    private void ChatForm_FormClosing(object sender, FormClosingEventArgs e)
+    private void ChatForm_FormClosing(object sender, FormClosingEventArgs e) // Событие перед закрытием формы
     {
-        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt");
+        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt"); // Закинем в файл историю бота 
     }
 
 
 
 
-    private void chatTalkBox_TextChanged(object sender, EventArgs e)
+    private void chatTalkBox_TextChanged(object sender, EventArgs e) // Событие изменения текста и автоскролла вниз
     {
-        chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
+        chatTalkBox.SelectionStart = chatTalkBox.Text.Length; // Каретку указателя на конец текст бокса
         // scroll it automatically
-        chatTalkBox.ScrollToCaret();
+        chatTalkBox.ScrollToCaret();                           
     }
 }

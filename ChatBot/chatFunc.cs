@@ -13,13 +13,13 @@ using System.Net;
 
 namespace ChatBotFunc
 {
-    //
-    public class chatFunc
+    // Класс чатбота
+    public class chatFunc 
     {
 
-        public List<string> botHistory = new();
+        public List<string> botHistory = new(); // История общения бота
 
-        public void loadHistory(string path = "History.txt")
+        public void loadHistory(string path = "History.txt") // Метод загрузки истории общения с ботом
         {
 
             string s1 = LoadFile(path); // stroka s istoriyei
@@ -33,18 +33,25 @@ namespace ChatBotFunc
             }
 
         }
-        public string getHistory()
+        public string getHistory() // Получаем историю бота
         {
             return botHistory[botHistory.Count - 1];
         }
 
-        public chatFunc()
+        public chatFunc() // Конструктор объекта бота
         {
             loadHistory("History.txt");
             botNameGen();
         }
 
-        static readonly string[]
+
+        /// <summary>
+        ///  Переменные:
+        ///  имя бота
+        ///  набор приветствий
+        ///  набор ответов на вопрос "как дела"
+        /// </summary>
+        static readonly string[] 
        robotNames = { "R2D2", "C3-PO", "WALL-E", "EVA", "JARVIS", "INERTAN", "KHRAZ", "T-800", "PIP-BOY", "CHAPPIE", "ROBOCOP" };
         static readonly string[]
        helloNames = { "Hola", "Hello", "Привет", "Hiya" };
@@ -61,14 +68,16 @@ namespace ChatBotFunc
         public static readonly string patternGetUrl = @"(?i)\b(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’])";
         public static readonly string patternClearHistory = @"(чист|удал|del)";
         public static string bot = botNameGen();   // Ботнейм
-        public static string? username = "";
+        public static string? username = "";       // Юзернейм
 
-        public static void SetUserName(string s1)
+        public static void SetUserName(string s1) // Сеттер юзернейма
         {
             username = s1;
         }
 
-        public static string GetUserName() { return username; }
+        public static string GetUserName() { return username; }  // Геттер юзернейма
+        
+
         /// <summary>
         ///  Паттерны для регулярных выражений:
         ///  сумма, умножение, разность, приветствия, загрузки картинки, получения текущего времени
@@ -83,12 +92,14 @@ namespace ChatBotFunc
         public static Regex regexClear = new Regex(patternClearHistory, RegexOptions.IgnoreCase);
         public static Regex regexHowRU = new Regex(patternHowRU, RegexOptions.IgnoreCase);
         //можно было бы сделать два списка, один хранит regex, другой хранит адреса методов соответствующие им
+        
         public static string botNameGen() // Метод генерации рандомного имени бота
         {
             Random random = new Random();
             int Index = random.Next(robotNames.Length);
             return robotNames[Index];
         }
+        
         public static string CheckRegexSum(string s1) // Метод проверки арифметической операции
         {
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
@@ -262,7 +273,7 @@ namespace ChatBotFunc
         }
 
 
-        public static void ToFile(string s1, string path)
+        public static void ToFile(string s1, string path) // Загрузка истории в файл
         {
             if (!File.Exists(path)) { File.Create(path); }
 
@@ -277,7 +288,7 @@ namespace ChatBotFunc
 
         }
 
-        public static string LoadFile(string path)
+        public static string LoadFile(string path) // Загрузка истории из файла
         {
             if (!File.Exists(path)) { File.Create(path); }
             string text = "";
@@ -290,8 +301,8 @@ namespace ChatBotFunc
         }
 
 
-
-        public static string GetAnswer(string s1)
+ 
+        public static string GetAnswer(string s1) // "Умный" метод, определяющий что нужно пользователю
         {
             if (string.IsNullOrEmpty(s1)) return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
             else 
@@ -310,7 +321,7 @@ namespace ChatBotFunc
                 if (regexMinus.IsMatch(s1)) return CheckRegexMinus(s1);
             else 
                 if (regexClear.IsMatch(s1)) return CheckClearHistory(s1, "History.txt");
-            else return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
+            else return $"{bot} at {DateTime.Now}:Я не знаю как это делать...";
 
         }
 
