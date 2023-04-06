@@ -16,7 +16,9 @@ namespace ChatBotFunc
     // Класс чатбота
     public class chatFunc 
     {
-
+        string path = "History.txt";
+        
+        
         public List<string> botHistory = new(); // История общения бота
 
         public void loadHistory(string path = "History.txt") // Метод загрузки истории общения с ботом
@@ -40,7 +42,7 @@ namespace ChatBotFunc
 
         public chatFunc() // Конструктор объекта бота
         {
-            loadHistory("History.txt");
+            loadHistory(path);
             botNameGen();
         }
 
@@ -67,15 +69,15 @@ namespace ChatBotFunc
         public static readonly string patternGetTime = @"(время|дата|час|time)";
         public static readonly string patternGetUrl = @"(?i)\b(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’])";
         public static readonly string patternClearHistory = @"(чист|удал|del)";
-        public static string bot = botNameGen();   // Ботнейм
-        public static string? username = "";       // Юзернейм
+        public string bot = botNameGen();   // Ботнейм
+        public string? username = "";       // Юзернейм, с возможностью хранить null("?").
 
-        public static void SetUserName(string s1) // Сеттер юзернейма
+        public void SetUserName(string s1) // Сеттер юзернейма
         {
             username = s1;
         }
 
-        public static string GetUserName() { return username; }  // Геттер юзернейма
+        public string GetUserName() { return username; }  // Геттер юзернейма
         
 
         /// <summary>
@@ -100,6 +102,8 @@ namespace ChatBotFunc
             return robotNames[Index];
         }
         
+
+        /// todo: перебор матчей в отдельную процедуру, попробовать лямбду функцию (переменная типа sum и элемент массива)
         public static string CheckRegexSum(string s1) // Метод проверки арифметической операции
         {
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
@@ -219,7 +223,7 @@ namespace ChatBotFunc
             WebClient client = new(); // создадим объект взаимодействия с сетью
             string fileName = "file";  // название файла
                                       //   string link = regexUrl.Matches(s1).ToString();
-            var link = regexUrl.Matches(s1)
+            var link = regexUrl.Matches(s1) // переменная link, явно приводится к типу Match, затем оттуда выбирается ссылка, и заносится в строковый массив
    .Cast<Match>()
    .Select(m => m.Value)
    .ToArray();
@@ -259,8 +263,10 @@ namespace ChatBotFunc
         {
             Random random = new Random();
             int Index = random.Next(howruNames.Length);
-            return howruNames[Index];
+            return $"{bot} at {DateTime.Now}: {howruNames[Index]}";
         }
+
+
 
         public static string CheckClearHistory(string s1, string path) // Проверка запроса на очистку истории
         {
@@ -273,7 +279,9 @@ namespace ChatBotFunc
         }
 
 
-        public static void ToFile(string s1, string path) // Загрузка истории в файл
+
+        // todo: from list , nonstatic
+        public void ToFile(string s1) // Загрузка истории в файл
         {
             if (!File.Exists(path)) { File.Create(path); }
 
@@ -287,8 +295,9 @@ namespace ChatBotFunc
             }
 
         }
-
-        public static string LoadFile(string path) // Загрузка истории из файла
+       
+       // to list , nonstatic
+        public  string LoadFile(string path) // Загрузка истории из файла
         {
             if (!File.Exists(path)) { File.Create(path); }
             string text = "";
@@ -301,8 +310,8 @@ namespace ChatBotFunc
         }
 
 
- 
-        public static string GetAnswer(string s1) // "Умный" метод, определяющий что нужно пользователю
+        /// todo: добавлять в историю , обращаясь к предпоследнему(запрос юзера) и последнему(ответ)
+        public string GetAnswer(string s1) // "Умный" метод, определяющий что нужно пользователю
         {
             if (string.IsNullOrEmpty(s1)) return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
             else 

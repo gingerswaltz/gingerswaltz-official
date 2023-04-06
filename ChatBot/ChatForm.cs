@@ -12,7 +12,7 @@ public partial class ChatForm : Form
     public string username = chatFunc.GetUserName(); // Юзернейм
     chatFunc botObject = new();
 
-
+    // конструктор формы
     public ChatForm()
     {
         if (string.IsNullOrEmpty(username))              // Если закрыли окно логина на крестик
@@ -27,8 +27,9 @@ public partial class ChatForm : Form
         // scroll it automatically
         chatTalkBox.ScrollToCaret();
     }
-
-    private void talkBotButton_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки
+    
+    // Обработчик события нажатия кнопки
+    private void talkBotButton_Click(object sender, EventArgs e) 
     {
         string s1 = chatTextBox.Text; // ввод запроса
         botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
@@ -38,24 +39,32 @@ public partial class ChatForm : Form
             botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
             chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
         }
-        else
-            chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
+        else // иначе добавим запрос и ответ на него в оперативную память, и с памяти на форму
+
+        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
         botObject.botHistory.Add(chatFunc.GetAnswer(s1) + "\n");
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
     }
 
-    private void ChatForm_FormClosing(object sender, FormClosingEventArgs e) // Событие перед закрытием формы
+    // событие закрытия формы
+    private void ChatForm_FormClosing(object sender, FormClosingEventArgs e) 
     {
-        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n", "History.txt"); // Закинем в файл историю бота 
+        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n"); // Закинем в файл историю бота 
     }
 
 
 
-
+    // метод автоскролла при вводе запроса
     private void chatTalkBox_TextChanged(object sender, EventArgs e) // Событие изменения текста и автоскролла вниз
     {
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length; // Каретку указателя на конец текст бокса
         // scroll it automatically
-        chatTalkBox.ScrollToCaret();                           
+        chatTalkBox.ScrollToCaret();
+    }
+
+    // метод шортката enter
+    private void chatTextBox_KeyPress(object sender, KeyPressEventArgs e)
+    {
+        if (e.KeyChar == (char)Keys.Enter) { talkBotButton_Click(sender, e); }
     }
 }

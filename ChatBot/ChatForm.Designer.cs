@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChatForm));
             chatTalkBox = new RichTextBox();
             talkBotButton = new Button();
             chatTextBox = new TextBox();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // chatTalkBox
@@ -66,7 +69,7 @@
             // 
             chatTextBox.AcceptsReturn = true;
             chatTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            chatTextBox.BorderStyle = BorderStyle.FixedSingle;
+            chatTextBox.BorderStyle = BorderStyle.None;
             chatTextBox.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             chatTextBox.Location = new Point(0, 372);
             chatTextBox.Multiline = true;
@@ -75,6 +78,17 @@
             chatTextBox.Size = new Size(898, 172);
             chatTextBox.TabIndex = 3;
             chatTextBox.Text = "Привет!";
+            chatTextBox.KeyPress += chatTextBox_KeyPress;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = SystemColors.Window;
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(735, 372);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(163, 172);
+            pictureBox1.TabIndex = 5;
+            pictureBox1.TabStop = false;
             // 
             // ChatForm
             // 
@@ -82,6 +96,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(898, 652);
+            Controls.Add(pictureBox1);
             Controls.Add(chatTextBox);
             Controls.Add(chatTalkBox);
             Controls.Add(talkBotButton);
@@ -90,6 +105,7 @@
             Name = "ChatForm";
             Text = "ЧатБот";
             FormClosing += ChatForm_FormClosing;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -99,5 +115,6 @@
         private RichTextBox chatTalkBox;
         private Button talkBotButton;
         private TextBox chatTextBox;
+        private PictureBox pictureBox1;
     }
 }
