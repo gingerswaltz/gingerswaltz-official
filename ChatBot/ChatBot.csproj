@@ -10,8 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ChatBotTest\**" />
+    <EmbeddedResource Remove="ChatBotTest\**" />
+    <None Remove="ChatBotTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="RegexPatterns.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="chatbot.drawio" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="icons8-приложение-64.ico" />
   </ItemGroup>
+
+
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
