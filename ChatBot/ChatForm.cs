@@ -8,61 +8,62 @@ using System.Windows.Forms;
 
 public partial class ChatForm : Form
 {
-
-    public string username = chatFunc.GetUserName(); // Юзернейм
     chatFunc botObject = new();
+    
+    public string username => botObject.GetUserName(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    // конструктор формы
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     public ChatForm()
     {
-        if (string.IsNullOrEmpty(username))              // Если закрыли окно логина на крестик
+        if (string.IsNullOrEmpty(username))              // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
-            Environment.Exit(0);                         // Убьем всю программу
+            Environment.Exit(0);                         // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
         InitializeComponent();
-        chatTalkBox.Text = botObject.getHistory(); // Получаем историю бота с оперативной памяти из листа
-        botObject.botHistory.Add($"Доброго времени суток, {username}!"); // Добавим в ячейку листа фразу приветствия
-        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]); // Потом добавим из листа уже на форму
+        chatTalkBox.Text = botObject.getHistory(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        botObject.botHistory.Add($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, {username}!"); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
         // scroll it automatically
         chatTalkBox.ScrollToCaret();
     }
     
-    // Обработчик события нажатия кнопки
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     private void talkBotButton_Click(object sender, EventArgs e) 
     {
-        string s1 = chatTextBox.Text; // ввод запроса
+        string s1 = chatTextBox.Text; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
         if (string.IsNullOrEmpty(s1))
         {
-            s1 = "???"; // Если ничего не ввели, то покажем это на форме..
+            s1 = "???"; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ..
             botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
             chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
         }
-        else // иначе добавим запрос и ответ на него в оперативную память, и с памяти на форму
+        else // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
-        botObject.botHistory.Add(chatFunc.GetAnswer(s1) + "\n");
+        botObject.botHistory.Add(botObject.GetAnswer(s1) + "\n");
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
     }
 
-    // событие закрытия формы
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     private void ChatForm_FormClosing(object sender, FormClosingEventArgs e) 
     {
-        chatFunc.ToFile(chatTalkBox.Text + $"\n***LAST SESSION END***\n"); // Закинем в файл историю бота 
+        
+        botObject.ToFile(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 
     }
 
 
 
-    // метод автоскролла при вводе запроса
-    private void chatTalkBox_TextChanged(object sender, EventArgs e) // Событие изменения текста и автоскролла вниз
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    private void chatTalkBox_TextChanged(object sender, EventArgs e) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     {
-        chatTalkBox.SelectionStart = chatTalkBox.Text.Length; // Каретку указателя на конец текст бокса
+        chatTalkBox.SelectionStart = chatTalkBox.Text.Length; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         // scroll it automatically
         chatTalkBox.ScrollToCaret();
     }
 
-    // метод шортката enter
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ enter
     private void chatTextBox_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (e.KeyChar == (char)Keys.Enter) { talkBotButton_Click(sender, e); }

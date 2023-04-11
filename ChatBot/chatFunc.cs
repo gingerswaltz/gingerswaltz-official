@@ -24,15 +24,10 @@ namespace ChatBotFunc
         public void loadHistory(string path = "History.txt") // Метод загрузки истории общения с ботом
         {
 
-            string s1 = LoadFile(path); // stroka s istoriyei
-            if ((s1 == null))
-            {
-                s1 = "";
-            }
-            else
-            {
-                botHistory.Add(s1);
-            }
+  
+            
+                LoadFile(path);
+         
 
         }
         public string getHistory() // Получаем историю бота
@@ -78,8 +73,9 @@ namespace ChatBotFunc
         }
 
         public string GetUserName() { return username; }  // Геттер юзернейма
-        
 
+
+        public string GetBotName() { return bot; }
         /// <summary>
         ///  Паттерны для регулярных выражений:
         ///  сумма, умножение, разность, приветствия, загрузки картинки, получения текущего времени
@@ -101,39 +97,49 @@ namespace ChatBotFunc
             int Index = random.Next(robotNames.Length);
             return robotNames[Index];
         }
-        
+
+
+        public static void FindMatch(List<int> mas1, string s1)
+        {
+
+            foreach (char s in s1) // для каждого символа в полученной строке
+            {
+                int i = 0;
+                int[] matches = Regex.Matches(s1, "\\d+") // формируем массив из совпадений, ищем только цифры
+                    .Cast<Match>()                        // приводим к другому типу
+                    .Select(x => int.Parse(x.Value))      // затем получаем целочисленное значение
+                    .ToArray();                           // затем возвращаем их в массив
+                if (i == matches.Length) break;           // проверка на выход из диапазона
+                else
+                    mas1.Add(matches[i]);                 // если всё ок, добавляем в лист..
+                i++;
+            }
+            
+        }
 
         /// todo: перебор матчей в отдельную процедуру, попробовать лямбду функцию (переменная типа sum и элемент массива)
         public static string CheckRegexSum(string s1) // Метод проверки арифметической операции
         {
+            chatFunc bot1 = new();
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
             var sum = 0;
-            int i = 0;
-            if (regexSum.IsMatch(s1)) // проверка запроса на сумму
+            // проверка запроса на сумму
+            if (regexSum.IsMatch(s1))
             {
-                foreach (char s in s1) // для каждого символа в полученной строке
-                {
-
-                    int[] matches = Regex.Matches(s1, "\\d+") // формируем массив из совпадений, ищем только цифры
-                        .Cast<Match>()                        // приводим к другому типу
-                        .Select(x => int.Parse(x.Value))      // затем получаем целочисленное значение
-                        .ToArray();                           // затем возвращаем их в массив
-                    if (matches.Length < 2) return $"{bot} at {DateTime.Now}:Я не понимаю вас..";        // если цифра одна, нечего считать, возвращаем -1
-                    else
-                    if (i == matches.Length) break;           // проверка на выход из диапазона
-                    else
-                        mas1.Add(matches[i]);                 // если всё ок, добавляем в лист..
-                    i++;
-                }
-
+                FindMatch(mas1, s1);
                 for (int j = 0; j < mas1.Count; j++)
                 {
                     sum += mas1[j];                           // суммируем..
                 }
                 mas1.Clear();                                 // очищаем массив на всякий случай
-                return $"{bot} at {DateTime.Now}:Сумма: {sum}";  // возвращаем результат в контроллер
+                return $"{bot1.GetBotName()} at {DateTime.Now}:Сумма: {sum}";  // возвращаем результат в контроллер
             }
             else return null;
+
+
+
+            
+          
         }
 
 
@@ -141,32 +147,19 @@ namespace ChatBotFunc
 
         public static string CheckRegexMult(string s1)
         {
+            chatFunc bot1 = new();
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
             var sum = 0;
-            int i = 0;
             if (regexMult.IsMatch(s1))
             {
-                foreach (char s in s1)
-                {
-
-                    int[] matches = Regex.Matches(s1, "\\d+")
-                        .Cast<Match>()
-                        .Select(x => int.Parse(x.Value))
-                        .ToArray();
-                    if (matches.Length < 2) return $"{bot} at {DateTime.Now}:Я не понимаю вас..";
-                    else
-                    if (i == matches.Length) break;
-                    else
-                        mas1.Add(matches[i]);
-                    i++;
-                }
+                FindMatch(mas1, s1);
                 sum = mas1[0];
                 for (int j = 1; j < mas1.Count; j++)
                 {
                     sum *= mas1[j];
                 }
                 mas1.Clear();
-                return $"{bot} at {DateTime.Now}:Умножение:{sum}";
+                return $"{bot1.GetBotName()} at {DateTime.Now}:Умножение:{sum}";
 
             }
             else return null;
@@ -175,25 +168,13 @@ namespace ChatBotFunc
 
         public static string CheckRegexMinus(string s1)
         {
+            chatFunc bot1 = new();
             List<int> mas1 = new(); // В этот лист будем закидывать числа для выражений..
             var sum = 0;
             int i = 0;
             if (regexMinus.IsMatch(s1))
             {
-                foreach (char s in s1)
-                {
-
-                    int[] matches = Regex.Matches(s1, "\\d+")
-                        .Cast<Match>()
-                        .Select(x => int.Parse(x.Value))
-                        .ToArray();
-                    if (matches.Length < 2) return $"{bot} at {DateTime.Now}:Я не понимаю вас..";
-                    else
-                    if (i == matches.Length) break;
-                    else
-                        mas1.Add(matches[i]);
-                    i++;
-                }
+                FindMatch(mas1, s1);
                 sum = mas1[0];
                 for (int j = 1; j < mas1.Count; j++)
                 {
@@ -201,7 +182,7 @@ namespace ChatBotFunc
                 }
 
                 mas1.Clear();
-                return $"{bot} at {DateTime.Now}:Разность:{sum}";
+                return $"{bot1.GetBotName()} at {DateTime.Now}:Разность:{sum}";
 
             }
 
@@ -212,14 +193,16 @@ namespace ChatBotFunc
         
         public static string CheckRegexHello(string s1) // Проверка запроса юзера на приветствие
         {
+            chatFunc bot1 = new();
             Random random = new Random();
             int Index = random.Next(helloNames.Length);
-            var result = $"{bot} at {DateTime.Now}: {helloNames[Index]}!";
+            var result = $"{bot1.GetBotName()} at {DateTime.Now}: {helloNames[Index]}!";
             return result;
         }
 
         public static string CheckRegexUpload(string s1) // Проверка  запроса юзера на загрузку чего либо
         {
+            chatFunc bot1 = new();
             WebClient client = new(); // создадим объект взаимодействия с сетью
             string fileName = "file";  // название файла
                                       //   string link = regexUrl.Matches(s1).ToString();
@@ -229,11 +212,11 @@ namespace ChatBotFunc
    .ToArray();
 
 
-            if (link.Length == 0) {return $"{bot} at {DateTime.Now}:Ссылка некорректна";}
+            if (link.Length == 0) {return $"{bot1.GetBotName()} at {DateTime.Now}:Ссылка некорректна";}
             string result = "";
             if (string.IsNullOrEmpty(link[0]) || link[0].ToUpper() == " " || !regexUrl.IsMatch(s1)) // Если строка пустая или ссылка не та
             {
-                return $"{bot} at {DateTime.Now}:Ссылка некорректна";
+                return $"{bot1.GetBotName()} at {DateTime.Now}:Ссылка некорректна";
             }
 
             try
@@ -242,11 +225,11 @@ namespace ChatBotFunc
                 client.DownloadFileAsync(uri, fileName);
             }
             catch(WebException ex) { 
-                return $"{bot} at {DateTime.Now}:{ex.Message}"; 
+                return $"{bot1.GetBotName()} at {DateTime.Now}:{ex.Message}"; 
             }
                                                                                          
-            result += ($"{bot} at {DateTime.Now}: Успешно загружен файл \"{fileName}\" из \"{link[0]}\"" + '\n');                           // Покажем на форме что и откуда скачали
-            result += ($"{bot} at {DateTime.Now}: Загруженный файл сохранен в следующей папке: {Application.StartupPath}" + '\n'); // Покажем куда
+            result += ($"{bot1.GetBotName()} at {DateTime.Now}: Успешно загружен файл \"{fileName}\" из \"{link[0]}\"" + '\n');                           // Покажем на форме что и откуда скачали
+            result += ($"{bot1.GetBotName()} at {DateTime.Now}: Загруженный файл сохранен в следующей папке: {Application.StartupPath}" + '\n'); // Покажем куда
 
             return result;
 
@@ -255,58 +238,59 @@ namespace ChatBotFunc
 
         public static string CheckRegexTime(string s1) // Проверка  запроса юзера на получение текущей даты
         {
-            return $"{bot} replies: {DateTime.Now}";
+            chatFunc bot1 = new();
+            return $"{bot1.GetBotName()} replies: {DateTime.Now}";
         }
 
 
         public static string CheckRegexHowRU(string s1) // Проверка запроса на вопрос Как дела
         {
+            chatFunc bot1 = new();
             Random random = new Random();
             int Index = random.Next(howruNames.Length);
-            return $"{bot} at {DateTime.Now}: {howruNames[Index]}";
+            return $"{bot1.GetBotName()} at {DateTime.Now}: {howruNames[Index]}";
         }
 
 
 
         public static string CheckClearHistory(string s1, string path) // Проверка запроса на очистку истории
         {
-
+            chatFunc bot1 = new();
             using (StreamWriter writer = new StreamWriter(path, false))
             {
                 writer.WriteLine(string.Empty);
             }
-            return $"{bot} at {DateTime.Now}: Файл истории очищен";
+            return $"{bot1.GetUserName()} at {DateTime.Now}: Файл истории очищен";
         }
 
 
 
         // todo: from list , nonstatic
-        public void ToFile(string s1) // Загрузка истории в файл
+        public void ToFile() // Загрузка истории в файл
         {
             if (!File.Exists(path)) { File.Create(path); }
 
-            if (s1 == null) throw new Exception();
-            string text = s1;
+            List<string> text = botHistory;
 
             // добавление в файл
             using (StreamWriter writer = new StreamWriter(path, true))
             {
-                writer.WriteLine("***LAST SESSION***\n" + $"{DateTime.Now}\n" + text);
+                writer.WriteLine("***LAST SESSION***\n" + $"{DateTime.Now}\n" + text[text.Count-1]);
             }
 
         }
        
        // to list , nonstatic
-        public  string LoadFile(string path) // Загрузка истории из файла
+        public void LoadFile(string path) // Загрузка истории из файла
         {
             if (!File.Exists(path)) { File.Create(path); }
-            string text = "";
+
             // чтение
             using (StreamReader reader = new StreamReader(path))
             {
-                text = reader.ReadToEnd();
+                botHistory.Add(reader.ReadToEnd());
             }
-            return text;
+            
         }
 
 

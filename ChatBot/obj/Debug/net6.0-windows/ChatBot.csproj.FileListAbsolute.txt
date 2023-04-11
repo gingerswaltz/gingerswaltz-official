@@ -17,3 +17,22 @@ C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-w
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.runtimeconfig.json
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.genruntimeconfig.cache
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ref\ChatBot.dll
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.csproj.AssemblyReference.cache
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.ChatForm.resources
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.formLogin.resources
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.Properties.Resources.resources
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.csproj.GenerateResource.cache
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.GeneratedMSBuildEditorConfig.editorconfig
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.AssemblyInfoInputs.cache
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.AssemblyInfo.cs
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.csproj.CoreCompileInputs.cache
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.dll
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\refint\ChatBot.dll
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.pdb
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.exe
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.deps.json
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.runtimeconfig.json
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.dll
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\bin\Debug\net6.0-windows\ChatBot.pdb
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ChatBot.genruntimeconfig.cache
+\\Mac\Home\Documents\git work\oop2022-gingerswaltz\ChatBot\obj\Debug\net6.0-windows\ref\ChatBot.dll

@@ -20,9 +20,9 @@ namespace ChatBot
 
         private void buttonApply_Click(object sender, EventArgs e) // Обработчик события нажатия кнопки принять
         {
+            chatFunc bot1 = new();
 
-
-            chatFunc.SetUserName(userInputBox.Text);                // Засеттим юзернейм
+            bot1.SetUserName(userInputBox.Text);                // Засеттим юзернейм
 
             if ((userInputBox.Text == null) || (userInputBox.Text == "")) // Если строка ввода имени пустая
             {
@@ -42,8 +42,9 @@ namespace ChatBot
 
         private void formLogin_FormClosed(object sender, FormClosedEventArgs e) // событие после закрытия формы 
         {
+            chatFunc bot1 = new();
             if (e.CloseReason == CloseReason.UserClosing && userInputBox.Text == "") // Если юзер закрыл форму на крестик и не ввел имя (не хочет работать)
-                chatFunc.SetUserName(null); // вернем null значение в форму общения, и при инициализации оно его словит и завершит всю программу
+            bot1.SetUserName(null); // вернем null значение в форму общения, и при инициализации оно его словит и завершит всю программу
 
         }
     }
