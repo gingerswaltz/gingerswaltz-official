@@ -12,7 +12,7 @@ namespace ChatBot
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new formLogin());
-            Application.Run(new ChatForm());
+            //Application.Run(new ChatForm());
         
         }
     }

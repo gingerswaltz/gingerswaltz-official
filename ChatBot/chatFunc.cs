@@ -65,8 +65,7 @@ namespace ChatBotFunc
         public static readonly string patternGetUrl = @"(?i)\b(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’])";
         public static readonly string patternClearHistory = @"(чист|удал|del)";
         public string bot = botNameGen();   // Ботнейм
-        public string? username = "";       // Юзернейм, с возможностью хранить null("?").
-
+        public string? username;       // Юзернейм, с возможностью хранить null("?").
         public void SetUserName(string s1) // Сеттер юзернейма
         {
             username = s1;
@@ -275,12 +274,12 @@ namespace ChatBotFunc
             // добавление в файл
             using (StreamWriter writer = new StreamWriter(path, true))
             {
-                writer.WriteLine("***LAST SESSION***\n" + $"{DateTime.Now}\n" + text[text.Count-1]);
+                writer.WriteLine("***LAST SESSION***\n" + $"{DateTime.Now}\n" + text); // todo по элементам списка , интерполяция строки здесь.
             }
 
         }
        
-       // to list , nonstatic
+      
         public void LoadFile(string path) // Загрузка истории из файла
         {
             if (!File.Exists(path)) { File.Create(path); }
@@ -288,7 +287,7 @@ namespace ChatBotFunc
             // чтение
             using (StreamReader reader = new StreamReader(path))
             {
-                botHistory.Add(reader.ReadToEnd());
+                botHistory.Add(reader.ReadToEnd()); // todo построчно и потом поэлементно в форму
             }
             
         }

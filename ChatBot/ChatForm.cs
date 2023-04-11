@@ -8,20 +8,15 @@ using System.Windows.Forms;
 
 public partial class ChatForm : Form
 {
-    chatFunc botObject = new();
-    
-    public string username => botObject.GetUserName(); // ссылка на метод гет юзернейм
-
+    public chatFunc  botObject = new();
+   
     // конструктор чат формы
-    public ChatForm()
+    public ChatForm(string username)
     {
-        if (string.IsNullOrEmpty(username))              // Если логин закрыли на крестик
-        {
-          Environment.Exit(0);                         // Убьем весь процесс
-       }
+        botObject.username = username;  
         InitializeComponent();
         chatTalkBox.Text = botObject.getHistory(); // Получим историю общения
-        botObject.botHistory.Add($"Доброго времени суток, {username}!"); // Выведем приветствие в лист и потом на форму
+        botObject.botHistory.Add($"Доброго времени суток, {botObject.username}!"); // Выведем приветствие в лист и потом на форму
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]); 
         chatTalkBox.SelectionStart = chatTalkBox.Text.Length;
         // scroll it automatically
@@ -32,11 +27,11 @@ public partial class ChatForm : Form
     private void talkBotButton_Click(object sender, EventArgs e) 
     {
         string s1 = chatTextBox.Text; // получим текст с формы
-        botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
+        botObject.botHistory.Add($"\n{botObject.username} says: " + s1 + "\n");
         if (string.IsNullOrEmpty(s1))
         {
             s1 = "???"; // иначе выведем что мы не понимаем юзера
-            botObject.botHistory.Add($"\n{username} says: " + s1 + "\n");
+            botObject.botHistory.Add($"\n{botObject.username} says: " + s1 + "\n");
             chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
         }
         else // иначе выведем ответ в форму
