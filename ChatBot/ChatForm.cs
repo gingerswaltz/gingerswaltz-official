@@ -15,10 +15,10 @@ public partial class ChatForm : Form
     // ����������� �����
     public ChatForm()
     {
-        if (string.IsNullOrEmpty(username))              // ���� ������� ���� ������ �� �������
-        {
-            Environment.Exit(0);                         // ����� ��� ���������
-        }
+        //if (string.IsNullOrEmpty(username))              // ���� ������� ���� ������ �� �������
+      //  {
+        //    Environment.Exit(0);                         // ����� ��� ���������
+      //  }
         InitializeComponent();
         chatTalkBox.Text = botObject.getHistory(); // �������� ������� ���� � ����������� ������ �� �����
         botObject.botHistory.Add($"������� ������� �����, {username}!"); // ������� � ������ ����� ����� �����������

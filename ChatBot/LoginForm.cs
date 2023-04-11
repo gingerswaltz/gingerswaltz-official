@@ -43,8 +43,8 @@ namespace ChatBot
         private void formLogin_FormClosed(object sender, FormClosedEventArgs e) // событие после закрытия формы 
         {
             chatFunc bot1 = new();
-            if (e.CloseReason == CloseReason.UserClosing && userInputBox.Text == "") // Если юзер закрыл форму на крестик и не ввел имя (не хочет работать)
-            bot1.SetUserName(null); // вернем null значение в форму общения, и при инициализации оно его словит и завершит всю программу
+            if (e.CloseReason == CloseReason.UserClosing && userInputBox.Text == "") ; // Если юзер закрыл форму на крестик и не ввел имя (не хочет работать)
+          //  bot1.SetUserName(null); // вернем null значение в форму общения, и при инициализации оно его словит и завершит всю программу
 
         }
     }
