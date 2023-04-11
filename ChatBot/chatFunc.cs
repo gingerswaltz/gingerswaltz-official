@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Net;
-
+using System.Security.Cryptography;
 
 namespace ChatBotFunc
 {
@@ -295,26 +295,41 @@ namespace ChatBotFunc
 
 
         /// todo: добавлять в историю , обращаясь к предпоследнему(запрос юзера) и последнему(ответ)
-        public string GetAnswer(string s1) // "Умный" метод, определяющий что нужно пользователю
+        public void GetAnswer() // "Умный" метод, определяющий что нужно пользователю
         {
-            if (string.IsNullOrEmpty(s1)) return $"{bot} at {DateTime.Now}:Я не понимаю вас...";
-            else 
-            if (regexHello.IsMatch(s1)) return CheckRegexHello(s1);
+            string s1 = botHistory[botHistory.Count-1];
+            if (string.IsNullOrEmpty(s1))  {
+                botHistory.Add($"{bot} at {DateTime.Now}:Я не понимаю вас...");
+            }
             else
-                if (regexHowRU.IsMatch(s1)) return CheckRegexHowRU(s1);
+            if (regexHello.IsMatch(s1))
+            {
+                botHistory.Add(CheckRegexHello(s1));
+            }
             else
-                if (regexTime.IsMatch(s1)) return CheckRegexTime(s1);
+                if (regexHowRU.IsMatch(s1))
+            {
+                botHistory.Add(CheckRegexHowRU(s1));
+            }
             else
-                if (regexUpload.IsMatch(s1)) return CheckRegexUpload(s1);
+                if (regexTime.IsMatch(s1))
+            {
+                botHistory.Add(CheckRegexTime(s1));
+            }
             else
-                if (regexSum.IsMatch(s1)) return CheckRegexSum(s1);
+                if (regexUpload.IsMatch(s1))
+            {
+                botHistory.Add(CheckRegexUpload(s1));
+            }
             else
-                if (regexMult.IsMatch(s1)) return CheckRegexMult(s1);   
-            else 
-                if (regexMinus.IsMatch(s1)) return CheckRegexMinus(s1);
-            else 
-                if (regexClear.IsMatch(s1)) return CheckClearHistory(s1, "History.txt");
-            else return $"{bot} at {DateTime.Now}:Я не знаю как это делать...";
+                if (regexSum.IsMatch(s1)) { botHistory.Add(CheckRegexSum(s1)); }
+            else
+                if (regexMult.IsMatch(s1)) { botHistory.Add(CheckRegexMult(s1)); }
+            else
+                if (regexMinus.IsMatch(s1)) { botHistory.Add(CheckRegexMinus(s1)); }
+            else
+                if (regexClear.IsMatch(s1)) { botHistory.Add(CheckClearHistory(s1, "History.txt")); }
+            else { botHistory.Add($"{bot} at {DateTime.Now}:Я не знаю как это делать..."); } 
 
         }
 

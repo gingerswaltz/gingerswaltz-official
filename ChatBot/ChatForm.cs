@@ -10,14 +10,14 @@ public partial class ChatForm : Form
 {
     chatFunc botObject = new();
     
-    public string username => botObject.GetUserName(); // ��������
+    public string username => botObject.GetUserName(); // ссылка на метод гет юзернейм
 
     // конструктор чат формы
     public ChatForm()
     {
         if (string.IsNullOrEmpty(username))              // Если логин закрыли на крестик
         {
-          Environment.Exit(0);                         // �Убьем весь процесс
+          Environment.Exit(0);                         // Убьем весь процесс
        }
         InitializeComponent();
         chatTalkBox.Text = botObject.getHistory(); // Получим историю общения
@@ -42,8 +42,8 @@ public partial class ChatForm : Form
         else // иначе выведем ответ в форму
 
         chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
-        botObject.botHistory.Add(botObject.GetAnswer(s1) + "\n");
-        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]);
+        botObject.GetAnswer();
+        chatTalkBox.AppendText(botObject.botHistory[botObject.botHistory.Count - 1]+"\n");
     }
 
     // закрытие формы
