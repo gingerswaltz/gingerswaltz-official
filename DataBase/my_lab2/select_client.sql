@@ -19,7 +19,8 @@ select "клиент".*
 
 --	select "id_договор".* from "оплата"
 	
-select *, extract(month from '08.10.2023'::date) - extract(month from "начало аренды") , ('08.10.2023'::date - "начало аренды")*500
+select *, extract(month from '15.04.2023'::date) - extract(month from "начало аренды") , 
+("конец аренды" - '15.04.2023'::date)*"прайс_день"
 	from "договор"
 		inner join "точка" on "точка"."id" = "договор"."id_точка";
 	 
