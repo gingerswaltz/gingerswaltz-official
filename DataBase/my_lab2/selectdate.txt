@@ -1,0 +1,28 @@
+SELECT * FROM "договор";
+
+SELECT * FROM "оплата" where "id_договор"=1 and "месяц"<=6 and "год"=2023;
+
+create or replace function get_date_begin(integer)
+	returns date
+language 'plpgsql'
+as
+$$
+declare d date;
+begin
+	select "начало аренды" into d from "договор" where id = $1;
+	return d;
+end;
+
+$$;
+
+select * from "договор";
+select  get_date_begin(1);
+select * from "оплата"
+
+
+insert into "оплата"
+values
+(1.0, 2023.0, 10000, 1, 1);
+
+
+ALTER TABLE public.оплата ADD CONSTRAINT оплата_check CHECK ((("месяц" > EXTRACT(month FROM get_date_begin(("id_договор")::integer))) AND ("год" >= EXTRACT(year FROM get_date_begin(("id_договор")::integer)))))
