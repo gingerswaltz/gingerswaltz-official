@@ -132,3 +132,7 @@ $RECYCLE.BIN/
 
 _NCrunch*
 out
+*.vsidx
+*.v2
+*.1
+*.lock
