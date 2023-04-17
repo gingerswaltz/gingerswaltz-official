@@ -13,15 +13,29 @@ namespace DatabaseApp
 
         private void setConnect_button_Click(object sender, EventArgs e)
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda;User Id=postgres;Password=1;";
-            string query = "SELECT * FROM \"клиент\"";  
+
             try
             {
-                DataTable dataTable = db.GetDataFromSQL(connectionString, query);
+                DataTable dataTable = db.GetDataFromSQL();
                 dbGridView.DataSource = dataTable;
-            }catch (Exception ex) { MessageBox.Show(ex.Message); }
-           
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
 
+
+        }
+
+
+
+        private void addDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Author: Georgy Purtov. 2023");
         }
     }
 }

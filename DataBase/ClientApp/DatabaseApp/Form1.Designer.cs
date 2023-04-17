@@ -30,7 +30,12 @@
         {
             dbGridView = new DataGridView();
             setConnect_button = new Button();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            addDataToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dbGridView).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // dbGridView
@@ -52,22 +57,61 @@
             setConnect_button.UseVisualStyleBackColor = true;
             setConnect_button.Click += setConnect_button_Click;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, aboutToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(847, 24);
+            menuStrip1.TabIndex = 2;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addDataToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // addDataToolStripMenuItem
+            // 
+            addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
+            addDataToolStripMenuItem.Size = new Size(180, 22);
+            addDataToolStripMenuItem.Text = "Add data";
+            addDataToolStripMenuItem.Click += addDataToolStripMenuItem_Click;
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(52, 20);
+            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
             // DBForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(847, 355);
+            Controls.Add(menuStrip1);
             Controls.Add(setConnect_button);
             Controls.Add(dbGridView);
+            MainMenuStrip = menuStrip1;
             Name = "DBForm";
             Text = "Data Base";
             ((System.ComponentModel.ISupportInitialize)dbGridView).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dbGridView;
         private Button setConnect_button;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem addDataToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
