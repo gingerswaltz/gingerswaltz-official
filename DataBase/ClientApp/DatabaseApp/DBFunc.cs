@@ -28,9 +28,8 @@ namespace DatabaseApp
 
         public DataTable GetDataFromSQL()
     {
-        using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+        using (var connection = GetPostgresConnection(connectionString))
         {
-            connection.Open();
             using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
             {
                 using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
@@ -43,24 +42,36 @@ namespace DatabaseApp
         }
     }
 
-
-    public int InsertDataToPostgreSQL()
+        public static NpgsqlConnection GetPostgresConnection(string connectionString)
         {
-        using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
-        {
+            var connection = new NpgsqlConnection(connectionString);
             connection.Open();
-            string insertQuery = $"INSERT INTO \"оплата\" VALUES ({},{}, {})";
-            using (NpgsqlCommand command = new NpgsqlCommand(insertQuery, connection))
+            return connection;
+        }
+
+
+        public static int InsertDataToPostgreSQL(string connectionString, string tableName, MyData data)
+        {
+            using (var connection = GetPostgresConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@value1", column1Value);
-                command.Parameters.AddWithValue("@value2", column2Value);
-                command.Parameters.AddWithValue("@value3", column3Value);
-                int rowsAffected = command.ExecuteNonQuery();
-                return rowsAffected;
+                using (var command = new NpgsqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = $"INSERT INTO {tableName} (name, address, phone, requisites, contact_person, id) VALUES (@name, @address, @phone, @requisites, @contactPerson, @id)";
+                    command.Parameters.AddWithValue("@name", data.Name);
+                    command.Parameters.AddWithValue("@address", data.Address);
+                    command.Parameters.AddWithValue("@phone", data.Phone);
+                    command.Parameters.AddWithValue("@requisites", data.Requisites);
+                    command.Parameters.AddWithValue("@contactPerson", data.ContactPerson);
+                    command.Parameters.AddWithValue("@id", data.Id);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected;
+                }
             }
         }
     }
 
 
 }
-}
+
