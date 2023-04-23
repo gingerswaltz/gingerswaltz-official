@@ -28,67 +28,126 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            textBox6 = new TextBox();
+            textBox_Arendator = new TextBox();
+            textBox_Adress = new TextBox();
+            textBox_Phone = new TextBox();
+            textBox_Req = new TextBox();
+            textBox_Contact = new TextBox();
+            buttonAdd = new Button();
+            label_Arendator = new Label();
+            label_Adress = new Label();
+            label_Phone = new Label();
+            label_Req = new Label();
+            label_Contact = new Label();
             SuspendLayout();
             // 
-            // textBox1
+            // textBox_Arendator
             // 
-            textBox1.Location = new Point(12, 22);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 0;
+            textBox_Arendator.Location = new Point(13, 31);
+            textBox_Arendator.Name = "textBox_Arendator";
+            textBox_Arendator.Size = new Size(100, 23);
+            textBox_Arendator.TabIndex = 0;
             // 
-            // textBox2
+            // textBox_Adress
             // 
-            textBox2.Location = new Point(12, 64);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(100, 23);
-            textBox2.TabIndex = 1;
+            textBox_Adress.Location = new Point(13, 82);
+            textBox_Adress.Name = "textBox_Adress";
+            textBox_Adress.Size = new Size(100, 23);
+            textBox_Adress.TabIndex = 1;
             // 
-            // textBox3
+            // textBox_Phone
             // 
-            textBox3.Location = new Point(12, 108);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(100, 23);
-            textBox3.TabIndex = 2;
+            textBox_Phone.Location = new Point(13, 136);
+            textBox_Phone.Name = "textBox_Phone";
+            textBox_Phone.Size = new Size(100, 23);
+            textBox_Phone.TabIndex = 2;
             // 
-            // textBox4
+            // textBox_Req
             // 
-            textBox4.Location = new Point(12, 149);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(100, 23);
-            textBox4.TabIndex = 3;
+            textBox_Req.Location = new Point(13, 189);
+            textBox_Req.Name = "textBox_Req";
+            textBox_Req.Size = new Size(100, 23);
+            textBox_Req.TabIndex = 3;
             // 
-            // textBox5
+            // textBox_Contact
             // 
-            textBox5.Location = new Point(12, 191);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(100, 23);
-            textBox5.TabIndex = 4;
+            textBox_Contact.Location = new Point(13, 237);
+            textBox_Contact.Name = "textBox_Contact";
+            textBox_Contact.Size = new Size(100, 23);
+            textBox_Contact.TabIndex = 4;
             // 
-            // textBox6
+            // buttonAdd
             // 
-            textBox6.Location = new Point(12, 235);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(100, 23);
-            textBox6.TabIndex = 5;
+            buttonAdd.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonAdd.Location = new Point(13, 277);
+            buttonAdd.Name = "buttonAdd";
+            buttonAdd.Size = new Size(101, 39);
+            buttonAdd.TabIndex = 6;
+            buttonAdd.Text = "Add";
+            buttonAdd.UseVisualStyleBackColor = true;
+            buttonAdd.Click += buttonAdd_Click;
+            // 
+            // label_Arendator
+            // 
+            label_Arendator.AutoSize = true;
+            label_Arendator.Location = new Point(12, 13);
+            label_Arendator.Name = "label_Arendator";
+            label_Arendator.Size = new Size(66, 15);
+            label_Arendator.TabIndex = 7;
+            label_Arendator.Text = "Арендатор";
+            // 
+            // label_Adress
+            // 
+            label_Adress.AutoSize = true;
+            label_Adress.Location = new Point(12, 64);
+            label_Adress.Name = "label_Adress";
+            label_Adress.Size = new Size(40, 15);
+            label_Adress.TabIndex = 8;
+            label_Adress.Text = "Адрес";
+            // 
+            // label_Phone
+            // 
+            label_Phone.AutoSize = true;
+            label_Phone.Location = new Point(13, 118);
+            label_Phone.Name = "label_Phone";
+            label_Phone.Size = new Size(55, 15);
+            label_Phone.TabIndex = 9;
+            label_Phone.Text = "Телефон";
+            // 
+            // label_Req
+            // 
+            label_Req.AutoSize = true;
+            label_Req.Location = new Point(12, 171);
+            label_Req.Name = "label_Req";
+            label_Req.Size = new Size(65, 15);
+            label_Req.TabIndex = 10;
+            label_Req.Text = "Реквизиты";
+            // 
+            // label_Contact
+            // 
+            label_Contact.AutoSize = true;
+            label_Contact.Location = new Point(12, 219);
+            label_Contact.Name = "label_Contact";
+            label_Contact.Size = new Size(101, 15);
+            label_Contact.TabIndex = 11;
+            label_Contact.Text = "Контактное лицо";
             // 
             // InputForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(187, 270);
-            Controls.Add(textBox6);
-            Controls.Add(textBox5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            ClientSize = new Size(132, 332);
+            Controls.Add(label_Contact);
+            Controls.Add(label_Req);
+            Controls.Add(label_Phone);
+            Controls.Add(label_Adress);
+            Controls.Add(label_Arendator);
+            Controls.Add(buttonAdd);
+            Controls.Add(textBox_Contact);
+            Controls.Add(textBox_Req);
+            Controls.Add(textBox_Phone);
+            Controls.Add(textBox_Adress);
+            Controls.Add(textBox_Arendator);
             Name = "InputForm";
             Text = "Input data";
             ResumeLayout(false);
@@ -97,11 +156,16 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
-        private TextBox textBox6;
+        private TextBox textBox_Arendator;
+        private TextBox textBox_Adress;
+        private TextBox textBox_Phone;
+        private TextBox textBox_Req;
+        private TextBox textBox_Contact;
+        private Button buttonAdd;
+        private Label label_Arendator;
+        private Label label_Adress;
+        private Label label_Phone;
+        private Label label_Req;
+        private Label label_Contact;
     }
 }

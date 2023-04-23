@@ -40,16 +40,19 @@
             // 
             // dbGridView
             // 
+            dbGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             dbGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dbGridView.Location = new Point(1, 1);
+            dbGridView.Location = new Point(1, 27);
             dbGridView.Name = "dbGridView";
+            dbGridView.ReadOnly = true;
             dbGridView.RowTemplate.Height = 25;
-            dbGridView.Size = new Size(596, 351);
+            dbGridView.Size = new Size(642, 325);
             dbGridView.TabIndex = 0;
             // 
             // setConnect_button
             // 
-            setConnect_button.Location = new Point(673, 160);
+            setConnect_button.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            setConnect_button.Location = new Point(693, 167);
             setConnect_button.Name = "setConnect_button";
             setConnect_button.Size = new Size(116, 45);
             setConnect_button.TabIndex = 1;
@@ -76,7 +79,7 @@
             // addDataToolStripMenuItem
             // 
             addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
-            addDataToolStripMenuItem.Size = new Size(180, 22);
+            addDataToolStripMenuItem.Size = new Size(122, 22);
             addDataToolStripMenuItem.Text = "Add data";
             addDataToolStripMenuItem.Click += addDataToolStripMenuItem_Click;
             // 

@@ -23,24 +23,29 @@ namespace DatabaseApp
 
     internal class DBFunc
     {
-        string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda;User Id=postgres;Password=1;";
-        string query = "SELECT * FROM \"клиент\"";
+        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=1;";
+
+
+
 
         public DataTable GetDataFromSQL()
-    {
-        using (var connection = GetPostgresConnection(connectionString))
         {
-            using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+            string query = "SELECT * FROM \"клиент\"";
+            using (var connection = GetPostgresConnection(connectionString))
             {
-                using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    return dataTable;
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.FillSchema(dataTable, SchemaType.Source);
+                        adapter.Fill(dataTable);
+                        return dataTable;
+                    }
                 }
             }
         }
-    }
+
 
         public static NpgsqlConnection GetPostgresConnection(string connectionString)
         {
@@ -50,20 +55,19 @@ namespace DatabaseApp
         }
 
 
-        public static int InsertDataToPostgreSQL(string connectionString, string tableName, MyData data)
+        public int InsertDataToPostgreSQL(MyData data)
         {
             using (var connection = GetPostgresConnection(connectionString))
             {
                 using (var command = new NpgsqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = $"INSERT INTO {tableName} (name, address, phone, requisites, contact_person, id) VALUES (@name, @address, @phone, @requisites, @contactPerson, @id)";
+                    command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
                     command.Parameters.AddWithValue("@name", data.Name);
-                    command.Parameters.AddWithValue("@address", data.Address);
+                    command.Parameters.AddWithValue("@adress", data.Address);
                     command.Parameters.AddWithValue("@phone", data.Phone);
                     command.Parameters.AddWithValue("@requisites", data.Requisites);
-                    command.Parameters.AddWithValue("@contactPerson", data.ContactPerson);
-                    command.Parameters.AddWithValue("@id", data.Id);
+                    command.Parameters.AddWithValue("@contact_name", data.ContactPerson);
 
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected;

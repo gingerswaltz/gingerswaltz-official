@@ -15,20 +15,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="180" y="180"/>
-	<column name="этаж" not-null="true">
+	<column name="floor" not-null="true">
 		<type name="int2" length="0"/>
 	</column>
-	<column name="площадь" not-null="true">
+	<column name="square" not-null="true">
 		<type name="int2" length="0"/>
 	</column>
-	<column name="кондиционер">
+	<column name="conditioner">
 		<type name="bool" length="0"/>
 	</column>
-	<column name="прайс_день" not-null="true">
+	<column name="price_day" not-null="true">
 		<type name="decimal" length="0"/>
 	</column>
 	<column name="id" not-null="true">
-		<type name="smallint" length="0"/>
+		<type name="serial" length="0"/>
 	</column>
 	<constraint name="точка_pk" type="pk-constr" table="public.&quot;точка&quot;">
 		<columns names="id" ref-type="src-columns"/>
@@ -44,24 +44,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="клиент" layer="0" collapse-mode="2" max-obj-count="7">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="600" y="180"/>
-	<column name="имя" not-null="true">
+	<position x="560" y="100"/>
+	<column name="name" not-null="true">
 		<type name="text" length="0"/>
 	</column>
-	<column name="адрес">
+	<column name="adress">
 		<type name="text" length="0"/>
 	</column>
-	<column name="телефон" not-null="true">
+	<column name="phone" not-null="true">
 		<type name="text" length="0"/>
 	</column>
-	<column name="реквизиты">
+	<column name="requisites">
 		<type name="text" length="0"/>
 	</column>
-	<column name="контактное лицо" not-null="true">
+	<column name="contact_name" not-null="true">
 		<type name="text" length="0"/>
 	</column>
 	<column name="id" not-null="true">
-		<type name="smallint" length="0"/>
+		<type name="serial" length="0"/>
 	</column>
 	<constraint name="клиент_pk" type="pk-constr" table="public.&quot;клиент&quot;">
 		<columns names="id" ref-type="src-columns"/>
@@ -78,13 +78,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="800" y="500"/>
-	<column name="конец аренды" not-null="true">
+	<column name="end_rent" not-null="true">
 		<type name="date" length="0"/>
 	</column>
 	<column name="id" not-null="true">
-		<type name="smallint" length="0"/>
+		<type name="serial" length="0"/>
 	</column>
-	<column name="начало аренды">
+	<column name="begin_rent">
 		<type name="date" length="0"/>
 	</column>
 	<constraint name="договор_pk" type="pk-constr" table="public.&quot;договор&quot;">
@@ -97,6 +97,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 	<customidxs object-type="constraint">
 		<object name="клиент_fk" index="1"/>
+		<object name="точка_fk" index="2"/>
 	</customidxs>
 	<initial-data>
 <![CDATA[конец аренды•id_клиент•id•начало аренды•id_точка⸣
@@ -135,17 +136,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="100" y="460"/>
-	<column name="месяц">
+	<column name="month">
 		<type name="decimal" length="0"/>
 	</column>
-	<column name="год">
+	<column name="year">
 		<type name="decimal" length="0"/>
 	</column>
-	<column name="стоимость">
+	<column name="payment">
 		<type name="decimal" length="0"/>
 	</column>
 	<column name="id" not-null="true">
-		<type name="smallint" length="0"/>
+		<type name="serial" length="0"/>
 	</column>
 	<constraint name="прайс_pk" type="pk-constr" table="public.&quot;оплата&quot;">
 		<columns names="id" ref-type="src-columns"/>
