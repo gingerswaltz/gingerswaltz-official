@@ -33,7 +33,12 @@
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             addDataToolStripMenuItem = new ToolStripMenuItem();
+            sortDataToolStripMenuItem = new ToolStripMenuItem();
+            findDataToolStripMenuItem = new ToolStripMenuItem();
+            deleteDataToolStripMenuItem = new ToolStripMenuItem();
+            saveToToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
+            loadDataToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dbGridView).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -41,23 +46,27 @@
             // dbGridView
             // 
             dbGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            dbGridView.BackgroundColor = SystemColors.GradientInactiveCaption;
             dbGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dbGridView.GridColor = SystemColors.ButtonFace;
             dbGridView.Location = new Point(1, 27);
             dbGridView.Name = "dbGridView";
             dbGridView.ReadOnly = true;
             dbGridView.RowTemplate.Height = 25;
-            dbGridView.Size = new Size(642, 325);
+            dbGridView.Size = new Size(641, 329);
             dbGridView.TabIndex = 0;
             // 
             // setConnect_button
             // 
-            setConnect_button.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            setConnect_button.Location = new Point(693, 167);
+            setConnect_button.BackColor = Color.Snow;
+            setConnect_button.Font = new Font("Berlin Sans FB", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            setConnect_button.ForeColor = Color.DarkBlue;
+            setConnect_button.Location = new Point(690, 172);
             setConnect_button.Name = "setConnect_button";
             setConnect_button.Size = new Size(116, 45);
             setConnect_button.TabIndex = 1;
             setConnect_button.Text = "Set Connection";
-            setConnect_button.UseVisualStyleBackColor = true;
+            setConnect_button.UseVisualStyleBackColor = false;
             setConnect_button.Click += setConnect_button_Click;
             // 
             // menuStrip1
@@ -71,7 +80,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addDataToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addDataToolStripMenuItem, sortDataToolStripMenuItem, findDataToolStripMenuItem, deleteDataToolStripMenuItem, saveToToolStripMenuItem, loadDataToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -79,9 +88,35 @@
             // addDataToolStripMenuItem
             // 
             addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
-            addDataToolStripMenuItem.Size = new Size(122, 22);
+            addDataToolStripMenuItem.Size = new Size(180, 22);
             addDataToolStripMenuItem.Text = "Add data";
             addDataToolStripMenuItem.Click += addDataToolStripMenuItem_Click;
+            // 
+            // sortDataToolStripMenuItem
+            // 
+            sortDataToolStripMenuItem.Name = "sortDataToolStripMenuItem";
+            sortDataToolStripMenuItem.Size = new Size(180, 22);
+            sortDataToolStripMenuItem.Text = "Sort data";
+            // 
+            // findDataToolStripMenuItem
+            // 
+            findDataToolStripMenuItem.Name = "findDataToolStripMenuItem";
+            findDataToolStripMenuItem.Size = new Size(180, 22);
+            findDataToolStripMenuItem.Text = "Find data";
+            // 
+            // deleteDataToolStripMenuItem
+            // 
+            deleteDataToolStripMenuItem.Name = "deleteDataToolStripMenuItem";
+            deleteDataToolStripMenuItem.Size = new Size(180, 22);
+            deleteDataToolStripMenuItem.Text = "Delete data";
+            deleteDataToolStripMenuItem.Click += deleteDataToolStripMenuItem_Click;
+            // 
+            // saveToToolStripMenuItem
+            // 
+            saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
+            saveToToolStripMenuItem.Size = new Size(180, 22);
+            saveToToolStripMenuItem.Text = "Save data";
+            saveToToolStripMenuItem.Click += saveToToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
@@ -90,14 +125,23 @@
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
+            // loadDataToolStripMenuItem
+            // 
+            loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
+            loadDataToolStripMenuItem.Size = new Size(180, 22);
+            loadDataToolStripMenuItem.Text = "Load data";
+            loadDataToolStripMenuItem.Click += loadDataToolStripMenuItem_Click;
+            // 
             // DBForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.CornflowerBlue;
             ClientSize = new Size(847, 355);
             Controls.Add(menuStrip1);
             Controls.Add(setConnect_button);
             Controls.Add(dbGridView);
+            Font = new Font("Berlin Sans FB", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             MainMenuStrip = menuStrip1;
             Name = "DBForm";
             Text = "Data Base";
@@ -116,5 +160,10 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem addDataToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem sortDataToolStripMenuItem;
+        private ToolStripMenuItem findDataToolStripMenuItem;
+        private ToolStripMenuItem saveToToolStripMenuItem;
+        private ToolStripMenuItem deleteDataToolStripMenuItem;
+        private ToolStripMenuItem loadDataToolStripMenuItem;
     }
 }
