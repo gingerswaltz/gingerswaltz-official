@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="4"
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,86" last-zoom="0.95" max-obj-count="4"
 	 default-owner="postgres">
 <database name="arenda_db" is-template="false" allow-conns="true">
 </database>
@@ -32,6 +32,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="точка_pk" type="pk-constr" table="public.&quot;точка&quot;">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="chk_price" type="ck-constr" table="public.&quot;точка&quot;">
+			<expression><![CDATA[price_day>-1]]></expression>
+	</constraint>
+	<constraint name="chk_square" type="ck-constr" table="public.&quot;точка&quot;">
+			<expression><![CDATA[square>0]]></expression>
 	</constraint>
 	<initial-data>
 <![CDATA[этаж•площадь•кондиционер•прайс_день•id⸣
@@ -90,9 +96,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="договор_pk" type="pk-constr" table="public.&quot;договор&quot;">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="chk_date" type="ck-constr" table="public.&quot;договор&quot;">
+			<expression><![CDATA[end_rent-begin_rent>=0]]></expression>
+	</constraint>
 
 	<customidxs object-type="column">
 		<object name="id_клиент" index="1"/>
+		<object name="id_точка" index="4"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
@@ -150,6 +160,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="прайс_pk" type="pk-constr" table="public.&quot;оплата&quot;">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="chk_payment" type="ck-constr" table="public.&quot;оплата&quot;">
+			<expression><![CDATA[payment>0]]></expression>
 	</constraint>
 
 	<customidxs object-type="column">
