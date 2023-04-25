@@ -71,9 +71,14 @@ namespace DatabaseApp
 
         private void addDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputForm inputForm = new InputForm();
-            inputForm.DataEntered += InputForm_DataEntered;
-            inputForm.Show();
+            try
+            {
+                InputForm inputForm = new InputForm();
+                inputForm.DataEntered += InputForm_DataEntered;
+                inputForm.Show();
+            }catch (Exception ex) { MessageBox.Show(ex.Message); }
+
+            
         }
 
 
@@ -131,24 +136,11 @@ namespace DatabaseApp
             inputQueryForm.IdEntered += InputForm_IdEntered;
             inputQueryForm.Show();
         }
-        public static string LoadCsvToString(string filePath)
-        {
-            var sb = new StringBuilder();
-            using (var reader = new StreamReader(filePath))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    sb.AppendLine(line);
-                }
-            }
-            return sb.ToString();
-        }
+       
 
         private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          //  string s = LoadCsvToString("output.csv");
-         //   MessageBox.Show(s);
+         
             try
             {
                 db.LoadDataFromCsvToPostgres();

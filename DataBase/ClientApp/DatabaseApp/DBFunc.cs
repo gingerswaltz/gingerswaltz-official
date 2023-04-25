@@ -26,7 +26,7 @@ namespace DatabaseApp
 
     internal class DBFunc
     {
-        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=1;";
+        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=123;";
 
 
         public void SaveToCsv(IEnumerable<string> columnNames, IEnumerable<IEnumerable<string>> data, string filePath)
