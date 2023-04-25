@@ -16,7 +16,7 @@ namespace DatabaseApp
     public class MyData
     {
         public string Name { get; set; }
-        public string Address { get; set; }
+        public string Adress { get; set; }
         public string Phone { get; set; }
         public string Requisites { get; set; }
         public string ContactPerson { get; set; }
@@ -33,65 +33,65 @@ namespace DatabaseApp
         {
             using (var writer = new StreamWriter(filePath))
             {
-                // Записываем заголовки столбцов в файл
-                foreach (var columnName in columnNames)
+                // Записываем заголовки столбцов в файл, кроме последнего столбца
+                foreach (var columnName in columnNames.Take(columnNames.Count() - 1))
                 {
                     writer.Write(columnName);
-                    if (columnName != columnNames.Last())
+                    if (columnName != columnNames.ElementAt(columnNames.Count() - 2))
                     {
-                        writer.Write(";");
+                        writer.Write(",");
                     }
                 }
                 writer.Write(writer.NewLine);
 
-                // Записываем данные в файл
+                // Записываем данные в файл, пропуская последний столбец
                 foreach (var row in data)
                 {
-                    foreach (var value in row)
+                    foreach (var value in row.Take(row.Count() - 1))
                     {
                         writer.Write(value != null ? value.ToString() : "");
-                        if (value != row.Last())
+                        if (value != row.ElementAt(row.Count() - 2))
                         {
-                            writer.Write(";");
+                            writer.Write(",");
                         }
                     }
-                    writer.Write(writer.NewLine);
-                }
-            }
-        }
-        public void LoadDataFromCsvStringToPostgres(string csvString)
-        {
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var writer = connection.BeginTextImport($"COPY \"клиент\" FROM STDIN (FORMAT CSV, HEADER true, DELIMITER ';')"))
-                {
-                    writer.Write(csvString);
+                    if (row != data.Last())
+                    {
+                        writer.Write(writer.NewLine);
+                    }
                 }
             }
         }
 
-    
+
+
+
+
+
 
 
         public void LoadDataFromCsvToPostgres(string filePath = "output.csv")
         {
             filePath = Path.Combine(Application.StartupPath, filePath);
 
-        
-                using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand())
                 {
-                    connection.Open();
-                    using (var command = new NpgsqlCommand())
-                    {
-                        command.Connection = connection;
-                    command.CommandText = $"COPY \"клиент\" (name, adress, phone, requisites, contact_name, id) FROM '{filePath}' DELIMITER ';' CSV HEADER;";
+                    command.Connection = connection;
+                    command.CommandText = 
+                        $@"CREATE TEMP TABLE temp_client (name text, adress text, phone text, requisites text, contact_name text);
+                         COPY temp_client (name, adress, phone, requisites, contact_name) FROM '{filePath}' DELIMITER ',' CSV HEADER;
+                         INSERT INTO клиент (name, adress, phone, requisites, contact_name) 
+                         SELECT t.name, t.adress, t.phone, t.requisites, t.contact_name
+                         FROM temp_client t
+                         ON CONFLICT DO NOTHING;";
                     command.ExecuteNonQuery();
-                    }
                 }
-           
+            }
         }
+
 
 
 
@@ -146,7 +146,7 @@ namespace DatabaseApp
                     command.Connection = connection;
                     command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
                     command.Parameters.AddWithValue("@name", data.Name);
-                    command.Parameters.AddWithValue("@adress", data.Address);
+                    command.Parameters.AddWithValue("@adress", data.Adress);
                     command.Parameters.AddWithValue("@phone", data.Phone);
                     command.Parameters.AddWithValue("@requisites", data.Requisites);
                     command.Parameters.AddWithValue("@contact_name", data.ContactPerson);
