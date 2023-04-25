@@ -1,4 +1,5 @@
-﻿using System;
+﻿// todo: 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -25,15 +26,18 @@ namespace DatabaseApp
 
 
     internal class DBFunc
-    {
-        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=1;";
+    {   
+        // todo: comment
+        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=123;";
 
 
+
+        // todo: use DataTable
         public void SaveToCsv(IEnumerable<string> columnNames, IEnumerable<IEnumerable<string>> data, string filePath)
         {
             using (var writer = new StreamWriter(filePath))
             {
-                // Записываем заголовки столбцов в файл, кроме последнего столбца
+                // Записываем заголовки столбцов в файл, кроме последнего столбца - id
                 foreach (var columnName in columnNames.Take(columnNames.Count() - 1))
                 {
                     writer.Write(columnName);
@@ -44,7 +48,7 @@ namespace DatabaseApp
                 }
                 writer.Write(writer.NewLine);
 
-                // Записываем данные в файл, пропуская последний столбец
+                // Записываем данные в файл, пропуская последний столбец - id
                 foreach (var row in data)
                 {
                     foreach (var value in row.Take(row.Count() - 1))
@@ -78,8 +82,11 @@ namespace DatabaseApp
             {
                 connection.Open();
                 using (var command = new NpgsqlCommand())
-                {
+                {   
+
+                    // todo: com
                     command.Connection = connection;
+
                     command.CommandText = 
                         $@"CREATE TEMP TABLE temp_client (name text, adress text, phone text, requisites text, contact_name text);
                          COPY temp_client (name, adress, phone, requisites, contact_name) FROM '{filePath}' DELIMITER ',' CSV HEADER;
@@ -99,6 +106,7 @@ namespace DatabaseApp
         public DataTable GetDataFromSQL()
         {
             string query = "SELECT * FROM \"клиент\"";
+            // todo: 
             using (var connection = GetPostgresConnection(connectionString))
             {
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
@@ -130,9 +138,11 @@ namespace DatabaseApp
                 using (var cmd = new NpgsqlCommand())
                 {
                     cmd.Connection = conn;
+                    // todo: ???
+                    // todoL to fields
                     cmd.CommandText = "DELETE FROM \"клиент\" WHERE id = @id";
                     cmd.Parameters.AddWithValue("id", id);
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery(); // возврат количества затронутых строк
                 }
             }
         }

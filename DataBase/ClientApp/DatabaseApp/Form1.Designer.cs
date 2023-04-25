@@ -28,128 +28,139 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dbGridView = new DataGridView();
-            setConnect_button = new Button();
-            menuStrip1 = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
-            addDataToolStripMenuItem = new ToolStripMenuItem();
-            sortDataToolStripMenuItem = new ToolStripMenuItem();
-            findDataToolStripMenuItem = new ToolStripMenuItem();
-            deleteDataToolStripMenuItem = new ToolStripMenuItem();
-            saveToToolStripMenuItem = new ToolStripMenuItem();
-            aboutToolStripMenuItem = new ToolStripMenuItem();
-            loadDataToolStripMenuItem = new ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)dbGridView).BeginInit();
-            menuStrip1.SuspendLayout();
-            SuspendLayout();
+            this.dbGridView = new System.Windows.Forms.DataGridView();
+            this.setConnect_button = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sortDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.dbGridView)).BeginInit();
+            this.menuStrip1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // dbGridView
             // 
-            dbGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            dbGridView.BackgroundColor = SystemColors.GradientInactiveCaption;
-            dbGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dbGridView.GridColor = SystemColors.ButtonFace;
-            dbGridView.Location = new Point(1, 27);
-            dbGridView.Name = "dbGridView";
-            dbGridView.ReadOnly = true;
-            dbGridView.RowTemplate.Height = 25;
-            dbGridView.Size = new Size(641, 329);
-            dbGridView.TabIndex = 0;
+            this.dbGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dbGridView.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dbGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dbGridView.GridColor = System.Drawing.SystemColors.ButtonFace;
+            this.dbGridView.Location = new System.Drawing.Point(1, 29);
+            this.dbGridView.Name = "dbGridView";
+            this.dbGridView.ReadOnly = true;
+            this.dbGridView.RowTemplate.Height = 25;
+            this.dbGridView.Size = new System.Drawing.Size(733, 351);
+            this.dbGridView.TabIndex = 0;
             // 
             // setConnect_button
             // 
-            setConnect_button.BackColor = Color.Snow;
-            setConnect_button.Font = new Font("Berlin Sans FB", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            setConnect_button.ForeColor = Color.DarkBlue;
-            setConnect_button.Location = new Point(690, 172);
-            setConnect_button.Name = "setConnect_button";
-            setConnect_button.Size = new Size(116, 45);
-            setConnect_button.TabIndex = 1;
-            setConnect_button.Text = "Set Connection";
-            setConnect_button.UseVisualStyleBackColor = false;
-            setConnect_button.Click += setConnect_button_Click;
+            this.setConnect_button.BackColor = System.Drawing.Color.Snow;
+            this.setConnect_button.Font = new System.Drawing.Font("Berlin Sans FB", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.setConnect_button.ForeColor = System.Drawing.Color.DarkBlue;
+            this.setConnect_button.Location = new System.Drawing.Point(789, 183);
+            this.setConnect_button.Name = "setConnect_button";
+            this.setConnect_button.Size = new System.Drawing.Size(133, 48);
+            this.setConnect_button.TabIndex = 1;
+            this.setConnect_button.Text = "Set Connection";
+            this.setConnect_button.UseVisualStyleBackColor = false;
+            this.setConnect_button.Click += new System.EventHandler(this.setConnect_button_Click);
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, aboutToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(847, 24);
-            menuStrip1.TabIndex = 2;
-            menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(968, 24);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addDataToolStripMenuItem, sortDataToolStripMenuItem, findDataToolStripMenuItem, deleteDataToolStripMenuItem, saveToToolStripMenuItem, loadDataToolStripMenuItem });
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addDataToolStripMenuItem,
+            this.sortDataToolStripMenuItem,
+            this.findDataToolStripMenuItem,
+            this.deleteDataToolStripMenuItem,
+            this.saveToToolStripMenuItem,
+            this.loadDataToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
             // addDataToolStripMenuItem
             // 
-            addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
-            addDataToolStripMenuItem.Size = new Size(180, 22);
-            addDataToolStripMenuItem.Text = "Add data";
-            addDataToolStripMenuItem.Click += addDataToolStripMenuItem_Click;
+            this.addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
+            this.addDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addDataToolStripMenuItem.Text = "Add data";
+            this.addDataToolStripMenuItem.Click += new System.EventHandler(this.addDataToolStripMenuItem_Click);
             // 
             // sortDataToolStripMenuItem
             // 
-            sortDataToolStripMenuItem.Name = "sortDataToolStripMenuItem";
-            sortDataToolStripMenuItem.Size = new Size(180, 22);
-            sortDataToolStripMenuItem.Text = "Sort data";
+            this.sortDataToolStripMenuItem.Name = "sortDataToolStripMenuItem";
+            this.sortDataToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.sortDataToolStripMenuItem.Text = "Sort data";
             // 
             // findDataToolStripMenuItem
             // 
-            findDataToolStripMenuItem.Name = "findDataToolStripMenuItem";
-            findDataToolStripMenuItem.Size = new Size(180, 22);
-            findDataToolStripMenuItem.Text = "Find data";
+            this.findDataToolStripMenuItem.Name = "findDataToolStripMenuItem";
+            this.findDataToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.findDataToolStripMenuItem.Text = "Find data";
             // 
             // deleteDataToolStripMenuItem
             // 
-            deleteDataToolStripMenuItem.Name = "deleteDataToolStripMenuItem";
-            deleteDataToolStripMenuItem.Size = new Size(180, 22);
-            deleteDataToolStripMenuItem.Text = "Delete data";
-            deleteDataToolStripMenuItem.Click += deleteDataToolStripMenuItem_Click;
+            this.deleteDataToolStripMenuItem.Name = "deleteDataToolStripMenuItem";
+            this.deleteDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteDataToolStripMenuItem.Text = "Delete data";
+            this.deleteDataToolStripMenuItem.Click += new System.EventHandler(this.deleteDataToolStripMenuItem_Click);
             // 
             // saveToToolStripMenuItem
             // 
-            saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
-            saveToToolStripMenuItem.Size = new Size(180, 22);
-            saveToToolStripMenuItem.Text = "Save data";
-            saveToToolStripMenuItem.Click += saveToToolStripMenuItem_Click;
-            // 
-            // aboutToolStripMenuItem
-            // 
-            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(52, 20);
-            aboutToolStripMenuItem.Text = "About";
-            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            this.saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
+            this.saveToToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToToolStripMenuItem.Text = "Save data";
+            this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
             // 
             // loadDataToolStripMenuItem
             // 
-            loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
-            loadDataToolStripMenuItem.Size = new Size(180, 22);
-            loadDataToolStripMenuItem.Text = "Load data";
-            loadDataToolStripMenuItem.Click += loadDataToolStripMenuItem_Click;
+            this.loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
+            this.loadDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadDataToolStripMenuItem.Text = "Load data";
+            this.loadDataToolStripMenuItem.Click += new System.EventHandler(this.loadDataToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // DBForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.CornflowerBlue;
-            ClientSize = new Size(847, 355);
-            Controls.Add(menuStrip1);
-            Controls.Add(setConnect_button);
-            Controls.Add(dbGridView);
-            Font = new Font("Berlin Sans FB", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            MainMenuStrip = menuStrip1;
-            Name = "DBForm";
-            Text = "Data Base";
-            ((System.ComponentModel.ISupportInitialize)dbGridView).EndInit();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.ClientSize = new System.Drawing.Size(968, 379);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.setConnect_button);
+            this.Controls.Add(this.dbGridView);
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "DBForm";
+            this.Text = "Data Base";
+            ((System.ComponentModel.ISupportInitialize)(this.dbGridView)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
