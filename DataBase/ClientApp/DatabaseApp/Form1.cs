@@ -1,3 +1,4 @@
+// todo: doc
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ namespace DatabaseApp
     public partial class DBForm : Form
     {
         DBFunc db = new();
+
         public DBForm()
         {
             InitializeComponent();
@@ -43,22 +45,25 @@ namespace DatabaseApp
         }
 
 
+        // метод-обработчик события DataEntered, переданном от экземпляра InputForm. 
+        // sender - объект, инициировавший событие, e - объект типа MyDataEventArgs, в который мы передаем объект myData
         private void InputForm_DataEntered(object sender, InputForm.MyDataEventArgs e)
         {
-            MyData myData = e.Data;
-            db.InsertDataToPostgreSQL(myData);
-            setConnect_button_Click(sender, e);
+            MyData myData = e.Data; // извлечение объекта из делегата
+            db.InsertDataToPostgreSQL(myData); // вставляем его в БД
+            setConnect_button_Click(sender, e); // делаем повторный селект и получаем актуальные данные
         }
 
 
+        // установка первоначального соединения, рефреш данных на гриде
         private void setConnect_button_Click(object sender, EventArgs e)
         {
 
             try
             {
                 dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
-                DataTable dataTable = db.GetDataFromSQL();
-                dbGridView.DataSource = dataTable;
+                DataTable dataTable = db.GetDataFromSQL(); // передаем в объект типа DataTable таблицу из БД 
+                dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
             }
             catch (Exception ex)
             {
@@ -68,13 +73,13 @@ namespace DatabaseApp
 
 
 
-
+        // кнопка меню File-Add data
         private void addDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 InputForm inputForm = new InputForm();
-                inputForm.DataEntered += InputForm_DataEntered;
+                inputForm.DataEntered += InputForm_DataEntered; // подписываемся на событие ввода данных из InputForm, начинаем прослушивание
                 inputForm.Show();
             }catch (Exception ex) { MessageBox.Show(ex.Message); }
 
@@ -82,19 +87,22 @@ namespace DatabaseApp
         }
 
 
-
+        // кнопка меню About
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Author: Georgy Purtov. 2023");
         }
 
+
+        // кнопка меню File-Save data
         private void saveToToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             try
             {
                 SaveDataGridViewToCsv("output.csv");
-                MessageBox.Show($"Successfully saved in:{Application.StartupPath}");
+                // todo: remove
+                //MessageBox.Show($"Successfully saved in:{Application.StartupPath}");
 
             }
             catch (Exception ex)
@@ -105,6 +113,7 @@ namespace DatabaseApp
 
 
 
+        // метод-обработчик события IdEntered, переданным из QueryForm
         private void InputForm_IdEntered(object sender, int id)
         {
             // Выполнение действий с использованием полученного id
@@ -129,11 +138,11 @@ namespace DatabaseApp
         }
 
 
-
+        // кнопка меню File-Delete data
         private void deleteDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var inputQueryForm = new InputQueryForm();
-            inputQueryForm.IdEntered += InputForm_IdEntered;
+            inputQueryForm.IdEntered += InputForm_IdEntered; // подп
             inputQueryForm.Show();
         }
        
@@ -143,8 +152,8 @@ namespace DatabaseApp
          
             try
             {
-                db.LoadDataFromCsvToPostgres();
-                MessageBox.Show("Successfully updated grid!");
+                db.LoadDataFromCsvToPostgres("output.csv");
+                // MessageBox.Show("Successfully updated grid!");
                 setConnect_button_Click(sender, e);
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }
