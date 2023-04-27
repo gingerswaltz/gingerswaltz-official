@@ -2,3 +2,10 @@
 DataBase/ClientApp/DatabaseApp/.vs/DatabaseApp/v17/.suo
 *.exe
 *.pdb
+ChatBot/bin/Debug/net6.0-windows/file.jpg
+*.1
+*.v2
+*.BuildWithSkipAnalyzers
+*.vsidx
+ChatBot/bin/Debug/net6.0-windows/file
+*.lock

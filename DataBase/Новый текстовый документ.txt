@@ -1,0 +1,115 @@
+1) Получить список торговых площадей, на которые не заключен договор аренда на заданную дату. Для каждой такой торговой площади получить список клиентов в виде массива, заключавших договор аренды ранее заданной даты.
+--задание1
+SELECT
+точка.id AS точка_id,
+ARRAY_AGG(DISTINCT клиент.id) AS клиенты
+FROM
+точка
+LEFT JOIN договор ON точка.id = договор.id_точка AND договор.begin_rent <= '2023-04-25' AND (договор.end_rent IS NULL OR договор.end_rent >= '2023-04-25')
+LEFT JOIN клиент ON договор.id_клиент = клиент.id
+WHERE
+договор.id IS NULL
+GROUP BY
+точка.id; 
+
+
+2) Получить список клиентов с открытыми договорами аренда на заданную дату. Для каждого клиента указать сумму, которою он должен оплатить с момента заключения договора аренды по заданную дату, а также сумму фактической платы аренды на заданную дату.
+--задание2
+SELECT c.name AS "Клиент",
+SUM(p.price_day * (EXTRACT(day FROM AGE('2023-04-25', d.begin_rent)) + 1)) AS "Сумма задолженности",
+COALESCE(SUM(o.payment), 0) AS "Фактическая сумма оплаты"
+FROM "договор" d
+JOIN public."клиент" c ON d."id_клиент" = c.id
+JOIN public."точка" t ON d."id_точка" = t.id
+LEFT JOIN public."оплата" o ON d.id = o."id_договор"
+JOIN (SELECT id, price_day FROM public."точка") p ON d."id_точка" = p.id
+WHERE d.end_rent >= '2023-04-25' AND d.begin_rent <= '2023-04-25'
+GROUP BY c.name; 
+
+
+
+
+3) Получить прибыль торгового центра по месяцам заданного года. Для каждого месяца указать клиента, внесшего максимальный вклад в прибыль.
+
+
+--задание3
+SELECT
+EXTRACT(MONTH FROM d.end_rent) AS month,
+EXTRACT(YEAR FROM d.end_rent) AS year,
+SUM(o.payment) AS total_profit,
+(SELECT c.name
+FROM public."клиент" c
+JOIN public."договор" d2 ON c.id = d2."id_клиент"
+JOIN public."оплата" o2 ON d2.id = o2."id_договор"
+WHERE EXTRACT(MONTH FROM d2.end_rent) = EXTRACT(MONTH FROM d.end_rent)
+GROUP BY c.id, c.name
+ORDER BY SUM(o2.payment) DESC -- сортирует результаты по убыванию этой суммы (desc)
+LIMIT 1 -- LIMIT 1 ограничивает вывод одной записью, в итоговой таблице один столбец "top_client"
+) AS top_client
+FROM public."оплата" o
+JOIN public."договор" d ON o."id_договор" = d.id
+JOIN public."клиент" c ON d."id_клиент" = c.id
+GROUP BY year, month, c.id, c.name, d.end_rent
+ORDER BY year, month; 
+
+
+
+
+
+4)Получить итоговые цифры по количеству аренд, минимальному и максимальному сроку аренды за заданный диапазон лет. Данные группировать по торговым площадям и клиентам.
+SELECT
+  "клиент".name AS client_name, 
+  "точка".square AS square, 
+  COUNT("договор".id) AS rental_count, 
+  MIN("договор".end_rent - "договор".begin_rent) AS min_rental_period, 
+  MAX("договор".end_rent - "договор".begin_rent) AS max_rental_period
+FROM 
+  "договор" 
+  JOIN "клиент" ON "договор"."id_клиент" = "клиент".id 
+  JOIN "точка" ON "договор"."id_точка" = "точка".id 
+WHERE 
+  EXTRACT(YEAR FROM "договор".begin_rent) >= 2020 
+  AND EXTRACT(YEAR FROM "договор".end_rent) <= 2022 
+GROUP BY 
+  "клиент".name, 
+  "точка".square;
+
+
+
+
+
+
+5) Получить кросс-таблицу из итоговой таблицы R(«клиент», «год», «суммарные выплаты по арендам за год»). Значения атрибута «год» представить в виде колонок кросс-таблицы.
+SELECT
+"клиент"."name" AS "клиент",
+("оплата"."year") AS "год",
+SUM("оплата"."payment") AS "суммарные выплаты по арендам за год"
+FROM
+public."оплата"
+JOIN public."договор" ON "оплата"."id_договор" = "договор"."id"
+JOIN public."клиент" ON "договор"."id_клиент" = "клиент"."id"
+GROUP BY
+"клиент",
+"оплата"."year";
+— просто получил табличку R
+
+
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+— кросс таблица
+SELECT *
+FROM crosstab(
+'SELECT
+"клиент"."name" AS "клиент",
+("оплата"."year")::text AS "год",
+SUM("оплата"."payment") AS "суммарные выплаты по арендам за год"
+FROM
+public."оплата"
+JOIN public."договор" ON "оплата"."id_договор" = "договор"."id"
+JOIN public."клиент" ON "договор"."id_клиент" = "клиент"."id"
+GROUP BY
+"клиент",
+"оплата"."year"
+ORDER BY 1, 2',
+'VALUES (2019), (2020), (2021), (2022), (2023)'
+) AS ct ("клиент" text, "2019" decimal, "2020" decimal, "2021" decimal, "2022" decimal, "2023" decimal); 

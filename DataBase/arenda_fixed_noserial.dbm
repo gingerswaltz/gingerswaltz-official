@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,87" last-zoom="0.95" max-obj-count="4"
+	 default-owner="postgres">
+<database name="arenda_db2" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="точка" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="180" y="180"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="price_day" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="square" not-null="true">
+		<type name="int2" length="0"/>
+	</column>
+	<column name="floor" not-null="true">
+		<type name="int2" length="0"/>
+	</column>
+	<column name="conditioner">
+		<type name="bool" length="0"/>
+	</column>
+	<constraint name="точка_pk" type="pk-constr" table="public.&quot;точка&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[id•price_day•square•floor•conditioner⸣
+1•250•100•2•true⸣
+2•345•131•3•true⸣
+3•650•156•1•false⸣
+4•450•134•1•true]]>
+	</initial-data>
+</table>
+
+<table name="клиент" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="560" y="100"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="contact_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="requisites">
+		<type name="text" length="0"/>
+	</column>
+	<column name="adress">
+		<type name="text" length="0"/>
+	</column>
+	<column name="phone" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="клиент_pk" type="pk-constr" table="public.&quot;клиент&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[name•adress•phone•requisites•contact_name•id⸣
+Prodmix•Lenina 25•112233•Sber•Ivanov•1⸣
+Akom•Lermontova 30•223344•Tink•Mironov•2⸣
+Ttk•Amurskaya 76•334455•Sber•Kalashnikov•3⸣
+Mimino•Babushkina 85•445566•Tink•Katamadze•4]]>
+	</initial-data>
+</table>
+
+<table name="договор" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="800" y="500"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="begin_rent">
+		<type name="date" length="0"/>
+	</column>
+	<column name="end_rent" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="договор_pk" type="pk-constr" table="public.&quot;договор&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_клиент" index="1"/>
+		<object name="id_точка" index="2"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="клиент_fk" index="1"/>
+		<object name="точка_fk" index="2"/>
+	</customidxs>
+	<initial-data>
+<![CDATA[end_rent•id_клиент•id•begin_rent•id_точка⸣
+2024-04-27•1•1•2023-04-27•1⸣
+2023-06-02•3•2•2023-01-02•3]]>
+	</initial-data>
+</table>
+
+<relationship name="клиент_has_many_договор" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#c618c4"
+	 src-table="public.&quot;клиент&quot;"
+	 dst-table="public.&quot;договор&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="79.4072" y="29.7143"/>
+	</label>
+</relationship>
+
+<relationship name="точка_has_many_договор" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#2858c1"
+	 src-table="public.&quot;точка&quot;"
+	 dst-table="public.&quot;договор&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-8.79238" y="2.67111"/>
+	</label>
+</relationship>
+
+<table name="оплата" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="100" y="460"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="month">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="payment">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="year">
+		<type name="decimal" length="0"/>
+	</column>
+	<constraint name="прайс_pk" type="pk-constr" table="public.&quot;оплата&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_договор" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="договор_fk" index="1"/>
+	</customidxs>
+	<initial-data>
+<![CDATA[id•id_договор•month•payment•year⸣
+1•1•1•5000•2023⸣
+2•2•4•60000•2023]]>
+	</initial-data>
+</table>
+
+<relationship name="договор_has_many_оплата" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#b7a799"
+	 src-table="public.&quot;договор&quot;"
+	 dst-table="public.&quot;оплата&quot;"
+	 src-required="true" dst-required="false"/>
+
+</dbmodel>
