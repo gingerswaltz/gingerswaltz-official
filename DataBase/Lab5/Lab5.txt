@@ -20,6 +20,7 @@ CREATE TRIGGER unique_phone_trigger
   EXECUTE FUNCTION check_unique_phone();
 
 2) Этот триггер будет вызываться перед вставкой или обновлением строк в таблице "договор". Если новая строка содержит дату начала аренды, которая позже даты окончания аренды, то триггер вызовет исключение и изменения не будут сохранены в таблице.
+
 CREATE OR REPLACE FUNCTION check_begin_rent_before_end_rent()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -53,37 +54,30 @@ FOR EACH ROW
 EXECUTE FUNCTION check_price_day();
 
 
-4) Этот триггер будет вызываться после каждой операции INSERT или UPDATE, которая изменяет столбец "payment" в таблице "оплата". Триггер вычисляет общую сумму платежей для данного договора и сравнивает ее с суммой, указанной в соответствующем договоре. Если общая сумма платежей превышает сумму аренды, триггер вызывает исключение.
+4) Этот триггер будет записывать информацию об изменении в таблице оплата в таблицу оплата_лог. При этом в столбце id_оплата будет храниться идентификатор изменяемой записи, а в столбце action будет указано, была ли запись вставлена или обновлена.
+Eсли таблица "оплата_лог" еще не создана, то она будет создана используя динамический SQL и команду EXECUTE при выполнении функции. Далее функция записывает данные об изменении в новую строку в таблице "оплата_лог".
 
-CREATE OR REPLACE FUNCTION check_payment() RETURNS TRIGGER AS $$
-DECLARE
-  total_payment decimal;
-  total_rent_price decimal;
+CREATE OR REPLACE FUNCTION log_payment() RETURNS TRIGGER AS $$
 BEGIN
-  -- вычисляем общую сумму платежей для данного договора
-  SELECT SUM(payment) INTO total_payment
-  FROM public."оплата"
-  WHERE id_договор = NEW.id_договор;
+    -- Создаем таблицу оплата_лог, если она еще не создана
+    EXECUTE 'CREATE TABLE IF NOT EXISTS public."оплата_лог" (
+        id SERIAL PRIMARY KEY,
+        id_оплата INTEGER NOT NULL,
+        action VARCHAR(6) NOT NULL,
+        log_time TIMESTAMP DEFAULT NOW()
+    )';
 
-  -- получаем сумму из договора
-  SELECT  (SUM(p.price_day * (EXTRACT(day from NEW.end_rent::timestamp - NEW.begin_rent::timestamp ) + 1))) - COALESCE(o.total_payment, 0)
-INTO total_rent_price
-  FROM public."договор" d
-  INNER JOIN public."точка" p ON d.id_точка = p.id
-  WHERE d.id = NEW.id_договор;
+    -- Записываем информацию об изменении в лог
+    INSERT INTO public."оплата_лог" (id_оплата, action) VALUES (NEW.id, TG_OP);
 
-  IF total_payment > total_rent_price THEN
-    RAISE EXCEPTION 'Сумма оплаты превышает стоимость аренды для данного договора';
-  END IF;
-
-  RETURN NEW;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER check_payment_trigger
-AFTER INSERT OR UPDATE OF payment ON public."оплата"
+CREATE or replace TRIGGER log_payment_trigger
+AFTER INSERT OR UPDATE ON public."оплата"
 FOR EACH ROW
-EXECUTE FUNCTION check_payment();
+EXECUTE FUNCTION log_payment();
 
 
 5) Этот триггер использует функцию plpgsql increment_id(), которая выбирает максимальное значение поля "id" из таблицы "клиент" и увеличивает его на 1. Затем, триггер increment_id_trigger вызывает эту функцию перед каждой вставкой новой записи в таблицу "клиент", присваивая значение "id" для новой записи.
