@@ -1,30 +1,29 @@
 1) Получить список торговых площадей, на которые не заключен договор аренда на заданную дату. Для каждой такой торговой площади получить список клиентов в виде массива, заключавших договор аренды ранее заданной даты.
 --задание1
-SELECT
-точка.id AS точка_id,
-ARRAY_AGG(DISTINCT клиент.id) AS клиенты
-FROM
-точка
-LEFT JOIN договор ON точка.id = договор.id_точка AND договор.begin_rent <= '2023-04-25' AND (договор.end_rent IS NULL OR договор.end_rent >= '2023-04-25')
-LEFT JOIN клиент ON договор.id_клиент = клиент.id
-WHERE
-договор.id IS NULL
-GROUP BY
-точка.id; 
+SELECT DISTINCT t.id AS "свободная точка", c.name AS client_name
+FROM "точка" t
+LEFT JOIN "договор" d ON t.id = d."id_точка" AND d.begin_rent <= '2023-04-28'  AnD d.end_rent='2023-04-28'
+LEFT JOIN "клиент" c ON d."id_клиент" = c.id
+WHERE d.id IS NOT NULL
 
 
 2) Получить список клиентов с открытыми договорами аренда на заданную дату. Для каждого клиента указать сумму, которою он должен оплатить с момента заключения договора аренды по заданную дату, а также сумму фактической платы аренды на заданную дату.
 --задание2
 SELECT c.name AS "Клиент",
-SUM(p.price_day * (EXTRACT(day FROM AGE('2023-04-25', d.begin_rent)) + 1)) AS "Сумма задолженности",
-COALESCE(SUM(o.payment), 0) AS "Фактическая сумма оплаты"
+    SUM(p.price_day * (EXTRACT(day from '2023-04-28'::timestamp - d.begin_rent::timestamp ) + 1)) 
+    - COALESCE(o.total_payment, 0) AS "Сумма задолженности",
+    COALESCE(o.total_payment, 0) AS "Фактическая сумма оплаты"
 FROM "договор" d
 JOIN public."клиент" c ON d."id_клиент" = c.id
 JOIN public."точка" t ON d."id_точка" = t.id
-LEFT JOIN public."оплата" o ON d.id = o."id_договор"
 JOIN (SELECT id, price_day FROM public."точка") p ON d."id_точка" = p.id
-WHERE d.end_rent >= '2023-04-25' AND d.begin_rent <= '2023-04-25'
-GROUP BY c.name; 
+LEFT JOIN (
+    SELECT "id_договор", SUM(payment) AS total_payment 
+    FROM public."оплата"
+    GROUP BY "id_договор"
+) o ON d.id = o."id_договор"
+GROUP BY c.name, o.total_payment;
+
 
 
 
