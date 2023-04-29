@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2" last-position="0,87" last-zoom="0.95" max-obj-count="4"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="0.95" max-obj-count="4"
 	 default-owner="postgres">
 <database name="arenda_db2" is-template="false" allow-conns="true">
 </database>
@@ -11,7 +11,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
-<table name="точка" layer="0" collapse-mode="2" max-obj-count="6">
+<table name="точка" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="180" y="180"/>
@@ -42,7 +42,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</initial-data>
 </table>
 
-<table name="клиент" layer="0" collapse-mode="2" max-obj-count="7">
+<table name="клиент" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="560" y="100"/>
@@ -76,7 +76,7 @@ Mimino•Babushkina 85•445566•Tink•Katamadze•4]]>
 	</initial-data>
 </table>
 
-<table name="договор" layer="0" collapse-mode="2" max-obj-count="6">
+<table name="договор" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="800" y="500"/>
@@ -105,7 +105,8 @@ Mimino•Babushkina 85•445566•Tink•Katamadze•4]]>
 	<initial-data>
 <![CDATA[end_rent•id_клиент•id•begin_rent•id_точка⸣
 2024-04-27•1•1•2023-04-27•1⸣
-2023-06-02•3•2•2023-01-02•3]]>
+2023-06-02•3•2•2023-01-02•3⸣
+2023-04-27•2•3•2023-12-31•4]]>
 	</initial-data>
 </table>
 
@@ -135,7 +136,7 @@ Mimino•Babushkina 85•445566•Tink•Katamadze•4]]>
 	</label>
 </relationship>
 
-<table name="оплата" layer="0" collapse-mode="2" max-obj-count="6">
+<table name="оплата" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="100" y="460"/>
