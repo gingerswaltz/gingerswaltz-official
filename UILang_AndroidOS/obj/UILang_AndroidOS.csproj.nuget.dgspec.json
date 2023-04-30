@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\UILang_AndroidOS\\UILang_AndroidOS.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\UILang_AndroidOS\\UILang_AndroidOS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\UILang_AndroidOS\\UILang_AndroidOS.csproj",
+        "projectName": "UILang_AndroidOS",
+        "projectPath": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\UILang_AndroidOS\\UILang_AndroidOS.csproj",
+        "packagesPath": "C:\\Users\\George\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\UILang_AndroidOS\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\George\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "monoandroid13.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "monoandroid13.0": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "monoandroid13.0": {
+          "dependencies": {
+            "Xamarin.AndroidX.AppCompat": {
+              "target": "Package",
+              "version": "[1.2.0.5, )"
+            },
+            "Xamarin.Essentials": {
+              "target": "Package",
+              "version": "[1.6.1, )"
+            },
+            "Xamarin.Google.Android.Material": {
+              "target": "Package",
+              "version": "[1.0.0.1, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}
