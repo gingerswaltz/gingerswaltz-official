@@ -12,37 +12,34 @@ namespace DatabaseApp
         public DBForm()
         {
             InitializeComponent();
-
+            KeyPreview = true;
         }
 
-        private void SaveDataGridViewToCsv(string filePath)
+        private DataTable GetDataTableFromDataGridView(DataGridView dgv)
         {
-            // Добавляем названия столбцов
-            var columnNames = dbGridView.Columns.Cast<DataGridViewColumn>()
-                                 .Select(column => column.Name)
-                                 .ToList();
+            DataTable dt = new DataTable();
 
-            // Перебираем строки в DataGridView
-            var data = new List<List<string>>();
-            foreach (DataGridViewRow row in dbGridView.Rows)
+            // добавляем столбцы в DataTable, кроме первого столбца из DataGridView
+            foreach (DataGridViewColumn col in dgv.Columns)
             {
-                // Создаем список строк для текущей строки DataGridView
-                var rowData = new List<string>();
-
-                // Перебираем ячейки в текущей строке DataGridView
-                for (int i = 0; i < dbGridView.Columns.Count; i++)
-                {
-                    // Записываем значение ячейки в список строк
-                    rowData.Add(row.Cells[i].Value != null ? row.Cells[i].Value.ToString() : "");
-                }
-
-                // Добавляем список строк в коллекцию
-                data.Add(rowData);
+                if (col.Index != 0) // пропускаем первый столбец
+                    dt.Columns.Add(col.Name);
             }
 
-            // Сохраняем данные в CSV файл
-            db.SaveToCsv(columnNames, data, filePath);
+            // добавляем строки в DataTable
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                DataRow dr = dt.NewRow();
+                for (int i = 1; i < dgv.Columns.Count; i++) // начинаем с 1, чтобы пропустить первый столбец
+                {
+                    dr[i - 1] = row.Cells[i].Value;
+                }
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
         }
+
 
 
         // метод-обработчик события DataEntered, переданном от экземпляра InputForm. 
@@ -64,10 +61,13 @@ namespace DatabaseApp
                 dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
                 DataTable dataTable = db.GetDataFromSQL(); // передаем в объект типа DataTable таблицу из БД 
                 dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
+                SetLabelColor();
             }
             catch (Exception ex)
             {
+                SetLabelColor(ex);
                 MessageBox.Show(ex.Message);
+                
             }
         }
 
@@ -81,9 +81,15 @@ namespace DatabaseApp
                 InputForm inputForm = new InputForm();
                 inputForm.DataEntered += InputForm_DataEntered; // подписываемся на событие ввода данных из InputForm, начинаем прослушивание
                 inputForm.Show();
-            }catch (Exception ex) { MessageBox.Show(ex.Message); }
+                SetLabelColor();
+            }
+            catch (Exception ex)
+            {
+                SetLabelColor(ex);
+                MessageBox.Show(ex.Message);
+            }
 
-            
+
         }
 
 
@@ -100,17 +106,31 @@ namespace DatabaseApp
 
             try
             {
-                SaveDataGridViewToCsv("output.csv");
-                // todo: remove
-                //MessageBox.Show($"Successfully saved in:{Application.StartupPath}");
-
+                var dt = GetDataTableFromDataGridView(dbGridView);
+                db.SaveToCsv(dt, "output.txt");
+                SetLabelColor() ;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                SetLabelColor(ex);
+
             }
         }
 
+        private void SetLabelColor(Exception ex=null)
+        {
+            if (ex == null)
+            {
+                labelState.Text = "OK";
+                labelState.BackColor = ColorTranslator.FromHtml("#94d446"); 
+            }
+            else
+            {
+                labelState.Text = "NOT OK";
+                labelState.BackColor = ColorTranslator.FromHtml("#c75842");
+            }
+        }
 
 
         // метод-обработчик события IdEntered, переданным из QueryForm
@@ -121,7 +141,7 @@ namespace DatabaseApp
             try
             {
                 db.DeleteRecordById(id);
-
+                
                 // Удаление записи с заданным id из DataGridView
                 foreach (DataGridViewRow row in dbGridView.Rows)
                 {
@@ -132,33 +152,78 @@ namespace DatabaseApp
                         break;
                     }
                 }
+                SetLabelColor();
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) 
+            {
+                SetLabelColor(ex);
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
 
-        // кнопка меню File-Delete data
-        private void deleteDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var inputQueryForm = new InputQueryForm();
-            inputQueryForm.IdEntered += InputForm_IdEntered; // подп
-            inputQueryForm.Show();
-        }
-       
+
+
 
         private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
+
             try
             {
                 db.LoadDataFromCsvToPostgres("output.csv");
                 // MessageBox.Show("Successfully updated grid!");
                 setConnect_button_Click(sender, e);
+                SetLabelColor() ;
             }
-            catch(Exception ex) { MessageBox.Show(ex.Message); }
-            
-           
+            catch (Exception ex) {
+
+                SetLabelColor(ex);
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
+
+
+
+        private void dbGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                DataGridViewCell selectedCell = dbGridView.CurrentCell;
+                if (selectedCell != null)
+                {
+                    int rowIndex = selectedCell.RowIndex;
+                    int columnIndex = selectedCell.ColumnIndex;
+                    if (columnIndex == dbGridView.Columns["Id"].Index)
+                    {
+                        int id = Convert.ToInt32(selectedCell.Value);
+                        db.DeleteRecordById(id);
+                        dbGridView.Rows.RemoveAt(rowIndex);
+                    }
+                }
+            }
+        }
+
+
+
+        private void dbGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                dbGridView.DataSource = db.SortById();
+            }
+        }
+
+        private void DBForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                // Вызываем метод сохранения данных
+                saveToToolStripMenuItem_Click(sender, e);
+                e.SuppressKeyPress = true; // Предотвращаем дальнейшую обработку нажатия клавиши
+            }
         }
     }
 }

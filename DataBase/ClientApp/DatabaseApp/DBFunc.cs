@@ -6,8 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
-using Npgsql;
+using Npgsql; // nuget пакет, позволяющий работать с Postgres
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
@@ -16,7 +17,7 @@ namespace DatabaseApp
 
     public class MyData
     {
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public string Adress { get; set; }
         public string Phone { get; set; }
         public string Requisites { get; set; }
@@ -28,41 +29,37 @@ namespace DatabaseApp
     internal class DBFunc
     {   
         // todo: comment
-        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=123;";
+        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_castrated;User Id=postgres;Password=1;";
 
 
 
-        // todo: use DataTable
-        public void SaveToCsv(IEnumerable<string> columnNames, IEnumerable<IEnumerable<string>> data, string filePath)
+        public void SaveToCsv(DataTable table, string filePath)
         {
             using (var writer = new StreamWriter(filePath))
             {
-                // Записываем заголовки столбцов в файл, кроме последнего столбца - id
-                foreach (var columnName in columnNames.Take(columnNames.Count() - 1))
+                // Записываем заголовки столбцов в файл
+                foreach (DataColumn column in table.Columns)
                 {
-                    writer.Write(columnName);
-                    if (columnName != columnNames.ElementAt(columnNames.Count() - 2))
+                    writer.Write(column.ColumnName);
+                    if (column != table.Columns[table.Columns.Count - 1])
                     {
                         writer.Write(",");
                     }
                 }
                 writer.Write(writer.NewLine);
 
-                // Записываем данные в файл, пропуская последний столбец - id
-                foreach (var row in data)
+                // Записываем данные в файл
+                foreach (DataRow row in table.Rows)
                 {
-                    foreach (var value in row.Take(row.Count() - 1))
+                    foreach (var value in row.ItemArray.Take(row.ItemArray.Length - 1))
                     {
                         writer.Write(value != null ? value.ToString() : "");
-                        if (value != row.ElementAt(row.Count() - 2))
+                        if (value != row.ItemArray[row.ItemArray.Length - 2])
                         {
                             writer.Write(",");
                         }
                     }
-                    if (row != data.Last())
-                    {
-                        writer.Write(writer.NewLine);
-                    }
+                    writer.Write(writer.NewLine);
                 }
             }
         }
@@ -81,10 +78,12 @@ namespace DatabaseApp
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-                using (var command = new NpgsqlCommand())
+                /// Основная идея using заключается в создании блока кода, внутри которого создаются ресурсы,
+                /// такие как объекты подключения к базе данных, файловые потоки и т.д. 
+                /// После того как блок кода завершается, все созданные ресурсы автоматически освобождаются.
+                using (var command = new NpgsqlCommand()) 
                 {   
 
-                    // todo: com
                     command.Connection = connection;
 
                     command.CommandText = 
@@ -106,16 +105,18 @@ namespace DatabaseApp
         public DataTable GetDataFromSQL()
         {
             string query = "SELECT * FROM \"клиент\"";
-            // todo: 
             using (var connection = GetPostgresConnection(connectionString))
             {
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
+                    /// NpgsqlDataAdapter это класс в библиотеке Npgsql, который используется для заполнения DataSet или DataTable данными из источника данных PostgreSQL.
+                    ///  Он позволяет выполнять запросы к базе данных и получать результаты в виде таблиц, 
+                    ///  которые могут быть использованы в приложении для отображения данных в пользовательском интерфейсе.
                     using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
                     {
-                        DataTable dataTable = new DataTable();
-                        adapter.FillSchema(dataTable, SchemaType.Source);
-                        adapter.Fill(dataTable);
+                        DataTable dataTable = new DataTable(); // Создание нового экземпляра класса DataTable, который будет содержать результаты выборки.
+                        adapter.FillSchema(dataTable, SchemaType.Source); // добавлениe схемы таблицы в экземпляр класса DataTable. SchemaType.Source указывает, что схема будет соответствовать источнику данных.
+                        adapter.Fill(dataTable); //  для заполнения таблицы данными.
                         return dataTable;
                     }
                 }
@@ -132,40 +133,60 @@ namespace DatabaseApp
 
         public void DeleteRecordById(int id)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(connectionString))// Эта строка создает новое подключение к базе данных PostgreSQL
             {
                 conn.Open();
-                using (var cmd = new NpgsqlCommand())
+                using (var cmd = new NpgsqlCommand())//  Эта строка создает новый объект NpgsqlCommand, который представляет SQL-команду, которую мы хотим выполнить. 
                 {
-                    cmd.Connection = conn;
-                    // todo: ???
-                    // todoL to fields
-                    cmd.CommandText = "DELETE FROM \"клиент\" WHERE id = @id";
-                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Connection = conn; // Эта строка устанавливает соединение для объекта cmd, указывая, что он будет использовать ранее созданное подключение conn.
+                    cmd.CommandText = "DELETE FROM \"клиент\" WHERE id = @id"; // Эта строка устанавливает текст SQL-запроса, который будет выполнен
+                    cmd.Parameters.AddWithValue("id", id); //  Эта строка добавляет параметр к команде. В данном случае, параметр "id" соответствует значению переменной id. 
                     cmd.ExecuteNonQuery(); // возврат количества затронутых строк
                 }
             }
         }
 
-        public int InsertDataToPostgreSQL(MyData data)
+        public void InsertDataToPostgreSQL(MyData data)
         {
             using (var connection = GetPostgresConnection(connectionString))
             {
                 using (var command = new NpgsqlCommand())
                 {
                     command.Connection = connection;
+                    //  задаем текст SQL-команды для выполнения. В данном случае это SQL-запрос на вставку новых данных в таблицу "клиент".
                     command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
                     command.Parameters.AddWithValue("@name", data.Name);
                     command.Parameters.AddWithValue("@adress", data.Adress);
                     command.Parameters.AddWithValue("@phone", data.Phone);
                     command.Parameters.AddWithValue("@requisites", data.Requisites);
                     command.Parameters.AddWithValue("@contact_name", data.ContactPerson);
-
-                    int rowsAffected = command.ExecuteNonQuery();
-                    return rowsAffected;
+                    command.ExecuteNonQuery ();
                 }
             }
         }
+        
+        public DataTable SortById()
+        {
+            string query = "SELECT * FROM \"клиент\" ORDER BY ID ASC;";
+            using (var connection = GetPostgresConnection(connectionString))
+            {
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.FillSchema(dataTable, SchemaType.Source);
+                        adapter.Fill(dataTable);
+                        return dataTable;
+                    }
+                }
+            }
+        }
+
+
+
+
+
     }
 
 

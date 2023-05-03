@@ -1,3 +1,4 @@
-name,adress,phone,requisites,contact_name
-sda,das,asd,asd,sdd
-вфы,ыфв,ффв,вв,ввв
+name,contact_name,phone,adress,requisites
+Филатов А.А.,Филатов А.А,21-94-93,Баргузинская,49
+ИП Мокин,Мокин А.М.,22-31-34,Промышленная, 3
+ООО Сервико,Панкратов Р.Н.,20-21-55,Бабушкина,43

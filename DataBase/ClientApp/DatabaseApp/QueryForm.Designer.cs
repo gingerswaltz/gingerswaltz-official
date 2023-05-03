@@ -50,11 +50,11 @@
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.OkButton_Click);
             // 
-            // label1
+            // labelState
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 20);
-            this.label1.Name = "label1";
+            this.label1.Name = "labelState";
             this.label1.Size = new System.Drawing.Size(50, 15);
             this.label1.TabIndex = 2;
             this.label1.Text = "Запрос:";
