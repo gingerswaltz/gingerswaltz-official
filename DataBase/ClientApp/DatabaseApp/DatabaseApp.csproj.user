@@ -8,6 +8,9 @@
     <Compile Update="AddForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ConnectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="QueryForm.cs">
       <SubType>Form</SubType>
     </Compile>

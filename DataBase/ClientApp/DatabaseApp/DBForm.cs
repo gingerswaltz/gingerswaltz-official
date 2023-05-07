@@ -1,20 +1,26 @@
-// todo: doc
+// Main Form
 using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace DatabaseApp
 {
     public partial class DBForm : Form
     {
-        DBFunc db = new();
+        private DBFunc db;
 
         public DBForm()
         {
             InitializeComponent();
-            KeyPreview = true;
-        }
+            KeyPreview = true; // свойство обработки нажатия клавиш (шорткатов)
 
+        }
+        private void ConnectForm_DbConnectionChanged(object sender, DBFunc db)
+        {
+            // Сохраняем объект db для использования в главной форме
+            this.db = db;
+
+            // Здесь можно выполнить какие-то действия, которые должны произойти при изменении подключения к БД
+        }
         private DataTable GetDataTableFromDataGridView(DataGridView dgv)
         {
             DataTable dt = new DataTable();
@@ -48,16 +54,18 @@ namespace DatabaseApp
         {
             MyData myData = e.Data; // извлечение объекта из делегата
             db.InsertDataToPostgreSQL(myData); // вставляем его в БД
-            setConnect_button_Click(sender, e); // делаем повторный селект и получаем актуальные данные
+            refreshBaseToolStripMenuItem_Click(sender, e);
+
+
         }
 
 
-        // установка первоначального соединения, рефреш данных на гриде
+        // установка первоначального соединения
         private void setConnect_button_Click(object sender, EventArgs e)
         {
-
             try
             {
+                ShowConnectForm();
                 dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
                 DataTable dataTable = db.GetDataFromSQL(); // передаем в объект типа DataTable таблицу из БД 
                 dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
@@ -67,7 +75,7 @@ namespace DatabaseApp
             {
                 SetLabelColor(ex);
                 MessageBox.Show(ex.Message);
-                
+
             }
         }
 
@@ -107,8 +115,8 @@ namespace DatabaseApp
             try
             {
                 var dt = GetDataTableFromDataGridView(dbGridView);
-                db.SaveToCsv(dt, "output.txt");
-                SetLabelColor() ;
+                db.SaveToCsv(dt, "output.csv");
+                SetLabelColor();
             }
             catch (Exception ex)
             {
@@ -118,12 +126,12 @@ namespace DatabaseApp
             }
         }
 
-        private void SetLabelColor(Exception ex=null)
+        private void SetLabelColor(Exception ex = null)
         {
             if (ex == null)
             {
                 labelState.Text = "OK";
-                labelState.BackColor = ColorTranslator.FromHtml("#94d446"); 
+                labelState.BackColor = ColorTranslator.FromHtml("#94d446");
             }
             else
             {
@@ -131,34 +139,44 @@ namespace DatabaseApp
                 labelState.BackColor = ColorTranslator.FromHtml("#c75842");
             }
         }
+        public void ShowSearchResult(List<DataRow> result)
+        {
+            // Очистить выделение в DataGridView
+            dbGridView.ClearSelection();
+
+            // Пройти по каждой строке результата поиска
+            foreach (var row in result)
+            {
+                // Найти строку с данными этой строки в DataGridView
+                var foundRow = dbGridView.Rows.Cast<DataGridViewRow>()
+                    .FirstOrDefault(r => r.Cells["name"].Value.ToString().Equals(row["name"].ToString()));
+
+                // Если строка найдена, переместить ее вверх и покрасить в зеленый цвет
+                if (foundRow != null)
+                {
+                    dbGridView.Rows.Remove(foundRow);
+                    dbGridView.Rows.Insert(0, foundRow);
+                    foundRow.DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+            }
+        }
 
 
         // метод-обработчик события IdEntered, переданным из QueryForm
-        private void InputForm_IdEntered(object sender, int id)
+        private void InputQueryForm_NameEntered(object sender, string name)
         {
-            // Выполнение действий с использованием полученного id
-
             try
             {
-                db.DeleteRecordById(id);
-                
-                // Удаление записи с заданным id из DataGridView
-                foreach (DataGridViewRow row in dbGridView.Rows)
-                {
-                    int rowId = (int)row.Cells["id"].Value;
-                    if (rowId == id)
-                    {
-                        dbGridView.Rows.Remove(row);
-                        break;
-                    }
-                }
+                ShowSearchResult(db.Search(name));
                 SetLabelColor();
+                refreshBaseToolStripMenuItem_Click(sender, new EventArgs());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                SetLabelColor(ex);
                 MessageBox.Show(ex.Message);
+                SetLabelColor(ex);
             }
+
 
         }
 
@@ -171,12 +189,11 @@ namespace DatabaseApp
 
             try
             {
-                db.LoadDataFromCsvToPostgres("output.csv");
-                // MessageBox.Show("Successfully updated grid!");
-                setConnect_button_Click(sender, e);
-                SetLabelColor() ;
+                db.LoadDataFromCsvToPostgres();
+                refreshBaseToolStripMenuItem_Click(sender, e);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 SetLabelColor(ex);
                 MessageBox.Show(ex.Message);
@@ -185,6 +202,12 @@ namespace DatabaseApp
 
         }
 
+        private void ShowConnectForm()
+        {
+            var connectForm = new ConnectForm();
+            connectForm.DbConnectionChanged += ConnectForm_DbConnectionChanged;
+            connectForm.ShowDialog();
+        }
 
 
         private void dbGridView_KeyDown(object sender, KeyEventArgs e)
@@ -223,6 +246,41 @@ namespace DatabaseApp
                 // Вызываем метод сохранения данных
                 saveToToolStripMenuItem_Click(sender, e);
                 e.SuppressKeyPress = true; // Предотвращаем дальнейшую обработку нажатия клавиши
+            }
+            if (e.Control && e.KeyCode == Keys.R)
+            {
+                // Вызываем метод сохранения данных
+                refreshBaseToolStripMenuItem_Click(sender, e);
+                e.SuppressKeyPress = true; // Предотвращаем дальнейшую обработку нажатия клавиши
+            }
+        }
+
+        private void DBForm_Load(object sender, EventArgs e)
+        {
+            ShowConnectForm();
+        }
+
+        private void findDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var queryForm = new InputQueryForm();
+            queryForm.NameEntered += InputQueryForm_NameEntered;
+            queryForm.Show();
+        }
+
+        private void refreshBaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
+                DataTable dataTable = db.GetUpdatedDataFromPostgres(); // передаем в объект типа DataTable таблицу из БД 
+                dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
+                SetLabelColor();
+            }
+            catch (Exception ex)
+            {
+                SetLabelColor(ex);
+                MessageBox.Show(ex.Message);
+
             }
         }
     }

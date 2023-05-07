@@ -18,15 +18,14 @@ namespace DatabaseApp
             InitializeComponent();
         }
 
-        public event EventHandler<int> IdEntered;
+        public event EventHandler<string> NameEntered;
 
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            int id = int.Parse(InputBox_Textbox.Text);
-
-            // Вызываем событие с передачей id
-            IdEntered?.Invoke(this, id);
+            string name = InputBox_Textbox.Text;
+            
+           NameEntered?.Invoke(this, name);
 
             // Закрываем форму
             this.Close();

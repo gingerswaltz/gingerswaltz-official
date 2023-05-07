@@ -90,3 +90,4 @@ C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\DataBase\ClientApp\Databas
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\DataBase\ClientApp\DatabaseApp\obj\Debug\net6.0-windows\DatabaseApp.pdb
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\DataBase\ClientApp\DatabaseApp\obj\Debug\net6.0-windows\DatabaseApp.genruntimeconfig.cache
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\DataBase\ClientApp\DatabaseApp\obj\Debug\net6.0-windows\ref\DatabaseApp.dll
+C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\DataBase\ClientApp\DatabaseApp\obj\Debug\net6.0-windows\DatabaseApp.ConnectForm.resources

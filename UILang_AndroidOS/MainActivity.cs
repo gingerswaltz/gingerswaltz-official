@@ -13,7 +13,7 @@ namespace UILang_AndroidOS
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         TextView textMessage;
-
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,13 +30,14 @@ namespace UILang_AndroidOS
         private void MyButton_Click(object sender, EventArgs e)
         {
             Android.App.AlertDialog.Builder builder = new Android.App.AlertDialog.Builder(this);
-            builder.SetMessage("Капибара?");
+            builder.SetMessage("Показать?");
             bool isCancelPressed = false;
 
+            // лямбда функция --- ???
             builder.SetNegativeButton("Cancel", (sender, args) =>
             {
                 builder.SetCancelable(false);
-                builder.SetMessage("Капибара осуждает вас");
+                builder.SetMessage(" Плохо.");
                 isCancelPressed = true;
                 builder.Show();
             });
@@ -71,12 +72,7 @@ namespace UILang_AndroidOS
                 case Resource.Id.navigation_home:
                     textMessage.SetText(Resource.String.title_home);
                     return true;
-                case Resource.Id.navigation_dashboard:
-                    textMessage.SetText(Resource.String.title_dashboard);
-                    return true;
-                case Resource.Id.navigation_notifications:
-                    textMessage.SetText(Resource.String.title_notifications);
-                    return true;
+                
             }
             return false;
         }

@@ -38,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:textSize="48sp"
         android:fontFamily="serif"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"/>
 
 
 
