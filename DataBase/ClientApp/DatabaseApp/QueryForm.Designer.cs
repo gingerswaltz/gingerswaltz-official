@@ -28,50 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.InputBox_Textbox = new System.Windows.Forms.TextBox();
-            this.buttonOk = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            InputBox_Textbox = new TextBox();
+            buttonOk = new Button();
+            label1 = new Label();
+            SuspendLayout();
             // 
             // InputBox_Textbox
             // 
-            this.InputBox_Textbox.Location = new System.Drawing.Point(12, 38);
-            this.InputBox_Textbox.Name = "InputBox_Textbox";
-            this.InputBox_Textbox.Size = new System.Drawing.Size(208, 23);
-            this.InputBox_Textbox.TabIndex = 0;
+            InputBox_Textbox.Location = new Point(12, 38);
+            InputBox_Textbox.Name = "InputBox_Textbox";
+            InputBox_Textbox.Size = new Size(208, 23);
+            InputBox_Textbox.TabIndex = 0;
             // 
             // buttonOk
             // 
-            this.buttonOk.Location = new System.Drawing.Point(12, 81);
-            this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(208, 37);
-            this.buttonOk.TabIndex = 1;
-            this.buttonOk.Text = "OK";
-            this.buttonOk.UseVisualStyleBackColor = true;
-            this.buttonOk.Click += new System.EventHandler(this.OkButton_Click);
+            buttonOk.Location = new Point(12, 81);
+            buttonOk.Name = "buttonOk";
+            buttonOk.Size = new Size(208, 37);
+            buttonOk.TabIndex = 1;
+            buttonOk.Text = "OK";
+            buttonOk.UseVisualStyleBackColor = true;
+            buttonOk.Click += OkButton_Click;
             // 
-            // labelState
+            // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 20);
-            this.label1.Name = "labelState";
-            this.label1.Size = new System.Drawing.Size(50, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Запрос:";
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 20);
+            label1.Name = "label1";
+            label1.Size = new Size(50, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Запрос:";
             // 
             // InputQueryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 130);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.buttonOk);
-            this.Controls.Add(this.InputBox_Textbox);
-            this.Name = "InputQueryForm";
-            this.Text = "Input Query";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(232, 130);
+            Controls.Add(label1);
+            Controls.Add(buttonOk);
+            Controls.Add(InputBox_Textbox);
+            Name = "InputQueryForm";
+            Text = "Input Name";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

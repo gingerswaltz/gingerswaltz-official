@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cYxITumTGeV8KTbbv5B6Yo+FGOCNjUjNodSEVSbaOhkfofoQKJ5TDKGTq7jzgQAWSdVgfopshxERg4n1Iig5Vw==",
+  "dgSpecHash": "OqAr0J+x9xXIbNOBsj9Iu9Nq09vg2xv+ficAmR+i+5uFHAhciwcX6ytwMrnb4NOeKuB1BjHfQ/FBb0BKhj5M8Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\George\\Desktop\\git_work\\oop2022-gingerswaltz\\DataBase\\ClientApp\\DatabaseApp\\DatabaseApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\George\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\George\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\George\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512",
     "C:\\Users\\George\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\George\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\George\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",

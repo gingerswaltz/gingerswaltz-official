@@ -1,29 +1,48 @@
 ﻿// todo: 
+using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Npgsql; // nuget пакет, позволяющий работать с Postgres
 using System.Data;
-
+using System.Globalization;
+using System.Diagnostics;
 
 namespace DatabaseApp
 {
 
     public class MyData
     {
-        public string Name { get; set; }
-        public string Adress { get; set; }
-        public string Phone { get; set; }
-        public string Requisites { get; set; }
-        public string ContactPerson { get; set; }
-        public int Id { get; set; }
+        public string name { get; set; }
+        public string adress { get; set; }
+        public string phone { get; set; }
+        public string requisites { get; set; }
+        public string contact_name { get; set; }
 
     }
 
 
     public class DBFunc
     {
-        string FilePath1 = "output.csv"; 
+        string FilePath = "output.csv";
 
         string connectionString;
 
+
+        public void SetFilePath(string filePath)
+        {
+            if (!filePath.IsNullOrEmpty())
+            {
+                FilePath = filePath + ".csv";
+            }
+            else FilePath = "output.csv";
+
+        }
+
+
+        public string GetFilePath()
+        {
+            return FilePath;
+        }
         void SetConnectionAdress(string ip, string port, string dbname, string username, string password)
         {
             connectionString = $"Server={ip};Port={port};Database={dbname};User Id={username};Password={password};";
@@ -35,10 +54,9 @@ namespace DatabaseApp
             SetConnectionAdress(ip, port, dbname, username, password);
 
         }
-        public void SaveToCsv(DataTable table, string filePath = "output.csv")
+        public void SaveToCsv(DataTable table)
         {
-            FilePath1 = filePath ;
-            using (var writer = new StreamWriter(filePath))
+            using (var writer = new StreamWriter(FilePath))
             {
                 // Записываем заголовки столбцов в файл
                 foreach (DataColumn column in table.Columns)
@@ -46,7 +64,7 @@ namespace DatabaseApp
                     writer.Write(column.ColumnName);
                     if (column != table.Columns[table.Columns.Count - 1])
                     {
-                        writer.Write(":");
+                        writer.Write(";");
                     }
                 }
                 writer.Write(writer.NewLine);
@@ -59,7 +77,7 @@ namespace DatabaseApp
                         writer.Write(value != null ? value.ToString() : "");
                         if (value != row.ItemArray[row.ItemArray.Length - 1])
                         {
-                            writer.Write(":");
+                            writer.Write(";");
                         }
                     }
                     writer.Write(writer.NewLine);
@@ -76,7 +94,7 @@ namespace DatabaseApp
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-                var command = new NpgsqlCommand($"SELECT * FROM clients WHERE name = '{name}'", connection);
+                var command = new NpgsqlCommand($"SELECT * FROM \"клиент\" WHERE name = '{name}'", connection);
                 var adapter = new NpgsqlDataAdapter(command);
                 var dataTable = new DataTable();
                 adapter.Fill(dataTable);
@@ -98,31 +116,33 @@ namespace DatabaseApp
 
         public void LoadDataFromCsvToPostgres()
         {
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var reader = new StreamReader(FilePath))
             {
-                connection.Open();
-                /// Основная идея using заключается в создании блока кода, внутри которого создаются ресурсы,
-                /// такие как объекты подключения к базе данных, файловые потоки и т.д. 
-                /// После того как блок кода завершается, все созданные ресурсы автоматически освобождаются.
-                using (var command = new NpgsqlCommand())
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
+                    Delimiter = ";",
+                };
+                using (var csv = new CsvReader(reader, config))
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
 
-                    command.Connection = connection;
+                    var records = csv.GetRecords<MyData>(); // MyData - класс, представляющий записи из CSV
+                    foreach (var record in records)
+                    {
+                        var command = new NpgsqlCommand("INSERT INTO \"клиент\" (name, contact_name, phone, adress, requisites) VALUES (@p1, @p2, @p3, @p4, @p5) ON CONFLICT DO NOTHING", connection);
+                        command.Parameters.AddWithValue("@p1", record.name);
+                        command.Parameters.AddWithValue("@p2", record.contact_name);
+                        command.Parameters.AddWithValue("@p3", record.phone);
+                        command.Parameters.AddWithValue("@p4", record.adress);
+                        command.Parameters.AddWithValue("@p5", record.requisites);
 
-                    command.CommandText =
-    $@"CREATE TEMP TABLE temp_client (name text, contact_name text, phone text, adress text, requisites text);
-    COPY temp_client (name, contact_name, phone, adress, requisites) FROM '{Application.StartupPath + FilePath1}' DELIMITER ',' CSV HEADER;
-    INSERT INTO клиент (name, contact_name, phone, adress, requisites) 
-    SELECT t.name, t.contact_name, t.phone, t.adress, t.requisites
-    FROM temp_client t
-    ON CONFLICT DO NOTHING;";
-
-                    command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
+
         }
-
-
 
 
 
@@ -131,6 +151,8 @@ namespace DatabaseApp
             string query = "SELECT * FROM \"клиент\"";
             using (var connection = new NpgsqlConnection(connectionString))
             {
+                connection.Open();
+
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
                     /// NpgsqlDataAdapter это класс в библиотеке Npgsql, который используется для заполнения DataSet или DataTable данными из источника данных PostgreSQL.
@@ -147,8 +169,8 @@ namespace DatabaseApp
             }
         }
 
-        
-        public  DataTable GetUpdatedDataFromPostgres()
+
+        public DataTable GetUpdatedDataFromPostgres()
         {
             var dataTable = new DataTable();
 
@@ -184,16 +206,17 @@ namespace DatabaseApp
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
+                connection.Open();
                 using (var command = new NpgsqlCommand())
                 {
                     command.Connection = connection;
                     //  задаем текст SQL-команды для выполнения. В данном случае это SQL-запрос на вставку новых данных в таблицу "клиент".
                     command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
-                    command.Parameters.AddWithValue("@name", data.Name);
-                    command.Parameters.AddWithValue("@adress", data.Adress);
-                    command.Parameters.AddWithValue("@phone", data.Phone);
-                    command.Parameters.AddWithValue("@requisites", data.Requisites);
-                    command.Parameters.AddWithValue("@contact_name", data.ContactPerson);
+                    command.Parameters.AddWithValue("@name", data.name);
+                    command.Parameters.AddWithValue("@adress", data.adress);
+                    command.Parameters.AddWithValue("@phone", data.phone);
+                    command.Parameters.AddWithValue("@requisites", data.requisites);
+                    command.Parameters.AddWithValue("@contact_name", data.contact_name);
                     command.ExecuteNonQuery();
                 }
             }
@@ -204,6 +227,8 @@ namespace DatabaseApp
             string query = "SELECT * FROM \"клиент\" ORDER BY ID ASC;";
             using (var connection = new NpgsqlConnection(connectionString))
             {
+                connection.Open();
+
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
                     using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
@@ -222,7 +247,9 @@ namespace DatabaseApp
 
 
     }
-
-
 }
+
+
+
+
 

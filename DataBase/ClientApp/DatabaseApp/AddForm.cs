@@ -28,11 +28,11 @@
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             MyData myData = new MyData(); // инициализация объекта
-            myData.Adress = textBox_Adress.Text; // заполнение полей
-            myData.ContactPerson = textBox_Contact.Text;
-            myData.Requisites = textBox_Req.Text;
-            myData.Name = textBox_Arendator.Text;
-            myData.Phone = textBox_Phone.Text;
+            myData.adress = textBox_Adress.Text; // заполнение полей
+            myData.contact_name = textBox_Contact.Text;
+            myData.requisites = textBox_Req.Text;
+            myData.name = textBox_Arendator.Text;
+            myData.phone = textBox_Phone.Text;
             DataEntered?.Invoke(this, new MyDataEventArgs(myData)); // объект myData передастся через событие MainForm.DataEntered через метод Invoke 
         }
     }

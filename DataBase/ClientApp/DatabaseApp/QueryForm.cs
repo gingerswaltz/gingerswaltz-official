@@ -24,8 +24,8 @@ namespace DatabaseApp
         private void OkButton_Click(object sender, EventArgs e)
         {
             string name = InputBox_Textbox.Text;
-            
-           NameEntered?.Invoke(this, name);
+
+            NameEntered?.Invoke(this, name);
 
             // Закрываем форму
             this.Close();

@@ -1,13 +1,14 @@
 // Main Form
+using Microsoft.VisualBasic;
 using System.Data;
-using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DatabaseApp
 {
     public partial class DBForm : Form
     {
-        private DBFunc db;
-
+        private DBFunc db; // объект базы данных без инициализации (просто указатель)
+        System.Windows.Forms.Timer autosaveTimer; // указатель на объект таймера
         public DBForm()
         {
             InitializeComponent();
@@ -18,9 +19,10 @@ namespace DatabaseApp
         {
             // Сохраняем объект db для использования в главной форме
             this.db = db;
-
-            // Здесь можно выполнить какие-то действия, которые должны произойти при изменении подключения к БД
+            refreshBaseToolStripMenuItem_Click(sender, new EventArgs());
         }
+
+        // парсим данные из таблицы
         private DataTable GetDataTableFromDataGridView(DataGridView dgv)
         {
             DataTable dt = new DataTable();
@@ -70,6 +72,7 @@ namespace DatabaseApp
                 DataTable dataTable = db.GetDataFromSQL(); // передаем в объект типа DataTable таблицу из БД 
                 dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
                 SetLabelColor();
+                refreshBaseToolStripMenuItem_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -114,8 +117,10 @@ namespace DatabaseApp
 
             try
             {
+                db.SetFilePath(Interaction.InputBox("Введите имя файла для сохранения:", "Имя файла", ""));
+                MessageBox.Show($"Данные сохранены в {Application.StartupPath}");
                 var dt = GetDataTableFromDataGridView(dbGridView);
-                db.SaveToCsv(dt, "output.csv");
+                db.SaveToCsv(dt);
                 SetLabelColor();
             }
             catch (Exception ex)
@@ -126,6 +131,9 @@ namespace DatabaseApp
             }
         }
 
+
+
+        // окрас состояния БД в красный или зеленый цвет
         private void SetLabelColor(Exception ex = null)
         {
             if (ex == null)
@@ -148,28 +156,29 @@ namespace DatabaseApp
             foreach (var row in result)
             {
                 // Найти строку с данными этой строки в DataGridView
-                var foundRow = dbGridView.Rows.Cast<DataGridViewRow>()
-                    .FirstOrDefault(r => r.Cells["name"].Value.ToString().Equals(row["name"].ToString()));
+                var index = dbGridView.Rows.Cast<DataGridViewRow>()
+                    .ToList()
+                    .FindIndex(r => r.Cells["name"].Value.ToString().Equals(row["name"].ToString(), StringComparison.OrdinalIgnoreCase));
 
                 // Если строка найдена, переместить ее вверх и покрасить в зеленый цвет
-                if (foundRow != null)
+                if (index >= 0)
                 {
-                    dbGridView.Rows.Remove(foundRow);
-                    dbGridView.Rows.Insert(0, foundRow);
-                    foundRow.DefaultCellStyle.BackColor = Color.LightGreen;
+                    dbGridView.Rows[index].DefaultCellStyle.BackColor = Color.LightGreen;
                 }
             }
+
+            dbGridView.Refresh();
         }
 
 
-        // метод-обработчик события IdEntered, переданным из QueryForm
+
+        // метод-обработчик события NameEntered, переданным из QueryForm
         private void InputQueryForm_NameEntered(object sender, string name)
         {
             try
             {
                 ShowSearchResult(db.Search(name));
                 SetLabelColor();
-                refreshBaseToolStripMenuItem_Click(sender, new EventArgs());
             }
             catch (Exception ex)
             {
@@ -183,14 +192,20 @@ namespace DatabaseApp
 
 
 
-
+        // загрузка данных из файла
         private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
 
             try
             {
-                db.LoadDataFromCsvToPostgres();
-                refreshBaseToolStripMenuItem_Click(sender, e);
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    db.SetFilePath(Path.GetFileNameWithoutExtension(openFileDialog.FileName));
+                    db.LoadDataFromCsvToPostgres();
+                    refreshBaseToolStripMenuItem_Click(sender, e);
+                }
+
             }
             catch (Exception ex)
             {
@@ -202,6 +217,7 @@ namespace DatabaseApp
 
         }
 
+        // метод открытия формы для подключения к бд
         private void ShowConnectForm()
         {
             var connectForm = new ConnectForm();
@@ -210,35 +226,30 @@ namespace DatabaseApp
         }
 
 
+        // обработка нажатия клавиши Delete в таблице
         private void dbGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                DataGridViewCell selectedCell = dbGridView.CurrentCell;
-                if (selectedCell != null)
+                DataGridViewCell selectedCell = dbGridView.CurrentCell; // выделенная строка
+                if (selectedCell != null) // если выбрана
                 {
-                    int rowIndex = selectedCell.RowIndex;
+                    int rowIndex = selectedCell.RowIndex; // получаем индексы строки и столбца выделенныъ
                     int columnIndex = selectedCell.ColumnIndex;
-                    if (columnIndex == dbGridView.Columns["Id"].Index)
+                    if (columnIndex == dbGridView.Columns["Id"].Index) // берём оттуда айдишник
                     {
-                        int id = Convert.ToInt32(selectedCell.Value);
-                        db.DeleteRecordById(id);
-                        dbGridView.Rows.RemoveAt(rowIndex);
+                        int id = Convert.ToInt32(selectedCell.Value); // парсим его в Int
+                        db.DeleteRecordById(id); // удаляем из БД по айди
+                        dbGridView.Rows.RemoveAt(rowIndex); // удаляем эту строку
                     }
                 }
             }
         }
 
 
+        
 
-        private void dbGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 0)
-            {
-                dbGridView.DataSource = db.SortById();
-            }
-        }
-
+        // шорткаты
         private void DBForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)
@@ -249,29 +260,64 @@ namespace DatabaseApp
             }
             if (e.Control && e.KeyCode == Keys.R)
             {
-                // Вызываем метод сохранения данных
+                // Вызываем метод обновления
                 refreshBaseToolStripMenuItem_Click(sender, e);
+                e.SuppressKeyPress = true; // Предотвращаем дальнейшую обработку нажатия клавиши
+            }
+            if (e.Control && e.KeyCode == Keys.T)
+            {
+                // Вызываем метод добавления данных
+                addDataToolStripMenuItem_Click(sender, e);
                 e.SuppressKeyPress = true; // Предотвращаем дальнейшую обработку нажатия клавиши
             }
         }
 
+
+        // на щагрузке формы
         private void DBForm_Load(object sender, EventArgs e)
         {
-            ShowConnectForm();
+            ShowConnectForm(); // показать форму подключения
+
+            // Создание таймера и настройка интервала на 3 минуты (180000 миллисекунд)
+            autosaveTimer = new System.Windows.Forms.Timer();
+            autosaveTimer.Interval = 180000; // 3 минуты
+            autosaveTimer.Tick += AutosaveTimer_Tick;
+            autosaveTimer.Start();
         }
+        private void AutosaveTimer_Tick(object sender, EventArgs e)
+        {
+            // Вызов метода сохранения
+            try
+            {
+                var dt = GetDataTableFromDataGridView(dbGridView);
+                db.SaveToCsv(dt);
+                // Отображение сообщения об успешном сохранении в Label
+                labelState.Text = $"Saved at {DateTime.Now}";
+                labelState.BackColor = ColorTranslator.FromHtml("#94d446");
+            }
+            catch (Exception ex)
+            { SetLabelColor(ex); }
+
+
+        }
+
 
         private void findDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var queryForm = new InputQueryForm();
-            queryForm.NameEntered += InputQueryForm_NameEntered;
-            queryForm.Show();
+            refreshBaseToolStripMenuItem_Click(sender, e);
+            var queryForm = new InputQueryForm(); // показываем форму запроса
+            queryForm.NameEntered += InputQueryForm_NameEntered; // начинаем слушать имя с формы
+            queryForm.Show(); // показываем форму
         }
 
+        // обновление данных в табл
         private void refreshBaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
+                dbGridView.ClearSelection(); // убираем выделения строк
                 dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
+                dbGridView.AutoSize = true;  // автоподгонка размеров
                 DataTable dataTable = db.GetUpdatedDataFromPostgres(); // передаем в объект типа DataTable таблицу из БД 
                 dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
                 SetLabelColor();
@@ -281,6 +327,32 @@ namespace DatabaseApp
                 SetLabelColor(ex);
                 MessageBox.Show(ex.Message);
 
+            }
+        }
+
+        // на закрытии формы
+        private void DBForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            autosaveTimer.Stop(); // остановка таймера
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            
+            try
+            {
+                string pdfFilePath = "helper.pdf";
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = pdfFilePath;
+                psi.UseShellExecute = true;
+                Process.Start(psi);
+                SetLabelColor() ;
+
+            } catch(Exception ex)   
+            {
+                MessageBox.Show(ex.Message);
+                SetLabelColor();
             }
         }
     }

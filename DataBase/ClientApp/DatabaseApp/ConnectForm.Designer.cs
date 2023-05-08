@@ -82,7 +82,7 @@
             buttonSet.Name = "buttonSet";
             buttonSet.Size = new Size(100, 49);
             buttonSet.TabIndex = 5;
-            buttonSet.Text = "Set Adress";
+            buttonSet.Text = "Set adress";
             buttonSet.UseVisualStyleBackColor = true;
             buttonSet.Click += buttonSet_Click;
             // 
@@ -111,7 +111,7 @@
             label_DB.Name = "label_DB";
             label_DB.Size = new Size(57, 15);
             label_DB.TabIndex = 8;
-            label_DB.Text = "DB Name";
+            label_DB.Text = "DB name";
             // 
             // label_Username
             // 
