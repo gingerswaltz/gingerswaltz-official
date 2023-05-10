@@ -9,7 +9,7 @@
   <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="33" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <application android:name="android.app.Application" android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:debuggable="true" android:extractNativeLibs="true" android:icon="@mipmap/ic_launcher_round" android:label="USD To RUB Currency" android:supportsRtl="true" android:theme="@style/AppTheme">
+  <application android:name="android.app.Application" android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:debuggable="true" android:extractNativeLibs="true" android:icon="@drawable/usd26" android:label="USD To RUB Currency" android:supportsRtl="true" android:theme="@style/AppTheme">
     <activity android:name="crc645dda14cb5975636d.MainActivity" android:exported="true" android:label="@string/app_name" android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

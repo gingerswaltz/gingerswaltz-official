@@ -338,3 +338,4 @@ C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\CurrencyExchange_Android\o
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\CurrencyExchange_Android\obj\Debug\130\stamp\_GenerateJavaStubs.stamp
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\CurrencyExchange_Android\obj\Debug\130\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\CurrencyExchange_Android\obj\Debug\130\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\George\Desktop\git_work\oop2022-gingerswaltz\CurrencyExchange_Android\obj\Debug\130\res\drawable\icon.png
