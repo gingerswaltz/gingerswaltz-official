@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace DatabaseApp
 {
 
-    public class MyData
+    public class ClientData
     {
         public string name { get; set; }
         public string adress { get; set; }
@@ -127,7 +127,7 @@ namespace DatabaseApp
                 {
                     connection.Open();
 
-                    var records = csv.GetRecords<MyData>(); // MyData - класс, представляющий записи из CSV
+                    var records = csv.GetRecords<ClientData>(); // ClientData - класс, представляющий записи из CSV
                     foreach (var record in records)
                     {
                         var command = new NpgsqlCommand("INSERT INTO \"клиент\" (name, contact_name, phone, adress, requisites) VALUES (@p1, @p2, @p3, @p4, @p5) ON CONFLICT DO NOTHING", connection);
@@ -202,7 +202,7 @@ namespace DatabaseApp
             }
         }
 
-        public void InsertDataToPostgreSQL(MyData data)
+        public void InsertDataToPostgreSQL(ClientData data)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {

@@ -1,4 +1,4 @@
-// Main Form
+/// AUTHOR: GEORGE PURTOV
 using Microsoft.VisualBasic;
 using System.Data;
 using System.Diagnostics;
@@ -55,7 +55,7 @@ namespace DatabaseApp
         // sender - объект, инициировавший событие, e - объект типа MyDataEventArgs, в который мы передаем объект myData
         private void InputForm_DataEntered(object sender, InputForm.MyDataEventArgs e)
         {
-            MyData myData = e.Data; // извлечение объекта из делегата
+            ClientData myData = e.Data; // извлечение объекта из делегата
             db.InsertDataToPostgreSQL(myData); // вставляем его в БД
             refreshBaseToolStripMenuItem_Click(sender, e);
 

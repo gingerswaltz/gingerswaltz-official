@@ -1,4 +1,6 @@
-﻿namespace DatabaseApp
+﻿/// AUTHOR: GEORGE PURTOV
+
+namespace DatabaseApp
 {
     public partial class ConnectForm : Form
     {

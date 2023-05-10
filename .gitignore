@@ -9,3 +9,4 @@ ChatBot/bin/Debug/net6.0-windows/file.jpg
 *.vsidx
 ChatBot/bin/Debug/net6.0-windows/file
 *.lock
+*.dtmp

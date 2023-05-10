@@ -1,4 +1,6 @@
-﻿namespace DatabaseApp
+﻿/// AUTHOR: GEORGE PURTOV
+
+namespace DatabaseApp
 {
     public partial class InputForm : Form
     {
@@ -9,8 +11,8 @@
         // класс, наследующийся от EventArgs, используется для передачи данных меж формами
         public class MyDataEventArgs : EventArgs
         {
-            public MyData Data { get; set; }
-            public MyDataEventArgs(MyData data)
+            public ClientData Data { get; set; }
+            public MyDataEventArgs(ClientData data)
             {
                 Data = data;
             }
@@ -27,7 +29,7 @@
         // обработчик события нажатия кнопки Add
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            MyData myData = new MyData(); // инициализация объекта
+            ClientData myData = new ClientData(); // инициализация объекта
             myData.adress = textBox_Adress.Text; // заполнение полей
             myData.contact_name = textBox_Contact.Text;
             myData.requisites = textBox_Req.Text;
