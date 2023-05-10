@@ -9,6 +9,7 @@ namespace DatabaseApp
     {
         private DBFunc db; // объект базы данных без инициализации (просто указатель)
         System.Windows.Forms.Timer autosaveTimer; // указатель на объект таймера
+        const string pdfFilePath = "helper.pdf"; // хелпер для юзера
         public DBForm()
         {
             InitializeComponent();
@@ -45,7 +46,7 @@ namespace DatabaseApp
                 dt.Rows.Add(dr);
             }
 
-            return dt;
+            return dt;      // вернем объект DataTable
         }
 
 
@@ -67,17 +68,17 @@ namespace DatabaseApp
         {
             try
             {
-                ShowConnectForm();
+                ShowConnectForm();                     // показать форму подключения
                 dbGridView.AutoGenerateColumns = true; // установить свойство AutoGenerateColumns в true
                 DataTable dataTable = db.GetDataFromSQL(); // передаем в объект типа DataTable таблицу из БД 
                 dbGridView.DataSource = dataTable; // установим источник данных грида - таблица из БД
-                SetLabelColor();
-                refreshBaseToolStripMenuItem_Click(sender, e);
+                SetLabelColor();                  // окрас в зеленый
+                refreshBaseToolStripMenuItem_Click(sender, e); // обновить бд
             }
             catch (Exception ex)
             {
-                SetLabelColor(ex);
-                MessageBox.Show(ex.Message);
+                SetLabelColor(ex);          // окрас в красный
+                MessageBox.Show(ex.Message);// покажем сообщение об ошибке
 
             }
         }
@@ -117,16 +118,16 @@ namespace DatabaseApp
 
             try
             {
-                db.SetFilePath(Interaction.InputBox("Введите имя файла для сохранения:", "Имя файла", ""));
-                MessageBox.Show($"Данные сохранены в {Application.StartupPath}");
-                var dt = GetDataTableFromDataGridView(dbGridView);
-                db.SaveToCsv(dt);
-                SetLabelColor();
+                db.SetFilePath(Interaction.InputBox("Введите имя файла для сохранения:", "Имя файла", "")); // задаем имя файла
+                toolStripStatusLabel1.Text = $"Данные сохранены в {Application.StartupPath}";  // выводим в статуслейбл куда сохранили
+                var dt = GetDataTableFromDataGridView(dbGridView); // считываем данные с datagridview
+                db.SaveToCsv(dt); // сохраняем в csv
+                SetLabelColor(); // окрашиваем статус бд в зеленый
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                SetLabelColor(ex);
+                MessageBox.Show(ex.Message); // покажем сообщение об ошибке
+                SetLabelColor(ex);           // окрасим статус бд в красный
 
             }
         }
@@ -136,17 +137,19 @@ namespace DatabaseApp
         // окрас состояния БД в красный или зеленый цвет
         private void SetLabelColor(Exception ex = null)
         {
-            if (ex == null)
+            if (ex == null) // если  исключения не было
             {
-                labelState.Text = "OK";
-                labelState.BackColor = ColorTranslator.FromHtml("#94d446");
+                labelState.Text = "OK"; // скажем что с бд всё  в порядке
+                labelState.BackColor = ColorTranslator.FromHtml("#94d446"); // окрасим в зеленый
             }
             else
             {
-                labelState.Text = "NOT OK";
-                labelState.BackColor = ColorTranslator.FromHtml("#c75842");
+                labelState.Text = "NOT OK"; // скажем что с бд не всё хорошо
+                labelState.BackColor = ColorTranslator.FromHtml("#c75842"); // окрасим в красный
             }
         }
+
+        // метод окраса в зелёный цвет найденных совпадений
         public void ShowSearchResult(List<DataRow> result)
         {
             // Очистить выделение в DataGridView
@@ -177,13 +180,13 @@ namespace DatabaseApp
         {
             try
             {
-                ShowSearchResult(db.Search(name));
+                ShowSearchResult(db.Search(name)); // в метод окраса рез-тов поиска закинем результаты, полученные из метода поиска по бд
                 SetLabelColor();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                SetLabelColor(ex);
+                MessageBox.Show(ex.Message); // покажем сообщение об ошибке
+                SetLabelColor(ex);           // окрас в красный
             }
 
 
@@ -195,23 +198,26 @@ namespace DatabaseApp
         // загрузка данных из файла
         private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog(); // инициализируем opendialog
 
             try
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (openFileDialog.ShowDialog() == DialogResult.OK) // если выбрали файл
                 {
-                    db.SetFilePath(Path.GetFileNameWithoutExtension(openFileDialog.FileName));
-                    db.LoadDataFromCsvToPostgres();
-                    refreshBaseToolStripMenuItem_Click(sender, e);
+                    db.SetFilePath(Path.GetFileNameWithoutExtension(openFileDialog.FileName)); // получим его имя
+                    db.LoadDataFromCsvToPostgres(); // загрузим данные
+                    refreshBaseToolStripMenuItem_Click(sender, e); // обновим бд
+                } else {
+                   
+                    refreshBaseToolStripMenuItem_Click(sender, e); // просто обновим бд
                 }
 
             }
             catch (Exception ex)
             {
 
-                SetLabelColor(ex);
-                MessageBox.Show(ex.Message);
+                SetLabelColor(ex);          // окрас в красный цвет
+                MessageBox.Show(ex.Message);// покажем сообщение об ошибке
             }
 
 
@@ -220,9 +226,9 @@ namespace DatabaseApp
         // метод открытия формы для подключения к бд
         private void ShowConnectForm()
         {
-            var connectForm = new ConnectForm();
-            connectForm.DbConnectionChanged += ConnectForm_DbConnectionChanged;
-            connectForm.ShowDialog();
+            var connectForm = new ConnectForm(); // создаем форму коннекта
+            connectForm.DbConnectionChanged += ConnectForm_DbConnectionChanged; // подпись на делегата
+            connectForm.ShowDialog();   // показываем форму
         }
 
 
@@ -247,7 +253,7 @@ namespace DatabaseApp
         }
 
 
-        
+
 
         // шорткаты
         private void DBForm_KeyDown(object sender, KeyEventArgs e)
@@ -284,27 +290,29 @@ namespace DatabaseApp
             autosaveTimer.Tick += AutosaveTimer_Tick;
             autosaveTimer.Start();
         }
+        
+        // метод автосохранения
         private void AutosaveTimer_Tick(object sender, EventArgs e)
         {
             // Вызов метода сохранения
             try
             {
-                var dt = GetDataTableFromDataGridView(dbGridView);
-                db.SaveToCsv(dt);
+                var dt = GetDataTableFromDataGridView(dbGridView); // получаем таблицу datagridview
+                db.SaveToCsv(dt); // сохраняем бд
                 // Отображение сообщения об успешном сохранении в Label
-                labelState.Text = $"Saved at {DateTime.Now}";
-                labelState.BackColor = ColorTranslator.FromHtml("#94d446");
+                toolStripStatusLabel1.Text = $"Autosaved at {DateTime.Now}";
+                toolStripStatusLabel1.BackColor = ColorTranslator.FromHtml("#94d446");
             }
             catch (Exception ex)
-            { SetLabelColor(ex); }
+            { SetLabelColor(ex); } // окрас в красный
 
 
         }
 
-
+        // метод поиска данных
         private void findDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            refreshBaseToolStripMenuItem_Click(sender, e);
+            refreshBaseToolStripMenuItem_Click(sender, e); // обновим данные
             var queryForm = new InputQueryForm(); // показываем форму запроса
             queryForm.NameEntered += InputQueryForm_NameEntered; // начинаем слушать имя с формы
             queryForm.Show(); // показываем форму
@@ -324,8 +332,8 @@ namespace DatabaseApp
             }
             catch (Exception ex)
             {
-                SetLabelColor(ex);
-                MessageBox.Show(ex.Message);
+                SetLabelColor(ex);           // окрас в красный
+                MessageBox.Show(ex.Message); // покажем сообщение об ошибке
 
             }
         }
@@ -336,23 +344,23 @@ namespace DatabaseApp
             autosaveTimer.Stop(); // остановка таймера
         }
 
+        // метод вызова хелпера
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            
             try
             {
-                string pdfFilePath = "helper.pdf";
-                ProcessStartInfo psi = new ProcessStartInfo();
-                psi.FileName = pdfFilePath;
-                psi.UseShellExecute = true;
-                Process.Start(psi);
-                SetLabelColor() ;
+              
+                ProcessStartInfo psi = new ProcessStartInfo(); // объект исполнения процессов
+                psi.FileName = pdfFilePath; // передаём имя файла который хотим открыть
+                psi.UseShellExecute = true; // разрешаем открывать программой по умолчанию для данного формата файлов
+                Process.Start(psi); // открываем файл
+                SetLabelColor();    // окрасим лейбл в зеленый
 
-            } catch(Exception ex)   
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                SetLabelColor();
+                MessageBox.Show(ex.Message); // покажем сообщение об ошибке
+                SetLabelColor();             // окрас в красный
             }
         }
     }

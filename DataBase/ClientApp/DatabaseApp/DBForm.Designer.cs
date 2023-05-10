@@ -37,11 +37,14 @@
             saveToToolStripMenuItem = new ToolStripMenuItem();
             loadDataToolStripMenuItem = new ToolStripMenuItem();
             findDataToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             labelState = new Label();
-            helpToolStripMenuItem = new ToolStripMenuItem();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)dbGridView).BeginInit();
             menuStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // dbGridView
@@ -79,44 +82,51 @@
             // setConnectionToolStripMenuItem
             // 
             setConnectionToolStripMenuItem.Name = "setConnectionToolStripMenuItem";
-            setConnectionToolStripMenuItem.Size = new Size(180, 22);
+            setConnectionToolStripMenuItem.Size = new Size(155, 22);
             setConnectionToolStripMenuItem.Text = "Set Connection";
             setConnectionToolStripMenuItem.Click += setConnect_button_Click;
             // 
             // refreshBaseToolStripMenuItem
             // 
             refreshBaseToolStripMenuItem.Name = "refreshBaseToolStripMenuItem";
-            refreshBaseToolStripMenuItem.Size = new Size(180, 22);
+            refreshBaseToolStripMenuItem.Size = new Size(155, 22);
             refreshBaseToolStripMenuItem.Text = "Refresh Base";
             refreshBaseToolStripMenuItem.Click += refreshBaseToolStripMenuItem_Click;
             // 
             // addDataToolStripMenuItem
             // 
             addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
-            addDataToolStripMenuItem.Size = new Size(180, 22);
+            addDataToolStripMenuItem.Size = new Size(155, 22);
             addDataToolStripMenuItem.Text = "Add data";
             addDataToolStripMenuItem.Click += addDataToolStripMenuItem_Click;
             // 
             // saveToToolStripMenuItem
             // 
             saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
-            saveToToolStripMenuItem.Size = new Size(180, 22);
+            saveToToolStripMenuItem.Size = new Size(155, 22);
             saveToToolStripMenuItem.Text = "Save data";
             saveToToolStripMenuItem.Click += saveToToolStripMenuItem_Click;
             // 
             // loadDataToolStripMenuItem
             // 
             loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
-            loadDataToolStripMenuItem.Size = new Size(180, 22);
+            loadDataToolStripMenuItem.Size = new Size(155, 22);
             loadDataToolStripMenuItem.Text = "Load data";
             loadDataToolStripMenuItem.Click += loadDataToolStripMenuItem_Click;
             // 
             // findDataToolStripMenuItem
             // 
             findDataToolStripMenuItem.Name = "findDataToolStripMenuItem";
-            findDataToolStripMenuItem.Size = new Size(180, 22);
+            findDataToolStripMenuItem.Size = new Size(155, 22);
             findDataToolStripMenuItem.Text = "Find name";
             findDataToolStripMenuItem.Click += findDataToolStripMenuItem_Click;
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new Size(44, 20);
+            helpToolStripMenuItem.Text = "Help";
+            helpToolStripMenuItem.Click += helpToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
@@ -140,12 +150,20 @@
             labelState.Text = "Состояние БД";
             labelState.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // helpToolStripMenuItem
+            // statusStrip1
             // 
-            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new Size(44, 20);
-            helpToolStripMenuItem.Text = "Help";
-            helpToolStripMenuItem.Click += helpToolStripMenuItem_Click;
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
+            statusStrip1.Location = new Point(0, 357);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(732, 22);
+            statusStrip1.TabIndex = 4;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.BackColor = Color.Lavender;
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(0, 17);
             // 
             // DBForm
             // 
@@ -153,6 +171,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.CornflowerBlue;
             ClientSize = new Size(732, 379);
+            Controls.Add(statusStrip1);
             Controls.Add(labelState);
             Controls.Add(menuStrip1);
             Controls.Add(dbGridView);
@@ -166,6 +185,8 @@
             ((System.ComponentModel.ISupportInitialize)dbGridView).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -184,5 +205,7 @@
         private ToolStripMenuItem setConnectionToolStripMenuItem;
         private ToolStripMenuItem refreshBaseToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
