@@ -26,6 +26,7 @@ private slots:
     void on_pushButton_clicked();
     void onChangeColor();
 
+    /// для сигналов тело метода не нужно.
 signals:
     void signalForm(QString);
     void changeColor();

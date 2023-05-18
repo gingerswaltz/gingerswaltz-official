@@ -1,18 +1,23 @@
 1) Получить список торговых площадей, на которые не заключен договор аренда на заданную дату. Для каждой такой торговой площади получить список клиентов в виде массива, заключавших договор аренды ранее заданной даты.
 --задание1
 
-SELECT DISTINCT t.id AS point, c.name AS client, d.id as "номер договора"
+SELECT 
+    t.id AS point, 
+    ARRAY_AGG(c.name) AS clients, 
+    ARRAY_AGG(d.id) AS "номер договора"
 FROM public."клиент" c
 JOIN public."договор" d ON c.id = d.id_клиент
-JOIN public."точка" t ON d.id_точка = t.id
+RIGHT JOIN public."точка" t ON d.id_точка = t.id
 LEFT JOIN (
-SELECT d2.id_точка, COUNT(*) OVER (PARTITION BY d2.id_точка) AS num_contracts
-FROM public."договор" d2
-WHERE d2.end_rent >= '2023-10-06' AND d2.begin_rent <= '2023-10-06'
+    SELECT d2.id_точка, COUNT(*) OVER (PARTITION BY d2.id_точка) AS num_contracts
+    FROM public."договор" d2
+    WHERE d2.end_rent >= '2023-10-06' AND d2.begin_rent <= '2023-10-06'
 ) sub ON t.id = sub.id_точка
 WHERE (sub.num_contracts IS NULL OR sub.num_contracts = 0)
-AND d.end_rent <= '2023-10-06'
-AND d.begin_rent <= '2023-10-06';
+    AND (d.end_rent <= '2023-10-06' OR d.id IS NULL)
+    AND (d.begin_rent <= '2023-10-06' OR d.id IS NULL)
+GROUP BY t.id;
+
 
 2) Получить список клиентов с открытыми договорами аренда на заданную дату.
  Для каждого клиента указать сумму, которою он должен оплатить с момента заключения договора аренды по заданную дату, а также сумму фактической платы аренды на заданную дату.
@@ -46,9 +51,7 @@ GROUP BY c.name, o.payment, d.id, p.price_day, o.month, d.begin_rent;
 3) Получить прибыль торгового центра по месяцам заданного года. Для каждого месяца указать клиента, внесшего максимальный вклад в прибыль.
 
 
- CREATE TEMPORARY TABLE months AS
- SELECT generate_series(1,12) AS month;
-
+ 
 
 WITH monthly_payments AS (
   SELECT 
@@ -66,15 +69,13 @@ WITH monthly_payments AS (
 SELECT 
   mp2.client_name AS max_payment_client,
   mp.month, 
-  mp.client_id,
-  mp.client_name,
   mp.total_payments
-  
 FROM 
   monthly_payments mp
-  LEFT JOIN monthly_payments mp2 ON mp.month = mp2.month AND mp2.row_number = 1
-ORDER BY 
-  mp.month;
+LEFT JOIN monthly_payments mp2 ON mp.month = mp2.month AND mp2.row_number = 1
+WHERE mp.row_number = 1
+ORDER BY mp.month;
+
 
 
 

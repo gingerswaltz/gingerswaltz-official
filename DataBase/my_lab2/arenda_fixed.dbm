@@ -35,9 +35,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 	<initial-data>
 <![CDATA[floor•square•conditioner•price_day•id⸣
-1•200•true•500•1⸣
-2•350•false•450•2⸣
-1•400•true•700•3]]>
+1•200•True•500•1⸣
+2•350•False•450•2⸣
+1•400•True•700•3⸣
+3•500•True•650•4⸣
+2•145•False•150•5]]>
 	</initial-data>
 </table>
 
@@ -101,9 +103,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="точка_fk" index="2"/>
 	</customidxs>
 	<initial-data>
-<![CDATA[end_rent•id_клиент•id•begin_rent•id_точка⸣
-17.09.2023•1•1•08.04.2023•1⸣
-08.04.2024•2•2•08.04.2023•2]]>
+<![CDATA[id•"id_клиент"•begin_rent•end_rent•"id_точка"⸣
+1•1•"2023-04-08"•"2023-09-17"•1⸣
+2•2•"2023-04-08"•"2024-04-08"•3⸣
+3•1•"2023-10-06"•"2023-10-08"•1⸣
+4•3•"2023-04-08"•"2023-10-07"•4⸣
+5•2•"2022-04-08"•"2022-12-04"•2⸣
+6•3•"2022-08-05"•"2022-09-05"•3⸣
+7•2•"2025-04-09"•"2025-05-01"•1]]>
 	</initial-data>
 </table>
 
@@ -161,8 +168,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="договор_fk" index="1"/>
 	</customidxs>
 	<initial-data>
-<![CDATA[month•year•payment•id•id_договор⸣
-1•2023•15000•1•1]]>
+<![CDATA[id•id_договор•payment•month•year⸣
+1•1•15000•1•2023⸣
+2•5•45000•5•2022⸣
+3•6•60000•11•2022⸣
+4•5•19000•6•2022⸣
+5•6•5000•5•2022⸣
+6•6•30000•6•2022⸣
+7•2•35000•5•2023⸣
+8•2•41000•1•2024⸣
+9•2•30000•2•2024⸣
+10•1•5000•6•2023]]>
 	</initial-data>
 </table>
 

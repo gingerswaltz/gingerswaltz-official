@@ -31,6 +31,7 @@ void Form::on_pushButton_clicked()
     // Вызываем новый сигнал "changeColor()"
         emit changeColor();
 
+
 }
 
 /// генерация рандомного цвета
