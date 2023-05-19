@@ -49,6 +49,8 @@ GROUP BY c.name, o.payment, d.id, p.price_day, o.month, d.begin_rent;
 
 3) Получить прибыль торгового центра по месяцам заданного года. Для каждого месяца указать клиента, внесшего максимальный вклад в прибыль.
 
+ CREATE TEMPORARY TABLE months AS
+ SELECT generate_series(1,12) AS month;
 
 WITH monthly_payments AS (
   SELECT 
