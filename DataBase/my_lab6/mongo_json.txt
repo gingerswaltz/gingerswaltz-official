@@ -1,0 +1,129 @@
+db.createCollection("клиент", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["name", "contact_name", "phone"],
+         properties: {
+            id: {
+               bsonType: "objectId"
+            },
+            name: {
+               bsonType: "string",
+               description: "Имя клиента"
+            },
+            contact_name: {
+               bsonType: "string",
+               description: "Контактное лицо клиента"
+            },
+            phone: {
+               bsonType: "string",
+               pattern: "^[0-9-+()]+$",
+               description: "Телефон клиента"
+            },
+            adress: {
+               bsonType: "string",
+               description: "Адрес клиента"
+            },
+            requisites: {
+               bsonType: "string",
+               description: "Реквизиты клиента"
+            }
+         }
+      }
+   }
+})
+
+
+db.createCollection("оплата", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "id_договор", "payment", "month", "year" ],
+         properties: {
+            id: {
+               bsonType: "objectId",
+               description: "Уникальный идентификатор оплаты"
+            },
+            id_договор: {
+               bsonType: "int",
+               minimum: 1,
+               description: "Уникальный идентификатор договора"
+            },
+            payment: {
+               bsonType: "decimal",
+               minimum: 0,
+               description: "Сумма оплаты"
+            },
+            month: {
+               bsonType: "decimal",
+               minimum: 1,
+               maximum: 12,
+               description: "Месяц оплаты"
+            },
+            year: {
+               bsonType: "decimal",
+               minimum: 2000,
+               maximum: 3000,
+               description: "Год оплаты"
+            }
+         }
+      }
+   }
+});
+
+
+db.createCollection("договор", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["id_клиент", "end_rent", "id_точка"],
+      properties: {
+        id: {
+          bsonType: "objectId"
+        },
+        id_клиент: {
+          bsonType: "int"
+        },
+        begin_rent: {
+          bsonType: "date"
+        },
+        end_rent: {
+          bsonType: "date"
+        },
+        id_точка: {
+          bsonType: "int"
+        }
+      }
+    }
+  }
+})
+
+db.createCollection("точка", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "floor", "square", "price_day" ],
+         properties: {
+            floor: {
+               bsonType: "int",
+               minimum: 0,
+               description: "must be a positive integer"
+            },
+            square: {
+               bsonType: "int",
+               minimum: 0,
+               description: "must be a positive integer"
+            },
+            conditioner: {
+               bsonType: "bool",
+               description: "must be a boolean"
+            },
+            price_day: {
+               bsonType: "decimal",
+               minimum: 0,
+               description: "must be a positive decimal"
+            }
+         }
+      }
+   }
+})

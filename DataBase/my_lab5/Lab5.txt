@@ -1,0 +1,63 @@
+1) функция check_trade_area_overlap(), которая выполняет проверку на перекрытие дат аренды для торговой площади. Если обнаруживается перекрытие с другими договорами, то генерируется исключение с сообщением об ошибке.
+
+CREATE OR REPLACE FUNCTION check_trade_area_overlap() RETURNS TRIGGER AS $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM "договор"
+    WHERE id <> NEW.id
+      AND id_точка = NEW.id_точка
+      AND (begin_rent, end_rent) OVERLAPS (NEW.begin_rent, NEW.end_rent)
+  ) THEN
+    RAISE EXCEPTION 'Торговая площадь уже занята другим договором.';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_trade_area_overlap
+BEFORE INSERT OR UPDATE ON "договор"
+FOR EACH ROW
+EXECUTE FUNCTION check_trade_area_overlap();
+
+
+2) Этот триггер будет записывать информацию об изменении в таблице оплата в таблицу оплата_лог. При этом в столбце id_оплата будет храниться идентификатор изменяемой записи, а в столбце action будет указано, была ли запись вставлена или обновлена.
+Eсли таблица "оплата_лог" еще не создана, то она будет создана используя динамический SQL и команду EXECUTE при выполнении функции. Далее функция записывает данные об изменении в новую строку в таблице "оплата_лог".
+
+CREATE OR REPLACE FUNCTION log_payment() RETURNS TRIGGER AS $$
+BEGIN
+    -- Создаем таблицу оплата_лог, если она еще не создана
+    EXECUTE 'CREATE TABLE IF NOT EXISTS public."оплата_лог" (
+        id SERIAL PRIMARY KEY,
+        id_оплата INTEGER NOT NULL,
+        action VARCHAR(6) NOT NULL,
+        log_time TIMESTAMP DEFAULT NOW()
+    )';
+
+    -- Записываем информацию об изменении в лог
+    INSERT INTO public."оплата_лог" (id_оплата, action) VALUES (NEW.id, TG_OP);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE or replace TRIGGER log_payment_trigger
+AFTER INSERT OR UPDATE ON public."оплата"
+FOR EACH ROW
+EXECUTE FUNCTION log_payment();
+
+
+3) Этот триггер использует функцию plpgsql increment_id(), которая выбирает максимальное значение поля "id" из таблицы "клиент" и увеличивает его на 1. Затем, триггер increment_id_trigger вызывает эту функцию перед каждой вставкой новой записи в таблицу "клиент", присваивая значение "id" для новой записи.
+
+CREATE OR REPLACE FUNCTION increment_id()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.id = (SELECT COALESCE(MAX(id), 0) + 1 FROM "клиент");
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER increment_id_trigger
+BEFORE INSERT ON public."клиент"
+FOR EACH ROW
+EXECUTE FUNCTION increment_id();

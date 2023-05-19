@@ -1,114 +1,234 @@
 ﻿// todo: 
-using System;
-using System.Collections.Generic;
+using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Npgsql; // nuget пакет, позволяющий работать с Postgres
 using System.Data;
+using System.Globalization;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic.ApplicationServices;
-using Npgsql;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
 
 namespace DatabaseApp
 {
 
-    public class MyData
+    public class ClientData
     {
-        public string Name { get; set; }
-        public string Adress { get; set; }
-        public string Phone { get; set; }
-        public string Requisites { get; set; }
-        public string ContactPerson { get; set; }
-        public int Id { get; set; }
+        public string name { get; set; }
+        public string adress { get; set; }
+        public string phone { get; set; }
+        public string requisites { get; set; }
+        public string contact_name { get; set; }
+
     }
 
 
-    internal class DBFunc
-    {   
-        // todo: comment
-        static string connectionString = "Server=127.0.0.1;Port=5432;Database=arenda_db;User Id=postgres;Password=123;";
+    public class DBFunc
+    {
+        string FilePath = "output.csv";
+
+        string connectionString;
 
 
-
-        // todo: use DataTable
-        public void SaveToCsv(IEnumerable<string> columnNames, IEnumerable<IEnumerable<string>> data, string filePath)
+        public void SetFilePath(string filePath)
         {
-            using (var writer = new StreamWriter(filePath))
+            if (!filePath.IsNullOrEmpty())
             {
-                // Записываем заголовки столбцов в файл, кроме последнего столбца - id
-                foreach (var columnName in columnNames.Take(columnNames.Count() - 1))
+                FilePath = filePath + ".csv";
+            }
+            else FilePath = "output.csv";
+
+        }
+
+
+        public string GetFilePath()
+        {
+            return FilePath;
+        }
+        void SetConnectionAdress(string ip, string port, string dbname, string username, string password)
+        {
+            connectionString = $"Server={ip};Port={port};Database={dbname};User Id={username};Password={password};";
+        }
+
+
+        public DBFunc(string ip = "127.0.0.1", string port = "5432", string dbname = "arenda_castrated", string username = "postgres", string password = "1") // конструктор для задания подключения по выбору
+        {
+            SetConnectionAdress(ip, port, dbname, username, password);
+
+        }
+        public void SaveToCsv(DataTable table)
+        {
+            using (var writer = new StreamWriter(FilePath))
+            {
+                // Записываем заголовки столбцов в файл
+                foreach (DataColumn column in table.Columns)
                 {
-                    writer.Write(columnName);
-                    if (columnName != columnNames.ElementAt(columnNames.Count() - 2))
+                    writer.Write(column.ColumnName);
+                    if (column != table.Columns[table.Columns.Count - 1])
                     {
-                        writer.Write(",");
+                        writer.Write(";");
                     }
                 }
                 writer.Write(writer.NewLine);
 
-                // Записываем данные в файл, пропуская последний столбец - id
-                foreach (var row in data)
+                // Записываем данные в файл
+                foreach (DataRow row in table.Rows)
                 {
-                    foreach (var value in row.Take(row.Count() - 1))
+                    foreach (var value in row.ItemArray)
                     {
                         writer.Write(value != null ? value.ToString() : "");
-                        if (value != row.ElementAt(row.Count() - 2))
+                        if (value != row.ItemArray[row.ItemArray.Length - 1])
                         {
-                            writer.Write(",");
+                            writer.Write(";");
                         }
                     }
-                    if (row != data.Last())
-                    {
-                        writer.Write(writer.NewLine);
-                    }
+                    writer.Write(writer.NewLine);
                 }
             }
         }
 
 
 
-
-
-
-
-
-        public void LoadDataFromCsvToPostgres(string filePath = "output.csv")
+        public List<DataRow> Search(string name)
         {
-            filePath = Path.Combine(Application.StartupPath, filePath);
+            var result = new List<DataRow>();
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-                using (var command = new NpgsqlCommand())
-                {   
-
-                    // todo: com
-                    command.Connection = connection;
-
-                    command.CommandText = 
-                        $@"CREATE TEMP TABLE temp_client (name text, adress text, phone text, requisites text, contact_name text);
-                         COPY temp_client (name, adress, phone, requisites, contact_name) FROM '{filePath}' DELIMITER ',' CSV HEADER;
-                         INSERT INTO клиент (name, adress, phone, requisites, contact_name) 
-                         SELECT t.name, t.adress, t.phone, t.requisites, t.contact_name
-                         FROM temp_client t
-                         ON CONFLICT DO NOTHING;";
-                    command.ExecuteNonQuery();
+                var command = new NpgsqlCommand($"SELECT * FROM \"клиент\" WHERE name = '{name}'", connection);
+                var adapter = new NpgsqlDataAdapter(command);
+                var dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                if (dataTable.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        result.Add(row);
+                    }
                 }
             }
+
+            return result;
         }
 
 
+
+
+
+        public void LoadDataFromCsvToPostgres()
+        {
+            using (var reader = new StreamReader(FilePath))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    Delimiter = ";",
+                };
+                using (var csv = new CsvReader(reader, config))
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    var records = csv.GetRecords<ClientData>(); // ClientData - класс, представляющий записи из CSV
+                    foreach (var record in records)
+                    {
+                        var command = new NpgsqlCommand("INSERT INTO \"клиент\" (name, contact_name, phone, adress, requisites) VALUES (@p1, @p2, @p3, @p4, @p5) ON CONFLICT DO NOTHING", connection);
+                        command.Parameters.AddWithValue("@p1", record.name);
+                        command.Parameters.AddWithValue("@p2", record.contact_name);
+                        command.Parameters.AddWithValue("@p3", record.phone);
+                        command.Parameters.AddWithValue("@p4", record.adress);
+                        command.Parameters.AddWithValue("@p5", record.requisites);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+        }
 
 
 
         public DataTable GetDataFromSQL()
         {
             string query = "SELECT * FROM \"клиент\"";
-            // todo: 
-            using (var connection = GetPostgresConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
+                connection.Open();
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    /// NpgsqlDataAdapter это класс в библиотеке Npgsql, который используется для заполнения DataSet или DataTable данными из источника данных PostgreSQL.
+                    ///  Он позволяет выполнять запросы к базе данных и получать результаты в виде таблиц, 
+                    ///  которые могут быть использованы в приложении для отображения данных в пользовательском интерфейсе.
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
+                    {
+                        DataTable dataTable = new DataTable(); // Создание нового экземпляра класса DataTable, который будет содержать результаты выборки.
+                        adapter.FillSchema(dataTable, SchemaType.Source); // добавлениe схемы таблицы в экземпляр класса DataTable. SchemaType.Source указывает, что схема будет соответствовать источнику данных.
+                        adapter.Fill(dataTable); //  для заполнения таблицы данными.
+                        return dataTable;
+                    }
+                }
+            }
+        }
+
+
+        public DataTable GetUpdatedDataFromPostgres()
+        {
+            var dataTable = new DataTable();
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = new NpgsqlCommand("SELECT * FROM \"клиент\"", connection);
+                var adapter = new NpgsqlDataAdapter(command);
+
+                adapter.Fill(dataTable);
+            }
+
+            return dataTable;
+        }
+
+        public void DeleteRecordById(int id)
+        {
+            using (var conn = new NpgsqlConnection(connectionString))// Эта строка создает новое подключение к базе данных PostgreSQL
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())//  Эта строка создает новый объект NpgsqlCommand, который представляет SQL-команду, которую мы хотим выполнить. 
+                {
+                    cmd.Connection = conn; // Эта строка устанавливает соединение для объекта cmd, указывая, что он будет использовать ранее созданное подключение conn.
+                    cmd.CommandText = "DELETE FROM \"клиент\" WHERE id = @id"; // Эта строка устанавливает текст SQL-запроса, который будет выполнен
+                    cmd.Parameters.AddWithValue("id", id); //  Эта строка добавляет параметр к команде. В данном случае, параметр "id" соответствует значению переменной id. 
+                    cmd.ExecuteNonQuery(); // возврат количества затронутых строк
+                }
+            }
+        }
+
+        public void InsertDataToPostgreSQL(ClientData data)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand())
+                {
+                    command.Connection = connection;
+                    //  задаем текст SQL-команды для выполнения. В данном случае это SQL-запрос на вставку новых данных в таблицу "клиент".
+                    command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
+                    command.Parameters.AddWithValue("@name", data.name);
+                    command.Parameters.AddWithValue("@adress", data.adress);
+                    command.Parameters.AddWithValue("@phone", data.phone);
+                    command.Parameters.AddWithValue("@requisites", data.requisites);
+                    command.Parameters.AddWithValue("@contact_name", data.contact_name);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public DataTable SortById()
+        {
+            string query = "SELECT * FROM \"клиент\" ORDER BY ID ASC;";
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
                     using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command))
@@ -123,51 +243,13 @@ namespace DatabaseApp
         }
 
 
-        public static NpgsqlConnection GetPostgresConnection(string connectionString)
-        {
-            var connection = new NpgsqlConnection(connectionString);
-            connection.Open();
-            return connection;
-        }
 
-        public void DeleteRecordById(int id)
-        {
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand())
-                {
-                    cmd.Connection = conn;
-                    // todo: ???
-                    // todoL to fields
-                    cmd.CommandText = "DELETE FROM \"клиент\" WHERE id = @id";
-                    cmd.Parameters.AddWithValue("id", id);
-                    cmd.ExecuteNonQuery(); // возврат количества затронутых строк
-                }
-            }
-        }
 
-        public int InsertDataToPostgreSQL(MyData data)
-        {
-            using (var connection = GetPostgresConnection(connectionString))
-            {
-                using (var command = new NpgsqlCommand())
-                {
-                    command.Connection = connection;
-                    command.CommandText = $"INSERT INTO \"клиент\" (name, adress, phone, requisites, contact_name) VALUES (@name, @adress, @phone, @requisites, @contact_name)";
-                    command.Parameters.AddWithValue("@name", data.Name);
-                    command.Parameters.AddWithValue("@adress", data.Adress);
-                    command.Parameters.AddWithValue("@phone", data.Phone);
-                    command.Parameters.AddWithValue("@requisites", data.Requisites);
-                    command.Parameters.AddWithValue("@contact_name", data.ContactPerson);
 
-                    int rowsAffected = command.ExecuteNonQuery();
-                    return rowsAffected;
-                }
-            }
-        }
     }
-
-
 }
+
+
+
+
 

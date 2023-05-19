@@ -1,28 +1,47 @@
 1) Получить список торговых площадей, на которые не заключен договор аренда на заданную дату. Для каждой такой торговой площади получить список клиентов в виде массива, заключавших договор аренды ранее заданной даты.
---задание1
-SELECT DISTINCT t.id AS "свободная точка", c.name AS client_name
-FROM "точка" t
-LEFT JOIN "договор" d ON t.id = d."id_точка" AND d.begin_rent <= '2023-04-28'  AnD d.end_rent='2023-04-28'
-LEFT JOIN "клиент" c ON d."id_клиент" = c.id
-WHERE d.id IS NOT NULL
 
 
-2) Получить список клиентов с открытыми договорами аренда на заданную дату. Для каждого клиента указать сумму, которою он должен оплатить с момента заключения договора аренды по заданную дату, а также сумму фактической платы аренды на заданную дату.
---задание2
-SELECT c.name AS "Клиент",
-    SUM(p.price_day * (EXTRACT(day from '2023-04-28'::timestamp - d.begin_rent::timestamp ) + 1)) 
-    - COALESCE(o.total_payment, 0) AS "Сумма задолженности",
-    COALESCE(o.total_payment, 0) AS "Фактическая сумма оплаты"
+SELECT 
+    t.id AS point, 
+    ARRAY_AGG(c.name) AS clients, 
+    ARRAY_AGG(d.id) AS "номер договора"
+FROM public."клиент" c
+JOIN public."договор" d ON c.id = d.id_клиент
+RIGHT JOIN public."точка" t ON d.id_точка = t.id
+LEFT JOIN (
+    SELECT d2.id_точка, COUNT(*) OVER (PARTITION BY d2.id_точка) AS num_contracts
+    FROM public."договор" d2
+    WHERE d2.end_rent >= '2023-10-06' AND d2.begin_rent <= '2023-10-06'
+) sub ON t.id = sub.id_точка
+WHERE (sub.num_contracts IS NULL OR sub.num_contracts = 0)
+    AND (d.end_rent <= '2023-10-06' OR d.id IS NULL)
+    AND (d.begin_rent <= '2023-10-06' OR d.id IS NULL)
+GROUP BY t.id;
+
+
+2) Получить список клиентов с открытыми договорами аренда на заданную дату.
+ Для каждого клиента указать сумму, которою он должен оплатить с момента заключения договора аренды по заданную дату, а также сумму фактической платы аренды на заданную дату.
+SELECT 
+    c.name AS "Клиент",
+    SUM(p.price_day * 
+        (CASE 
+            WHEN d.begin_rent <= '2023-04-28' AND d.end_rent >= '2023-04-28' THEN EXTRACT(day from '2023-04-28'::timestamp - d.begin_rent)
+            WHEN d.begin_rent <= '2023-04-28' AND d.end_rent < '2023-04-28' THEN EXTRACT(day from d.end_rent::timestamp - d.begin_rent)
+            ELSE 0
+        END)
+    ) - COALESCE(SUM(o.payment), 0) AS "Сумма задолженности",
+  o.payment as Payment,
+  d.id as dogovor,
+  p.price_day as price_day,
+  o.month as Month,
+  EXTRACT(day from '2023-04-28'::timestamp - d.begin_rent) AS "days gone" 
 FROM "договор" d
 JOIN public."клиент" c ON d."id_клиент" = c.id
 JOIN public."точка" t ON d."id_точка" = t.id
 JOIN (SELECT id, price_day FROM public."точка") p ON d."id_точка" = p.id
-LEFT JOIN (
-    SELECT "id_договор", SUM(payment) AS total_payment 
-    FROM public."оплата"
-    GROUP BY "id_договор"
-) o ON d.id = o."id_договор"
-GROUP BY c.name, o.total_payment;
+LEFT JOIN public."оплата" o ON d.id = o."id_договор"
+WHERE d.end_rent >= '2023-04-28' AND d.begin_rent <= '2023-04-28' AND (o.month IS NULL OR o.month <= 4)
+GROUP BY c.name, o.payment, d.id, p.price_day, o.month, d.begin_rent;
 
 
 
@@ -31,34 +50,35 @@ GROUP BY c.name, o.total_payment;
 3) Получить прибыль торгового центра по месяцам заданного года. Для каждого месяца указать клиента, внесшего максимальный вклад в прибыль.
 
 
---задание3
-SELECT
-EXTRACT(MONTH FROM d.end_rent) AS month,
-EXTRACT(YEAR FROM d.end_rent) AS year,
-SUM(o.payment) AS total_profit,
-(SELECT c.name
-FROM public."клиент" c
-JOIN public."договор" d2 ON c.id = d2."id_клиент"
-JOIN public."оплата" o2 ON d2.id = o2."id_договор"
-WHERE EXTRACT(MONTH FROM d2.end_rent) = EXTRACT(MONTH FROM d.end_rent)
-GROUP BY c.id, c.name
-ORDER BY SUM(o2.payment) DESC -- сортирует результаты по убыванию этой суммы (desc)
-LIMIT 1 -- LIMIT 1 ограничивает вывод одной записью, в итоговой таблице один столбец "top_client"
-) AS top_client
-FROM public."оплата" o
-JOIN public."договор" d ON o."id_договор" = d.id
-JOIN public."клиент" c ON d."id_клиент" = c.id
-GROUP BY year, month, c.id, c.name, d.end_rent
-ORDER BY year, month; 
-
-
+WITH monthly_payments AS (
+  SELECT 
+    m.month, 
+    c.id AS client_id,
+    c.name AS client_name,
+    o.payment AS total_payments,
+    ROW_NUMBER() OVER (PARTITION BY m.month ORDER BY o.payment DESC) AS row_number
+  FROM 
+    months m 
+    JOIN public."оплата" o ON o.month = m.month AND o.year = 2022
+    JOIN public."договор" d ON d.id = o."id_договор"
+    JOIN public."клиент" c ON c.id = d."id_клиент"
+)
+SELECT 
+  mp2.client_name AS max_payment_client,
+  mp.month, 
+  mp.total_payments
+FROM 
+  monthly_payments mp
+LEFT JOIN monthly_payments mp2 ON mp.month = mp2.month AND mp2.row_number = 1
+WHERE mp.row_number = 1
+ORDER BY mp.month;
 
 
 
 4)Получить итоговые цифры по количеству аренд, минимальному и максимальному сроку аренды за заданный диапазон лет. Данные группировать по торговым площадям и клиентам.
 SELECT
   "клиент".name AS client_name, 
-  "точка".square AS square, 
+  SUM("точка".square) AS total_square, 
   COUNT("договор".id) AS rental_count, 
   MIN("договор".end_rent - "договор".begin_rent) AS min_rental_period, 
   MAX("договор".end_rent - "договор".begin_rent) AS max_rental_period
@@ -68,13 +88,9 @@ FROM
   JOIN "точка" ON "договор"."id_точка" = "точка".id 
 WHERE 
   EXTRACT(YEAR FROM "договор".begin_rent) >= 2020 
-  AND EXTRACT(YEAR FROM "договор".end_rent) <= 2022 
+  AND EXTRACT(YEAR FROM "договор".end_rent) <= 2023
 GROUP BY 
-  "клиент".name, 
-  "точка".square;
-
-
-
+  "клиент".name;
 
 
 
@@ -90,12 +106,10 @@ JOIN public."клиент" ON "договор"."id_клиент" = "клиент
 GROUP BY
 "клиент",
 "оплата"."year";
-— просто получил табличку R
 
 
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
-— кросс таблица
 SELECT *
 FROM crosstab(
 'SELECT

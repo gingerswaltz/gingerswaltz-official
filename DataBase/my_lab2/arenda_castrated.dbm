@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="0.95" max-obj-count="4"
+	 default-owner="postgres">
+<database name="arenda_castrated" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="клиент" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="560" y="100"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="contact_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="phone" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="adress">
+		<type name="text" length="0"/>
+	</column>
+	<column name="requisites">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="клиент_pk" type="pk-constr" table="public.&quot;клиент&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[name•adress•phone•requisites•contact_name•id⸣
+Филатов А.А.•Баргузинская,49•21-94-93•12345678•Филатов А.А•1⸣
+ИП Мокин•Промышленная, 3•22-31-34•23456789•Мокин А.М.•2⸣
+ООО Сервико•Бабушкина,43•20-21-55•34567890•Панкратов Р.Н.•3]]>
+	</initial-data>
+</table>
+
+</dbmodel>

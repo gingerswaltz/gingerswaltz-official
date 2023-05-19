@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_main"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    
+    >
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:text="Click Me!" />
+    
+        
+        <ImageView
+    android:layout_width="128dp"
+    android:layout_height="128dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:src="@drawable/usd26" />
+
+
+    <TextView
+        android:id="@+id/exchangeRateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Курс обмена:"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+</RelativeLayout>
