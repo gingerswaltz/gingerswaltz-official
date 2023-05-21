@@ -1,11 +1,11 @@
-1) функция check_trade_area_overlap(), которая выполняет проверку на перекрытие дат аренды для торговой площади. Если обнаруживается перекрытие с другими договорами, то генерируется исключение с сообщением об ошибке.
+1) функция check_trade_area_overlap(), которая выполняет проверку на перекрытие дат аренды для торговой площади. 
+Если обнаруживается перекрытие с другими договорами, то генерируется исключение с сообщением об ошибке.
 
 CREATE OR REPLACE FUNCTION check_trade_area_overlap() RETURNS TRIGGER AS $$
 BEGIN
   IF EXISTS (
     SELECT 1
     FROM "договор"
-    WHERE id <> NEW.id
       AND id_точка = NEW.id_точка
       AND (begin_rent, end_rent) OVERLAPS (NEW.begin_rent, NEW.end_rent)
   ) THEN
