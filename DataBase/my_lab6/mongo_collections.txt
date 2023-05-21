@@ -5,7 +5,7 @@ db.createCollection("клиент", {
          required: ["name", "contact_name", "phone"],
          properties: {
             id: {
-               bsonType: "objectId"
+               bsonType: "id"
             },
             name: {
                bsonType: "string",
@@ -41,7 +41,7 @@ db.createCollection("оплата", {
          required: [ "id_договор", "payment", "month", "year" ],
          properties: {
             id: {
-               bsonType: "objectId",
+               bsonType: "id",
                description: "Уникальный идентификатор оплаты"
             },
             id_договор: {
@@ -50,18 +50,18 @@ db.createCollection("оплата", {
                description: "Уникальный идентификатор договора"
             },
             payment: {
-               bsonType: "decimal",
+               bsonType: "double",
                minimum: 0,
                description: "Сумма оплаты"
             },
             month: {
-               bsonType: "decimal",
+               bsonType: "double",
                minimum: 1,
                maximum: 12,
                description: "Месяц оплаты"
             },
             year: {
-               bsonType: "decimal",
+               bsonType: "double",
                minimum: 2000,
                maximum: 3000,
                description: "Год оплаты"
@@ -79,7 +79,7 @@ db.createCollection("договор", {
       required: ["id_клиент", "end_rent", "id_точка"],
       properties: {
         id: {
-          bsonType: "objectId"
+          bsonType: "int"
         },
         id_клиент: {
           bsonType: "int"
@@ -119,9 +119,9 @@ db.createCollection("точка", {
                description: "must be a boolean"
             },
             price_day: {
-               bsonType: "decimal",
+               bsonType: "double",
                minimum: 0,
-               description: "must be a positive decimal"
+               description: "must be a positive double"
             }
          }
       }

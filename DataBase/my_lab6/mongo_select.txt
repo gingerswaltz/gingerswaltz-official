@@ -1,0 +1,98 @@
+1) Этот MQL-запрос возвращает все документы из коллекции "клиент", которые не имеют соответствующих записей в коллекции "договор".
+
+db.клиент.aggregate([
+  {
+    $lookup: {
+      from: "договор",
+      localField: "id",
+      foreignField: "id_клиент",
+      as: "договоры"
+    }
+  },
+  {
+    $match: {
+      договоры: {
+        $size: 0
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0
+    }
+  }
+])
+
+2) Этот MQL-запрос вернет соединение двух коллекций по полям id и id_клиент.
+
+db.точка.aggregate([
+    {
+        '$lookup': {
+            'from': 'клиент', 
+            'localField': 'id_клиент', 
+            'foreignField': 'id', 
+            'as': 'договор_клиент'
+        }
+    }
+])
+
+
+3) этот MQL-запрос вернет ObjectId точки в поле "id" и значение "прайс_день" для документов, где "прайс_день" больше 100.
+
+db.точка.aggregate([
+  {
+    $match: {
+      price_day: { $gt: 100 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      id: { $toString: "$_id" },
+      price_day: 1
+    }
+  }
+])
+
+
+4) этот MQL-запрос возвращает результаты, аналогичные запросу SQL, включая имя клиента (client_name), общую площадь (total_square), количество аренд (rental_count), минимальный период аренды (min_rental_period) и максимальный период аренды (max_rental_period), для договоров, где год начала аренды больше или равен 2020 и год окончания аренды меньше или равен 2023.
+
+db.договор.aggregate([
+  {
+    $lookup: {
+      from: "клиент",
+      localField: "id_клиент",
+      foreignField: "id",
+      as: "клиент"
+    }
+  },
+  {
+    $lookup: {
+      from: "точка",
+      localField: "id_точка",
+      foreignField: "id",
+      as: "точка"
+    }
+  },
+  {
+    $match: {
+      $expr: {
+        $and: [
+          { $gte: [{ $year: "$begin_rent" }, 2020] },
+          { $lte: [{ $year: "$end_rent" }, 2024] }
+        ]
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      client_name: "$клиент.name",
+      total_square: { $sum: "$точка.square" },
+      rental_count: 1,
+      min_rental_period: { $dateDiff: { startDate: "$begin_rent", endDate: "$end_rent", unit: "day" } },
+      max_rental_period: { $dateDiff: { startDate: "$begin_rent", endDate: "$end_rent", unit: "day" } }
+    }
+  }
+])
+
