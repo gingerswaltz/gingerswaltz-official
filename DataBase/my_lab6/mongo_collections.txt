@@ -5,7 +5,7 @@ db.createCollection("клиент", {
          required: ["name", "contact_name", "phone"],
          properties: {
             id: {
-               bsonType: "id"
+               bsonType: "int"
             },
             name: {
                bsonType: "string",
@@ -41,7 +41,7 @@ db.createCollection("оплата", {
          required: [ "id_договор", "payment", "month", "year" ],
          properties: {
             id: {
-               bsonType: "id",
+               bsonType: "int",
                description: "Уникальный идентификатор оплаты"
             },
             id_договор: {
@@ -72,6 +72,8 @@ db.createCollection("оплата", {
 });
 
 
+
+
 db.createCollection("договор", {
   validator: {
     $jsonSchema: {
@@ -97,6 +99,12 @@ db.createCollection("договор", {
     }
   }
 })
+
+db.договор.insertMany([
+  {id: 1, id_клиент:1, begin_rent: new Date('2023-04-08'), end_rent: new Date('2024-04-08'), id_точка:2},
+   {id: 2, id_клиент:2, begin_rent: new Date('2023-05-06'), end_rent: new Date('2023-09-17'), id_точка:1},
+  ])
+
 
 db.createCollection("точка", {
    validator: {
@@ -127,3 +135,17 @@ db.createCollection("точка", {
       }
    }
 })
+
+db.клиент.insertMany([
+  {name: "Prodmix",
+    contact_name:"Filatov", phone:"332233", adress:"lenina 120", requisites:"tink"
+  }, {name: "Servico", contact_name: "Ivanov", adress:"lermontova", requisites:"sber", phone:"445566" },
+  {name:"zabugol", contact_name:"katamadze", phone:"667788", adress:"babushkina", requisites:"vtb"}
+  ])
+
+
+db.точка.insertMany([
+  {floor: 3, square:500,  price_day:100},
+   {floor: 2, square:1500,  price_day:550},
+  {floor: 1, square:300,  price_day:10}
+  ])
