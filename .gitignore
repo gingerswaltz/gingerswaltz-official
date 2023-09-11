@@ -11,3 +11,4 @@ ChatBot/bin/Debug/net6.0-windows/file
 *.lock
 *.dtmp
 *.tmp
+.DS_Store
