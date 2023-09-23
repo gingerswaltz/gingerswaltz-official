@@ -124,11 +124,6 @@ $result = $db->query($query);
 </body>
 </html>
 
-
-
-
-
-
 <?php
 $db = null; // Закрываем соединение с базой данных
 ?>
