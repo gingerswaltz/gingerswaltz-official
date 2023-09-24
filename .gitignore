@@ -13,3 +13,7 @@ ChatBot/bin/Debug/net6.0-windows/file
 *.tmp
 .DS_Store
 *.icloud
+*.ipch
+saod_tree/.vs/saod_tree/v17/.wsuo
+saod_tree/.vs/slnx.sqlite
+saod_tree/.vs/VSWorkspaceState.json

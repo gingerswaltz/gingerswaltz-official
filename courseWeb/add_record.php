@@ -31,6 +31,12 @@
             margin-bottom: 10px;
         }
 
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
         .button {
             background-color: #000080;
             color: #fff;
@@ -40,7 +46,7 @@
             text-decoration: none;
             width: auto;
             user-select: none;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         
         a{
@@ -54,28 +60,52 @@
             background-color: #0056b3;
         }
     </style>
-</head>
+
 
 
 
 
 <body>
-    <h1 id="table-heading">Добавление записи в базу данных (Таблица: $table)</h1>
-    <!-- Форма для добавления записи -->
-    <form action="add_record_process.php" method="post">
-        <label for="ip_address">IP Address:</label>
-        <input type="text" name="ip_address" required><br>
-        
-        <label for="port">Port:</label>
-        <input type="text" name="port" required><br>
-        
-        <label for="reading_id">Reading ID:</label>
-        <input type="text" name="reading_id" required><br>
-        
-        <input type="submit" value="Добавить запись" class="button">
-    </form>
-    
-    <a href="dashboard.php">Вернуться к списку записей</a>
+    <?php 
 
+    $host = $_COOKIE['host'];
+    $port = $_COOKIE['port'];
+    $username = $_COOKIE['username'];
+    $password = $_COOKIE['password'];
+    $dbname = $_COOKIE['dbname'];
+    try {
+        $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+    die("Ошибка подключения к базе данных: " . $e->getMessage());
+    }
+    $tableName=$_COOKIE['table'];
+    ?>
+
+<h1 id="table-heading">Добавление записи в базу данных (Таблица: <?php echo $tableName ?>)</h1>;
+<?php    
+    $query = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = :tableName";
+    $statement = $db->prepare($query);
+    $statement->bindParam(':tableName', $tableName, PDO::PARAM_STR);
+    $statement->execute();
+    $tableColumns = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+//  HTML-форма с полями ввода на основе полученной информации
+    echo '<form action="add_record_process.php" method="post">';
+    foreach ($tableColumns as $column) {
+    $columnName = $column['column_name'];
+    $dataType = $column['data_type'];
+    
+    // Генерация полей ввода в зависимости от типа данных
+    if ($dataType == 'text') {
+        echo "<input type='text' name='$columnName' placeholder='$columnName'>";
+    } elseif ($dataType == 'integer') {
+        echo "<input type='number' name='$columnName' placeholder='$columnName'>";
+    } // Добавьте другие типы данных, если необходимо
+}
+    echo '<input type="submit" value="Добавить запись">';
+    echo '</form>';
+?>    
+<a href="dashboard.php">Вернуться к списку записей</a>
 </body>
 </html>

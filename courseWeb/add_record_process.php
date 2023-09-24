@@ -1,40 +1,43 @@
 <?php
-// Подключение к базе данных (по аналогии с вашим кодом подключения)
-$host = "localhost";
-$port = "5432";
-$dbname = "DBForWebServer";
-$user = "postgres";
-$password = "1";
+error_reporting(0);
+
+$host = $_COOKIE['host'];
+$port = $_COOKIE['port'];
+$username = $_COOKIE['username'];
+$password = $_COOKIE['password'];
+$dbname = $_COOKIE['dbname'];
+$table = $_COOKIE['table'];
 
 try {
-    $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password");
+    $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
 
-// Обработка данных из формы
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $table_name = $_POST['table_name']; // Получаем имя таблицы
-    $data = $_POST['data']; // Получаем структуру данных в виде ассоциативного массива
+$tableName = $table;
 
-    // Подготавливаем запрос для вставки данных в указанную таблицу
-    $placeholders = implode(', ', array_fill(0, count($data), '?'));
-    $query = "INSERT INTO $table_name (" . implode(', ', array_keys($data)) . ") VALUES ($placeholders)";
-    
-    // Выполняем вставку данных
-    $statement = $db->prepare($query);
-    $values = array_values($data);
-    if ($statement->execute($values)) {
-        echo "Запись успешно добавлена в таблицу $table_name.";
-        header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
-        exit;
-    } else {
-        echo "Произошла ошибка при добавлении записи в таблицу $table_name.";
-        header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
-        exit;
-    }
+// Создайте массив для хранения данных, которые будут вставлены в таблицу
+$dataToInsert = [];
+
+// Получите значения из POST-запроса и добавьте их в массив данных
+foreach ($_POST as $columnName => $value) {
+    $dataToInsert[$columnName] = $value;
 }
 
-// Закрытие соединения с базой данных
-$db = null;
+// Генерируйте SQL-запрос на основе данных из массива
+$columns = implode(', ', array_keys($dataToInsert));
+$values = ':' . implode(', :', array_keys($dataToInsert));
+$query = "INSERT INTO $tableName ($columns) VALUES ($values)";
+
+try {
+    $statement = $db->prepare($query);
+    $statement->execute($dataToInsert);
+    header("Location: dashboard.php");
+    exit;
+} catch (PDOException $e) {
+    echo "Ошибка при добавлении записи: " . $e->getMessage();
+}
+
+$db = null; // Закрываем соединение с базой данных
 ?>
