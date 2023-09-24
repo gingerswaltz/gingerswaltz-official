@@ -101,7 +101,9 @@
         echo "<input type='text' name='$columnName' placeholder='$columnName'>";
     } elseif ($dataType == 'integer') {
         echo "<input type='number' name='$columnName' placeholder='$columnName'>";
-    } // Добавьте другие типы данных, если необходимо
+    } else {
+        echo "<input type='text' name='$columnName' placeholder='$columnName'>";
+    }
 }
     echo '<input type="submit" value="Добавить запись">';
     echo '</form>';

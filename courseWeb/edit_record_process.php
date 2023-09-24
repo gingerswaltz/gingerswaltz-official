@@ -1,104 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Редактирование записи</title>
-    <style>
-        /* Стиль CSS */
-        body {
-            background-color: #222;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            margin: 20px;
-        }
-
-        .message {
-            text-align: center;
-            margin: 20px;
-        }
-
-        .button {
-            background-color: #000080;
-            color: #fff;
-            border: solid;
-            padding: 5px 10px;
-            cursor: pointer;
-            text-decoration: none;
-            width: 100px;
-            user-select: none;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Редактирование записи в базе данных</h1>
-    <div class="message">
 <?php
-// Подключение к базе данных (по аналогии с вашим кодом подключения)
-$host = "localhost";
-$port = "5432";
-$dbname = "DBForWebServer";
-$user = "postgres";
-$password = "1";
+error_reporting(0);
 
+$host = $_COOKIE['host'];
+$port = $_COOKIE['port'];
+$username = $_COOKIE['username'];
+$password = $_COOKIE['password'];
+$dbname = $_COOKIE['dbname'];
+$table = $_COOKIE['table'];
+$id = $_POST['id'];
 try {
-    $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password");
+    $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
 
-$success = false; // Переменная для отслеживания успешности операции редактирования
+$tableName = $table;
 
-// Обработка данных из формы
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-    $ipAddress = isset($_POST['ip_address']) ? htmlspecialchars($_POST['ip_address'], ENT_QUOTES, 'UTF-8') : '';
-    $port = isset($_POST['port']) ? htmlspecialchars($_POST['port'], ENT_QUOTES, 'UTF-8') : '';
-    $readingId = isset($_POST['reading_id']) ? htmlspecialchars($_POST['reading_id'], ENT_QUOTES, 'UTF-8') : '';
+// Создайте массив для хранения данных, которые будут обновлены в таблице
+$dataToUpdate = [];
 
-
-
-    // Проверяем, что данные были корректно обработаны
-    if ($id !== false && $ipAddress !== null && $port !== false && $readingId !== false) {
-        // Выполните операцию UPDATE записи в базе данных, используя полученные данные и ID
-        $query = "UPDATE main_ip SET ip_address = :ip_address, port = :port, reading_id = :reading_id WHERE id = :id";
-        $statement = $db->prepare($query);
-        $statement->bindParam(':ip_address', $ipAddress);
-        $statement->bindParam(':port', $port);
-        $statement->bindParam(':reading_id', $readingId);
-        $statement->bindParam(':id', $id);
-
-        if ($statement->execute()) {
-            $success = true; // Устанавливаем флаг успешного редактирования
-        } else {
-            $success = false; // Устанавливаем флаг ошибки редактирования
-        }
-    } else {
-        // Обработка случая, если данные из формы не прошли фильтрацию
-        echo "Некорректные данные из формы.";
-    }
+// Получите значения из POST-запроса и добавьте их в массив данных
+foreach ($_POST as $columnName => $value) {
+    $dataToUpdate[$columnName] = $value;
 }
 
-// Закрытие соединения с базой данных
-$db = null;
-        if ($success) {
-            echo "Запись успешно обновлена в базе данных.";
-            header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
-            exit;
-        } else {
-            echo "Произошла ошибка при редактировании записи в базе данных.";
-            header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
-            exit;
-        }
-        ?>
-</div>
-    
-<a href="index.php" class="button">Вернуться к списку записей</a>
-</body>
-</html>
+// Генерируйте SQL-запрос на основе данных из массива
+$setClause = implode(', ', array_map(function ($column) {
+    return "$column = :$column";
+}, array_keys($dataToUpdate)));
+
+$query = "UPDATE $tableName SET $setClause WHERE id = :id";
+
+try {
+    $dataToUpdate['id'] = $id; // Добавляем ID записи
+    $statement = $db->prepare($query);
+    $statement->execute($dataToUpdate);
+    header("Location: dashboard.php"); // Перенаправление после задержки
+    exit;
+} catch (PDOException $e) {
+    echo "Ошибка при обновлении записи: " . $e->getMessage();
+}
+
+$db = null; // Закрываем соединение с базой данных
+?>
+
+<a href="dashboard.php">Вернуться к списку записей</a>
