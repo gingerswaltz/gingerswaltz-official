@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,8 +57,12 @@
         <h1>Удаление записи из базы данных</h1>
         
         <?php
+
+        
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Проверка наличия ID записи для удаления
         if (isset($_POST['id'])) {
+            
             $id = $_POST['id'];
             echo "<p class='message'>Вы уверены, что хотите удалить запись с ID $id?</p>";
             echo "<form action='delete_record_process.php' method='post'>";
@@ -67,9 +72,10 @@
         } else {
             echo "<p class='message'>ID записи не указано.</p>";
         }
+    }
         ?>
         
-        <a href="index.php">Вернуться к списку записей</a>
+        <a href="dashboard.php">Вернуться к списку записей</a>
     </div>
 </body>
 </html>

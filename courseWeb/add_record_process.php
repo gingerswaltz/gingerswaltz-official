@@ -14,23 +14,22 @@ try {
 
 // Обработка данных из формы
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $ipAddress = $_POST['ip_address'];
-    $port = $_POST['port'];
-    $readingId = $_POST['reading_id'];
+    $table_name = $_POST['table_name']; // Получаем имя таблицы
+    $data = $_POST['data']; // Получаем структуру данных в виде ассоциативного массива
 
-    // Выполните вставку записи в базу данных, используя полученные данные
-    $query = "INSERT INTO main_ip (ip_address, port, reading_id) VALUES (:ip_address, :port, :reading_id)";
+    // Подготавливаем запрос для вставки данных в указанную таблицу
+    $placeholders = implode(', ', array_fill(0, count($data), '?'));
+    $query = "INSERT INTO $table_name (" . implode(', ', array_keys($data)) . ") VALUES ($placeholders)";
+    
+    // Выполняем вставку данных
     $statement = $db->prepare($query);
-    $statement->bindParam(':ip_address', $ipAddress);
-    $statement->bindParam(':port', $port);
-    $statement->bindParam(':reading_id', $readingId);
-
-    if ($statement->execute()) {
-        echo "Запись успешно добавлена в базу данных.";
+    $values = array_values($data);
+    if ($statement->execute($values)) {
+        echo "Запись успешно добавлена в таблицу $table_name.";
         header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
         exit;
     } else {
-        echo "Произошла ошибка при добавлении записи в базу данных.";
+        echo "Произошла ошибка при добавлении записи в таблицу $table_name.";
         header("Location: index.php"); // Замените "index.php" на путь к вашей домашней странице
         exit;
     }

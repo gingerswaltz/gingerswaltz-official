@@ -43,13 +43,11 @@
             margin-bottom: 5px;
         }
         
-
         a{
             position: relative;
             margin-top: 15px;
             margin-left: 141px;
             color:#fff;
-
         }
 
         .button:hover {
@@ -57,8 +55,12 @@
         }
     </style>
 </head>
+
+
+
+
 <body>
-    <h1>Добавление записи в базу данных</h1>
+    <h1 id="table-heading">Добавление записи в базу данных (Таблица: $table)</h1>
     <!-- Форма для добавления записи -->
     <form action="add_record_process.php" method="post">
         <label for="ip_address">IP Address:</label>
@@ -73,6 +75,7 @@
         <input type="submit" value="Добавить запись" class="button">
     </form>
     
-    <a href="index.php">Вернуться к списку записей</a>
+    <a href="dashboard.php">Вернуться к списку записей</a>
+
 </body>
 </html>

@@ -1,33 +1,9 @@
-<?php
-$host = "localhost";
-$port = "5432";
-$dbname = "DBForWebServer";
-$user = "postgres";
-$password = "1";
-
-try {
-    $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password");
-} catch (PDOException $e) {
-    die("Ошибка подключения к базе данных: " . $e->getMessage());
-}
-?>
-<?php
-$query = "SELECT * FROM main_ip";
-$result = $db->query($query);
-?>
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Просмотр базы данных</title>
-    <style>
+<style>
+        /* Стиль CSS */
         body {
-            background-color: #222; /* Цвет фона */
-            color: #fff; /* Цвет текста */
-            font-family: Arial, sans-serif; /* Шрифт */
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
         h1 {
@@ -35,44 +11,39 @@ $result = $db->query($query);
             margin: 20px;
         }
 
-        table {
+        form {
             width: 80%;
             margin: 0 auto;
-            border-collapse: collapse;
         }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #444; /* Горизонтальные линии */
+        label {
+            display: block;
+            margin-bottom: 10px;
         }
 
-        th {
-            background-color: #333; /* Цвет заголовков */
-        }
-
-        tr:nth-child(even) {
-            background-color: #444; /* Цвет четных строк */
-        }
-
-        a {
-            color: #00f; /* Цвет ссылок */
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
         }
 
         .button {
-            background-color: #000080	;
-            color: #fff	;
+            background-color: #000080;
+            color: #fff;
             border: solid;
             padding: 5px 10px;
             cursor: pointer;
             text-decoration: none;
-            width: 100px;
+            width: auto;
             user-select: none;
+            margin-bottom: 5px;
+        }
+        
+        a{
+            position: relative;
+            margin-top: 15px;
+            margin-left: 141px;
+            color:#fff;
         }
 
         .button:hover {
@@ -80,50 +51,33 @@ $result = $db->query($query);
         }
     </style>
 
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Страница входа</title>
 </head>
 <body>
-    <h1>Просмотр данных из базы данных</h1>
-   
-    <!-- Кнопка для добавления записи -->
-   <form action="add_record.php" method="post">
-        <button type="submit" class="button add-button">Добавить запись</button>
+    <h1>Вход в систему</h1>
+    <form action="login.php" method="post">
+        <label for="host">Хост:</label>
+        <input type="text" name="host" required><br>
+        
+        <label for="port">Порт:</label>
+        <input type="text" name="port" required><br>
+        
+        <label for="username">Имя пользователя:</label>
+        <input type="text" name="username" required><br>
+        
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" required><br>
+        
+        <label for="dbname">Имя базы данных:</label>
+        <input type="text" name="dbname" required><br>
+        
+        <label for="table">Таблица:</label>
+        <input type="text" name="table" required><br>
+        
+        <input type="submit" value="Войти">
     </form>
-    <table>
-    <tr>
-        <th>ID</th>
-        <th>ip_address</th>
-        <th>port</th>
-        <th>reading_id</th>
-    </tr>
-    
-   <?php
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        echo "<td>" . $row['id'] . "</td>";
-        echo "<td>" . $row['ip_address'] . "</td>";
-        echo "<td>" . $row['port'] . "</td>";
-        echo "<td>" . $row['reading_id'] . "</td>";
-         // Кнопки для изменения и удаления записи
-         echo "<td>";
-         echo "<form action='edit_record.php' method='post'>";
-         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-         echo "<button type='submit' class='button'>Изменить</button>";
-         echo "</form>";
-
-         echo "<form action='delete_record.php' method='post'>";
-         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-         echo "<button type='submit' class='button'>Удалить</button>";
-         echo "</form>";
-         echo "</td>";
-
-         echo "</tr>";
-    }
-    ?>
-    </table>
 </body>
 </html>
-
-<?php
-$db = null; // Закрываем соединение с базой данных
-?>
