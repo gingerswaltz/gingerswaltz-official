@@ -7,7 +7,7 @@ $port = $_COOKIE['port'];
 $username = $_COOKIE['username'];
 $password = $_COOKIE['password'];
 $dbname = $_COOKIE['dbname'];
-$table=$_COOKIE['table'];
+$table = $_COOKIE['table'];
 
 try {
     $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
@@ -16,17 +16,30 @@ try {
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
 
-
-
 $tableName = $table; // Замените на имя вашей таблицы
 $query = "SELECT column_name FROM information_schema.columns WHERE table_name = :tableName";
 $statement = $db->prepare($query);
 $statement->bindParam(':tableName', $tableName, PDO::PARAM_STR);
 $statement->execute();
 $tableColumns = $statement->fetchAll(PDO::FETCH_COLUMN);
-// Выполнение SQL-запроса для получения данных
-$queryData = "SELECT * FROM $tableName"; 
-$queryArray = explode(" ", $queryData);
+
+// Получение параметров сортировки из URL
+$sortColumn = isset($_GET['sort_column']) ? $_GET['sort_column'] : null;
+$sortOrder = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC';
+
+// Взять имя первичного ключа из имени первого столбца
+if (!empty($tableColumns)) {
+    $primaryKeyName = reset($tableColumns);
+    setcookie("primaryKeyName", $primaryKeyName);
+} 
+
+// Выполнение SQL-запроса для получения данных с учетом сортировки
+$queryData = "SELECT * FROM $tableName";
+
+if ($sortColumn) {
+    $queryData .= " ORDER BY $sortColumn $sortOrder";
+}
+
 $dataStatement = $db->query($queryData);
 
 if ($dataStatement === false) {
@@ -70,6 +83,10 @@ if ($dataStatement === false) {
             background-color: #444;
         }
 
+        tr:hover {
+            background-color: #0056b3; /* Изменение цвета при наведении */
+        }
+
         a {
             color: #00f;
             text-decoration: none;
@@ -94,10 +111,7 @@ if ($dataStatement === false) {
             background-color: #0056b3;
         }
     </style>
-
-
-
-
+</head>
 <body>
     <h1>Просмотр данных из базы данных <?php echo $dbname?> (Таблица: <?php echo $tableName; ?>)</h1>
    
@@ -114,40 +128,51 @@ if ($dataStatement === false) {
             <?php
             // Вывод заголовков столбцов
             foreach ($tableColumns as $column) {
-                echo "<th>$column</th>";
+                echo "<th><a href='dashboard.php?sort_column=$column&sort_order=";
+                
+                // Определяем направление сортировки для данного столбца
+                if ($column === $sortColumn) {
+                    // Если столбец сортируется, меняем направление сортировки
+                    $newSortOrder = ($sortOrder === 'ASC') ? 'DESC' : 'ASC';
+                    echo $newSortOrder;
+                } else {
+                    // Если столбец не сортируется, начинаем сортировку по возрастанию
+                    echo 'ASC';
+                }
+
+                echo "'>$column</a></th>";
             }
             ?>
         </tr>
     
         <?php
-if ($dataStatement) { 
-    while ($row = $dataStatement->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        foreach ($tableColumns as $column) {
-            echo "<td>" . $row[$column] . "</td>";
+        if ($dataStatement) { 
+            while ($row = $dataStatement->fetch(PDO::FETCH_ASSOC)) {
+                echo "<tr>";
+                foreach ($tableColumns as $column) {
+                    echo "<td>" . $row[$column] . "</td>";
+                }
+                
+                // Получение ID для текущей строки
+                $id = $row[$primaryKeyName];
+
+                // Кнопки для изменения и удаления записи
+                echo "<td>";
+                echo "<form action='edit_record.php' method='post'>";
+                echo "<input type='hidden' name='id' value='$id'>";
+                echo "<button type='submit' class='button'>Изменить</button>";
+                echo "</form>";
+
+                echo "<form action='delete_record.php' method='post'>";
+                echo "<input type='hidden' name='id' value='$id'>"; // Включение ID в форму удаления
+                echo "<button type='submit' class='button'>Удалить</button>";
+                echo "</form>";
+                echo "</td>";
+
+                echo "</tr>";
+            }
         }
-
-        // Получение ID для текущей строки
-        $id = $row['id'];
-
-        // Кнопки для изменения и удаления записи
-        echo "<td>";
-        echo "<form action='edit_record.php' method='post'>";
-        echo "<input type='hidden' name='id' value='$id'>";
-        echo "<button type='submit' class='button'>Изменить</button>";
-        echo "</form>";
-
-        echo "<form action='delete_record.php' method='post'>";
-        echo "<input type='hidden' name='id' value='$id'>"; // Включение ID в форму удаления
-        echo "<button type='submit' class='button'>Удалить</button>";
-        echo "</form>";
-        echo "</td>";
-
-        echo "</tr>";
-    }
-}
-?>
-
+        ?>
     </table>
 </body>
 </html>
@@ -155,4 +180,3 @@ if ($dataStatement) {
 <?php
 $db = null; // Закрываем соединение с базой данных
 ?>
-

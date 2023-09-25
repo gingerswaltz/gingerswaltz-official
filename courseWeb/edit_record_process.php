@@ -8,6 +8,7 @@ $password = $_COOKIE['password'];
 $dbname = $_COOKIE['dbname'];
 $table = $_COOKIE['table'];
 $id = $_POST['id'];
+$primaryKeyName = $_COOKIE['primaryKeyName'];
 try {
     $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -25,19 +26,19 @@ foreach ($_POST as $columnName => $value) {
     $dataToUpdate[$columnName] = $value;
 }
 
+// Добавьте имя первичного ключа в массив данных
+$dataToUpdate[$primaryKeyName] = $id;
+
 // Генерируйте SQL-запрос на основе данных из массива
 $setClause = implode(', ', array_map(function ($column) {
     return "$column = :$column";
 }, array_keys($dataToUpdate)));
 
-$query = "UPDATE $tableName SET $setClause WHERE id = :id";
+$query = "UPDATE $tableName SET $setClause WHERE $primaryKeyName = :$id";
 
 try {
-    $dataToUpdate['id'] = $id; // Добавляем ID записи
     $statement = $db->prepare($query);
     $statement->execute($dataToUpdate);
-    header("Location: dashboard.php"); // Перенаправление после задержки
-    exit;
 } catch (PDOException $e) {
     echo "Ошибка при обновлении записи: " . $e->getMessage();
 }

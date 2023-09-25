@@ -73,6 +73,7 @@
     $username = $_COOKIE['username'];
     $password = $_COOKIE['password'];
     $dbname = $_COOKIE['dbname'];
+    $primaryKeyName=$_COOKIE['primaryKeyName'];
     try {
         $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -101,12 +102,12 @@ foreach ($tableColumns as $column) {
     if ($dataType == 'text') {
         echo "<input type='text' name='$columnName' placeholder='$columnName'>";
     } elseif ($dataType == 'integer') {
-        if ($columnName === 'id') { // Проверка, что это поле первичного ключа
+        if ($columnName === $primaryKeyName) { // Проверка, что это поле первичного ключа
             // Здесь добавляем атрибут readonly и значение из $_POST
             echo "<input type='number' name='$columnName' value='{$_POST['id']}' readonly>";
         } else {
             // Если это не поле первичного ключа, генерируем обычное поле ввода
-            echo "<input type='number' name='$columnName' placeholder='$columnName'>";
+            echo "<input type='text' name='$columnName' placeholder='$columnName'>";
         }
     } else  {
         echo "<input type='text' name='$columnName' placeholder='$columnName'>";

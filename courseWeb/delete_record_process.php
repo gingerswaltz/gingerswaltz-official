@@ -7,6 +7,7 @@
         $password = $_COOKIE['password'];
         $dbname = $_COOKIE['dbname'];
         $table= $_COOKIE['table'];
+        $primaryKeyName=$_COOKIE['primaryKeyName'];
 
 try {
     $db = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$username;password=$password");
@@ -19,9 +20,10 @@ if (isset($_POST['id'])) {
     $id = $_POST['id'];
 
     // Подготовка SQL-запроса для удаления записи
-    $query = "DELETE FROM $table WHERE id = :id";
+    $query = "DELETE FROM $table WHERE $primaryKeyName = :id";
     $statement = $db->prepare($query);
     $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
 
     // Выполнение запроса
     if ($statement->execute()) {
