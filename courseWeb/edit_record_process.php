@@ -34,11 +34,12 @@ $setClause = implode(', ', array_map(function ($column) {
     return "$column = :$column";
 }, array_keys($dataToUpdate)));
 
-$query = "UPDATE $tableName SET $setClause WHERE $primaryKeyName = :$id";
+$query = "UPDATE $tableName SET $setClause WHERE $primaryKeyName = :id";
 
 try {
     $statement = $db->prepare($query);
     $statement->execute($dataToUpdate);
+    header("Location: dashboard.php");
 } catch (PDOException $e) {
     echo "Ошибка при обновлении записи: " . $e->getMessage();
 }
