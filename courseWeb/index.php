@@ -75,9 +75,62 @@
         <input type="text" name="dbname" required><br>
         
         <label for="table">Таблица:</label>
-        <input type="text" name="table" required><br>
+        <select name="table" required id="tableSelect">
+            <option value="" disabled selected>Выберите таблицу</option>
+        </select><br>
         
         <input type="submit" value="Войти">
+        <button type="button" id="checkConnectionButton">Проверить подключение</button>
     </form>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Обработчик события для кнопки "Проверить подключение"
+            document.getElementById("checkConnectionButton").addEventListener("click", function () {
+                // Получаем значения хоста, порта, пользователя и пароля из инпутов
+                const host = document.querySelector("input[name='host']").value;
+                const port = document.querySelector("input[name='port']").value;
+                const username = document.querySelector("input[name='username']").value;
+                const password = document.querySelector("input[name='password']").value;
+                const dbname = document.querySelector("input[name='dbname']").value;
+
+                // Создаем объект FormData для отправки данных
+                const formData = new FormData();
+                formData.append("host", host);
+                formData.append("port", port);
+                formData.append("username", username);
+                formData.append("password", password);
+                formData.append("dbname", dbname);
+
+                // Создаем асинхронный запрос к check_connection.php
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "check_connection.php", true);
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+                // Отправляем данные и обрабатываем ответ
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Если запрос успешен, обновляем список таблиц
+                        const tableSelect = document.getElementById("tableSelect");
+                        tableSelect.innerHTML = "<option value='' disabled selected>Выберите таблицу</option>";
+                        const tables = JSON.parse(xhr.responseText);
+                        tables.forEach(function (table) {
+                            const option = document.createElement("option");
+                            option.value = table;
+                            option.textContent = table;
+                            tableSelect.appendChild(option);
+                        });
+                    } else {
+                        // Если запрос не удался, выводим сообщение об ошибке
+                        alert("Ошибка при проверке подключения: " + xhr.responseText);
+                    }
+                };
+
+                // Отправляем запрос
+                xhr.send(formData);
+            });
+        });
+    </script>
 </body>
 </html>
+
