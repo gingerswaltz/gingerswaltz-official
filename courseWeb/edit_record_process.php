@@ -25,7 +25,10 @@ $dataToUpdate = [];
 foreach ($_POST as $columnName => $value) {
     $dataToUpdate[$columnName] = $value;
 }
-
+// Вывод данных для отладки
+echo "<pre>";
+print_r($dataToUpdate);
+echo "</pre>";
 // Добавьте имя первичного ключа в массив данных
 $dataToUpdate[$primaryKeyName] = $id;
 
@@ -38,13 +41,22 @@ $query = "UPDATE $tableName SET $setClause WHERE $primaryKeyName = :id";
 
 try {
     $statement = $db->prepare($query);
-    $statement->execute($dataToUpdate);
+
+    // Привязать параметр :id
+    $statement->bindParam(':id', $dataToUpdate[$primaryKeyName], PDO::PARAM_INT);
+
+    // Привязать параметры для остальных столбцов
+    foreach (array_keys($dataToUpdate) as $column) {
+        $statement->bindParam(":$column", $dataToUpdate[$column]);
+    }
+
+    $statement->execute();
     header("Location: dashboard.php");
 } catch (PDOException $e) {
     echo "Ошибка при обновлении записи: " . $e->getMessage();
 }
 
 $db = null; // Закрываем соединение с базой данных
-?>
+?>  
 
 <a href="dashboard.php">Вернуться к списку записей</a>

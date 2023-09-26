@@ -36,6 +36,7 @@
             text-decoration: none;
             width: auto;
             user-select: none;
+            margin-top: 5px;
             margin-bottom: 5px;
         }
         
@@ -47,6 +48,31 @@
         }
 
         .button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Стили для перемещенной строки и кнопки поиска */
+        .search-container {
+            text-align: right;
+            margin: 20px;
+        }
+
+        .search-input {
+            width: 200px;
+            padding: 5px;
+        }
+
+        .search-button {
+            background-color: #000080;
+            color: #fff;
+            border: solid;
+            padding: 5px 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-button:hover {
             background-color: #0056b3;
         }
     </style>

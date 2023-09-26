@@ -1,5 +1,4 @@
 <?php
-session_start();
 error_reporting(0);
 
 $host = $_COOKIE['host'];
@@ -105,9 +104,40 @@ if ($dataStatement === false) {
             text-decoration: none;
             width: 100px;
             user-select: none;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
         .button:hover {
+            background-color: #0056b3;
+        }
+        /* Стили для перемещенной строки и кнопки поиска */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .search-container {
+            text-align: right;
+        }
+
+        .search-input {
+            width: 200px;
+            padding: 5px;
+        }
+
+        .search-button {
+            background-color: #000080;
+            color: #fff;
+            border: solid;
+            padding: 5px 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-button:hover {
             background-color: #0056b3;
         }
     </style>
@@ -122,7 +152,13 @@ if ($dataStatement === false) {
     </form>
 
     <button type="button" onclick="window.location.href='index.php'">Разлогиниться</button>
-
+<!-- Перемещенная строка и кнопка поиска -->
+<div class="search-container">
+        <form action="search.php" method="get">
+            <input type="text" class="search-input" name="search_query" placeholder="Введите запрос для поиска">
+            <button type="submit" class="search-button">Поиск</button>
+        </form>
+    </div>
     <table>
         <tr>
             <?php
@@ -174,6 +210,9 @@ if ($dataStatement === false) {
         }
         ?>
     </table>
+     
+</form>
+
 </body>
 </html>
 
