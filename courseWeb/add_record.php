@@ -82,7 +82,7 @@
     $tableName=$_COOKIE['table'];
     ?>
 
-<h1 id="table-heading">Добавление записи в базу данных (Таблица: <?php echo $tableName ?>)</h1>;
+<h1 id="table-heading">Добавление записи в базу данных (Таблица: <?php echo $tableName ?>)</h1>
 <?php    
     $query = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = :tableName";
     $statement = $db->prepare($query);

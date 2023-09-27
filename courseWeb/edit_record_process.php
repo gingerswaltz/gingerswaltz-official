@@ -25,10 +25,7 @@ $dataToUpdate = [];
 foreach ($_POST as $columnName => $value) {
     $dataToUpdate[$columnName] = $value;
 }
-// Вывод данных для отладки
-echo "<pre>";
-print_r($dataToUpdate);
-echo "</pre>";
+
 // Добавьте имя первичного ключа в массив данных
 $dataToUpdate[$primaryKeyName] = $id;
 
