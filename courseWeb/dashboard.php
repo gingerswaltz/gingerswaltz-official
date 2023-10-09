@@ -31,19 +31,34 @@ if (!empty($tableColumns)) {
     $primaryKeyName = reset($tableColumns);
     setcookie("primaryKeyName", $primaryKeyName);
 } 
+//  количество записей на одной странице
+$itemsPerPage = 5; 
 
-// Выполнение SQL-запроса для получения данных с учетом сортировки
+$currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+//  смещение для SQL-запроса
+$offset = ($currentPage - 1) * $itemsPerPage;
+
+// Выполнение SQL-запроса для получения данных с учетом сортировки и пагинации
 $queryData = "SELECT * FROM $tableName";
 
 if ($sortColumn) {
     $queryData .= " ORDER BY $sortColumn $sortOrder";
 }
 
+$queryData .= " LIMIT $itemsPerPage OFFSET $offset";
+
 $dataStatement = $db->query($queryData);
 
 if ($dataStatement === false) {
     die("Ошибка выполнения запроса данных: " . $db->errorInfo()[2]);
 }
+//  запрос для подсчета общего количества записей
+$countQuery = "SELECT COUNT(*) FROM $tableName";
+$totalCount = $db->query($countQuery)->fetchColumn();
+
+//  общее количество страниц
+$totalPages = ceil($totalCount / $itemsPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -212,7 +227,20 @@ if ($dataStatement === false) {
     </table>
      
 </form>
+<!-- Пагинация -->
+<div class="pagination">
+        <?php
+        // Выводите ссылку на предыдущую страницу, если она доступна
+        if ($currentPage > 1) {
+            echo "<a href='dashboard.php?sort_column=$sortColumn&sort_order=$sortOrder&page=" . ($currentPage - 1) . "' class='button'>Предыдущая</a>";
+        }
 
+        // Выводите ссылку на следующую страницу, если она доступна
+        if ($currentPage < $totalPages) {
+            echo "<a href='dashboard.php?sort_column=$sortColumn&sort_order=$sortOrder&page=" . ($currentPage + 1) . "' class='button'>Следующая</a>";
+        }
+        ?>
+    </div>
 </body>
 </html>
 
