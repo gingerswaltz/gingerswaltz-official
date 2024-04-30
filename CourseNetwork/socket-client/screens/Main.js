@@ -1,4 +1,3 @@
-// React Native
 import React, { useState } from "react";
 import {
   View,
@@ -6,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from "react-native";
 
 const Main = ({ navigation }) => {
@@ -22,7 +22,9 @@ const Main = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, Platform.OS === "ios" && styles.containerIOS]}
+    >
       <Text style={styles.heading}>Join</Text>
       <TextInput
         style={styles.input}
@@ -53,31 +55,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    paddingHorizontal: 40,
+    backgroundColor: "#f5f5f5",
+  },
+  containerIOS: {
+    marginBottom: 190, // Дополнительное расстояние margin снизу для iOS
   },
   heading: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 32,
+    marginBottom: 40,
+    fontWeight: "bold",
+    color: "#333",
   },
   input: {
     width: "100%",
-    height: 40,
+    height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: "#fff",
+    fontSize: 16,
+    color: "#333",
   },
   button: {
     backgroundColor: "blue",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    elevation: 3,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
+    fontWeight: "bold",
   },
 });
 

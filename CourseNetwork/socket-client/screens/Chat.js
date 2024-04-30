@@ -5,6 +5,9 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import io from "socket.io-client";
 
@@ -12,85 +15,64 @@ const socket = io.connect("http://192.168.0.12");
 
 const Chat = ({ navigation, route }) => {
   const [message, setMessage] = useState("");
-  const [state, setState] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState(0);
 
   useEffect(() => {
-    // Событие приема сообщения от сервера
     socket.on("message", (data) => {
-      // Обновление состояния с полученным сообщением
-      setState([...state, data]);
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
 
-    // Событие приема списка пользователей от сервера
     socket.on("room", (data) => {
-      // Обновление количества пользователей в комнате
-      setUsers(data.users.length);
+      const usersArray = data.data.users;
+      setUsers(usersArray.length);
     });
 
-    // Отправка события присоединения к комнате на сервер
     socket.emit("join", { name: route.params.name, room: route.params.room });
 
-    // Очистка слушателей событий при размонтировании компонента
     return () => {
       socket.off("message");
       socket.off("room");
     };
   }, []);
 
-  // Обработчик изменения текста в поле ввода сообщения
   const handleChange = (text) => {
     setMessage(text);
   };
 
-  // Обработчик нажатия на кнопку отправки сообщения
   const handleSubmit = () => {
-    // Отправка сообщения на сервер
     socket.emit("sendMessage", { message, params: route.params });
-    // Очистка поля ввода после отправки сообщения
     setMessage("");
   };
 
-  // Обработчик нажатия на кнопку покидания комнаты
   const leftRoom = () => {
-    // Отправка события покидания комнаты на сервер
     socket.emit("leftRoom", { params: route.params });
-    // Переход на предыдущий экран
     navigation.goBack();
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
-        <Text>{route.params.room}</Text>
-        <Text>{users} users in this room</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
+      <View style={styles.header}>
+        <Text style={styles.roomName}>{route.params.room}</Text>
+        <Text style={styles.userCount}>{users} users in this room</Text>
         <TouchableOpacity onPress={leftRoom}>
-          <Text>Left the room</Text>
+          <Text style={styles.leaveRoom}>Leave the room</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ flex: 1 }}>
-        {state.map((msg, index) => (
-          <Text key={index}>
+      <ScrollView style={styles.messagesContainer}>
+        {messages.map((msg, index) => (
+          <Text key={index} style={styles.message}>
             {msg.data.user.name}: {msg.data.message}
           </Text>
         ))}
       </ScrollView>
-      <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={{
-            flex: 1,
-            borderWidth: 1,
-            borderColor: "#ccc",
-            borderRadius: 5,
-            padding: 10,
-          }}
+          style={styles.input}
           placeholder="What do you want to say?"
           value={message}
           onChangeText={handleChange}
@@ -98,15 +80,71 @@ const Chat = ({ navigation, route }) => {
           autoCapitalize="none"
           required
         />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSubmit}>
+          <Text style={styles.sendButtonText}>Send a message</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={{ backgroundColor: "blue", padding: 10, alignItems: "center" }}
-        onPress={handleSubmit}
-      >
-        <Text style={{ color: "#fff", fontSize: 16 }}>Send a message</Text>
-      </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  roomName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  userCount: {
+    fontSize: 16,
+  },
+  leaveRoom: {
+    fontSize: 16,
+    color: "blue",
+  },
+  messagesContainer: {
+    flex: 1,
+    padding: 10,
+  },
+  message: {
+    marginBottom: 10,
+    fontSize: 16,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#ccc",
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+  },
+  sendButton: {
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 5,
+  },
+  sendButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    textAlign: "center",
+  },
+});
 
 export default Chat;

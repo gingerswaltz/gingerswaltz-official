@@ -101,3 +101,4 @@ _ReSharper.*/
 
 # Игнорировать файлы с настройками Visual Studio для CodeLens
 .vscode/codelens.json
+/CourseNetwork/itProgerReact
