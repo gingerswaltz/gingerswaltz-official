@@ -11,6 +11,24 @@ const findUser = (user) => {
   );
 };
 
+const getUsers = () => {
+  return users;
+};
+
+const getActiveRooms = () => {
+  const activeRooms = [];
+  const allUsers = getUsers(); // Предполагается, что getUsers - это функция, возвращающая всех текущих пользователей
+
+  // Перебираем всех пользователей и собираем уникальные комнаты
+  allUsers.forEach((user) => {
+    if (!activeRooms.includes(user.room)) {
+      activeRooms.push(user.room);
+    }
+  });
+
+  return activeRooms;
+};
+
 const addUser = (user) => {
   const isExist = findUser(user);
 
@@ -35,4 +53,10 @@ const removeUser = (user) => {
   return found;
 };
 
-module.exports = { addUser, findUser, getRoomUsers, removeUser };
+module.exports = {
+  addUser,
+  findUser,
+  getRoomUsers,
+  removeUser,
+  getActiveRooms,
+};

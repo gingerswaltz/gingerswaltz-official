@@ -6,7 +6,13 @@ const winston = require("winston");
 
 const app = express();
 const route = require("./route");
-const { addUser, findUser, getRoomUsers, removeUser } = require("./users");
+const {
+  addUser,
+  findUser,
+  getRoomUsers,
+  removeUser,
+  getActiveRooms,
+} = require("./users");
 
 app.use(cors({ origin: "*" }));
 app.use(route);
@@ -64,6 +70,18 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("listRoom", () => {
+    const rooms = getActiveRooms();
+
+    if (rooms.length > 0) {
+      // Отправляем список комнат только пользователю, отправившему запрос
+      socket.emit("message", { data: { rooms } });
+
+      // Логгирование отправки сообщения
+      logger.info(`Rooms list: ${JSON.stringify(rooms)}`);
+    }
+  });
+
   socket.on("leftRoom", ({ params }) => {
     const user = removeUser(params);
 
@@ -83,7 +101,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  io.on("disconnect", () => {
+  socket.on("disconnect", () => {
     console.log("Disconnect");
   });
 });
